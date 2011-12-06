@@ -1,0 +1,524 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Change log for SSOAP package</title>
+</head>
+
+<body>
+<h1>Change log for SSOAP package</h1>
+
+<h2>0.8-0</h2>
+<dl>
+  <dt>
+  <li> Restored the ability to the generated interface code and
+      classes to a file that can be source()ed into another R session
+       or used as code in a package. See writeInterface().
+  <dd>
+</dl>
+
+
+<h2>0.7-0</h2>
+<dl>
+  <dt>
+  <li> Support for HTTP GET and POST methods for WSDL.
+  <dd>
+
+  <dt>
+  <li> New, simpler approach to processing/gathering schema types.
+  <dd>
+      
+  <dt>
+  <li> Support for many more WSDLs/schema.
+  <dd>
+  <dt>
+  <li> Significant improvements to XMLSchema and mapping descriptions
+       of data types to and from XML.
+  <dd>
+</dl>
+
+<h2>0.6-0</h2>
+<dl>
+
+  <dt>
+  <li>  Added methods to coerce a list to an S4 object so that the
+       caller  of a WSDL method expecting an S4 object(s) can provide
+       just a list of the slots.
+  <dd>
+  
+  <dt>
+  <li> Discard parameters in WSDL methods that call for an empty object/element.
+  <dd>
+
+      
+  <dt>
+  <li> Allow the caller to specify which port by name or by number to
+       allow the selection of differnt types of interfaces.
+  <dd>
+
+  <dt>
+  <li> Added more support for targetNamespace and elementFormDefault.
+  <dd>
+      
+  <dt>
+      <li> Many changes (along with those to XMLSchema) to process
+	  more data types and WSDLs.
+  <dd>	  
+  <dt>
+  <li> Support for processing &lt;wsdl:import:gt; nodes in addition to
+       schema import nodes.
+  <dd>
+</dl>
+
+<h2>0.5-7</h2>
+<dl>
+  <dt>
+  <li> Fixes for working with brenda.wsdl.
+  <dd>
+  <dt>
+  <li> Removed the XMLRPC functions. See the XMLRPC package.
+  <dd>
+</dl>
+
+<h2>0.5-6</h2>
+
+<h2>0.5-5</h2>
+<dl>
+  <dt>
+  <li> Patches from Alexandre Rademaker.
+      <ul>
+	<li> processWSDL() when "XMLAbstractDocument" passed.
+	<li> Fix PDF documentation for Users Guide
+      </ul>
+</dl>      
+
+
+<h2>0.5-5</h2>
+<dl>
+  <dt>
+  <li> Patches from Seth Falcon to fix methods for $, UTF-8 issues
+      with quotes, etc. (Thanks.)
+  <dd>
+</dl>
+
+<h2>0.5-4</h2>
+<dl>
+  <dt>
+  <li> Fixed a bug in creating the XML for the body of the request
+      and converting the arguments to XML in toSOAP().
+  <dd> The issue was parenting and reparenting the new nodes.
+     These are added to the parent explicitly in writeSOAPBody() rather than
+     implicitly in the toSOAP() methods.
+</dl>
+
+<h2>0.5-3</h2>
+<dl>
+  <dt>
+  <li> Added support for dealing with fancy quotes when processing
+      method definitions and generating R code.
+  <dd>
+</dl>
+
+<h2>0.5-2</h2>
+<dl>
+  <dt>
+  <li> Suport for elementFormQualified in .SOAP() and
+       genSOAPClientInterface() from the schema definition.
+  <dd> This controls whether XML elements representing arguments in
+      SOAP method calls use the target namespace of the method
+      or not.
+</dl>
+
+<h2>0.5-1</h2>
+<dl>
+  <dt>
+  <li> Update toSOAP methods to work with XMLInternalDocument objects
+       rather than connections.
+  <dd>
+</dl>
+
+<h2>0.5-0</h2>
+
+<dl>
+  <dt>
+  <li> Introduced richer support for date, datetime and time types,
+       allowing the user to specify values as POSIXt or character types.
+  <dd>  Classes SOAPDate, SOAPDateTime and SOAPTime used to aid in
+        writing methods for toSOAP() and fromSOAP().
+  
+  <dt>
+  <li> [Important] Functions generated from the WSDL use ... as the arguments for
+       the  RCurl parameters .opts, i.e. .opts = list(...)
+  <dd>
+
+  <dt>
+  <li>  Added .soapHeader parameter to .SOAP function to allow a
+        function, XML node,  or XML text to be supplied as the
+        content for the header node of the SOAP Envelope.
+  <dd>  This is often used for authentication, etc. in the SOAP request.
+
+  <dt>
+  <li>  Added addSoapHeader parameter to genSOAPClientInterface() to
+        control whether .soapHeader is added as a parameter to each
+        generated function.
+  <dd>
+      
+  <dt>
+  <li> Generating converters from XML nodes to instances of the
+       defined WSDL classes and arrays directly
+       rather than determining the conversion steps run-time.
+  <dd>
+
+  <dt>
+  <li> Use the converter function rather than the type in the .convert.
+  <dd>
+
+  <dt>
+  <li>  .convert argument to .SOAP can be the name of a class and will
+      be used in a call to as(xmlNode, .convert).
+       This allows one to define setAs() methods for converting
+        XMLAbstractNode objects to 
+  <dd>
+      
+  <dt>
+  <li> Using XMLInternalNode objects to create the envelope (header,
+        body) of the SOAP request
+  <dd>
+      
+  
+  <dt>
+  <li>  Additions to handle different aspects of XML schema in WSDL files.
+  <dd>
+</dl>  
+
+
+<h2>0.4-8</h2>
+
+<dl>
+  <dt>
+  <li> Avoid using dQuote() when creating code for function
+    definitions as, within certain locales, this can create code that is
+    not parseable by R.
+  <dd>
+</dl>
+
+<h2>0.4-7</h2>
+<dl>
+  <dt>
+  <li> Better handling of anyType.
+  <dd>
+
+  <dt>
+  <li> Handle case when there are no types.
+  <dd>
+</dl>
+
+<h2>0.4-6</h2>
+<dl>
+  <dt>
+  <li> Some documentation fixes and generally fixing up warnings.
+  <dd>
+</dl>
+
+<h2>0.4-5</h2>
+<dl>
+ <dt>
+ <li> resolve() methods handle working with multiple schema and being able to resolve,
+      e.g., fields with types in different schemas. 
+ <dd>
+
+ <dt>
+ <li>  Added support for xsd:anyType.
+ <dd>
+     
+ <dt>
+ <li> Use a class SOAPResolveError for signalling errors related to
+      resolving types in schema so that we can catch those errors.
+ <dd>
+</dl>
+
+
+<h2>0.4-4</h2>
+<dl>
+   Changes for dealing with WSDL files
+
+  <dt>
+  <li>  Added the arguments passed via the ... in generated functions
+        to the actual .SOAP() call,
+        e.g. for nameSpaces
+  <dd>
+
+  <dt>
+  <li> Handle description of fields/elements in structures more
+      directly so that the generated code is more complete.
+  <dd>
+  <dt>
+  <li> Handle more cases during the processing (e.g. element nodes
+      that point to other nodes in the schema).
+  <dd>
+
+  <dt>
+  <li> .SOAP accepts nameSpaces argument as the name of an element in
+      the .SOAPDefaultNameSpaces list, e.g. "1.1" or "1.2"
+      as well as a character vector of alias=URI pairs
+  <dd>
+
+  <dt>
+  <li> Handle enumeration types.
+  <dd>
+
+  <dt>
+  <li>  Examples of WSDL code generation in examples/KEGG.S and
+      tests/interop.R work.
+       Can also process eBay developer's WSDL. (More work needed to
+       make the calls with the authentication.)
+  <dd>
+
+      
+      
+</dl>
+
+<h2>0.4-3</h2>
+
+<dl>
+  <dt>
+   <li> Removed the setGeneric() for "names" that prohibited the
+       package from being installed after changes to the methods package.    
+  <dd>
+</dl>
+
+<h2>0.4-2</h2>
+<dl>
+  <dt>
+  <li> Fix for the emission of warnings for nodes of the
+       form <xsd:string>value</value> when attempting to convert them
+       from SOAP to R.
+  <dd>
+
+  <dt>
+  <li> processWSDL() now separates the different schema in the types
+      node into SchemaContainer and creates "SchemaTypes" lists
+      with methods for resolve() to make the lookup of a particular
+      type more structured.
+      
+  <dd>
+      
+</dl>
+
+<h2>0.4-1</h2>
+
+<dl>
+  <dt>
+  <li>  Fix for the generation of the URL from a SOAPServer object
+        which incorrectly inserted a port.  The parsing of the URI
+        using the XML package returned a value of 0 rather than NA
+        when there is no port. Fixed in XML package and here.
+  <dd>
+</dl>
+
+<h2>0.4-0</h2>
+<dl>
+
+ <dt>
+ <li> Tested using HTTPS (HTTP over SSL).
+ <dd>
+
+ <dt>
+ <li> Determine the protocol (http, https, etc.) from the SOAPServer object
+ <dd> See getProtocol() which is not exported.
+
+ <dt>
+ <li> Support for base64Binary return types types.
+ <dd>  Need RCurl >= 0.8-0
+
+ <dt>
+ <li> Honor the fromConverter in the BasicSOAPType objects when converting 
+      a SOAP response to R.
+ <dd>
+
+ <dt>
+ <li>  SOAPTypes structure has changed so each element is a list and can contain
+      converter functions for convert to SOAP from R (to), and to R from SOAP (from).
+ <dd>  
+
+ <dt>
+ <li> Issue: Still issues with namespaces and matching prefix to URIs
+      when resolving types. 
+ <dd>     
+</dl>
+
+
+<h2>0.3-0</h2>
+<dl>
+
+  <dt>
+  <li> Programmatically generated bindings perform coercion of
+      both arguments to the appropriate type and
+      of the return value  class,
+      if the return type is a newly defined class in the WSDL file.</li>
+  <dd>
+    
+  <dt>
+  <li>parseArrayType() returns a single ArrayType object (not a list
+    of ArrayType objects) with a vector giving the dimensions of the
+    nested arrays. </li>
+  <dd> More work to check if this covers the complete set of cases is needed.
+
+
+  <dt>
+  <li>Fix for processing the updated KEGG WSDL</li>
+  <dd>
+
+  <dt>
+  <li> Added some support for using/checking namespaces in the
+  processing of the schema.</li>
+  <dd>  
+  <dt>
+  <li> New interface for calling methods via a server
+       object, i.e. <code>keggServer$list_databases()</code>.
+  <dd> The server is created from a "SOAPClientInterface" instance
+       created from <code>genSOAPClientInterface</code>.
+
+
+  <dt>
+  <li> Added a server argument to genSOAPClientInterface() which
+       defaults to the server description object read from the
+       WSDL file. This can however be used to create 
+  <dd>    
+  <dt>
+  <li> Functions generated via genSOAPClientInterface()
+       (and createOperationDefinition()) now have an explicit
+       environment whose parent is that specified via the env argument
+       (of both functions).
+  <dd>
+      
+  <dt>
+  <li> Added a curlHandle arguemnt .SOAP so that one can supply
+       previously created handles with options, connections, etc.
+       to the SOAP operation.
+  <dd>
+
+  <dt>
+  <li> processWSDL takes a handler argument that is used to perform
+       imports, etc. The default is an internal function in the
+       package named WSDLParseHandlers.
+      
+  <dd>
+      
+</dl>
+
+<h2>0.2-4</h2>
+<dl>
+
+  <dt>
+  <li> fromSOAPArray() calls unlist to create a vector if the element
+      types are primitive (i.e. numbers, strings, logicals).
+  <dd>
+  
+  <dt>
+  <li> Deals better with element type objects (i.e. SOAPType) when explicitly passed to fromSOAPArray
+  <dd>
+
+  <dt>
+  <li> Update KEGG.wsdl to new version.
+       And the KEGG.S examples to use class slots rather than list
+      elements,
+       i.e.  iface@functions rather than  iface$functions.
+  <dd>
+
+  <dt>
+  <li> Handle NULL return values in fromSOAPArray as this function can be
+      called when the type is known from, e.g.,  processing a WSDL
+      file but the return value is actually NULL.
+  <dd>
+      
+</dl>
+
+<h2>0.2-3</h2>
+  <dl>
+    <dt>
+    <li> License switched to GPL2 from BSD.
+    <dd> Previous versions are still available under the BSD license.
+
+    <dt>
+    <li> Empty/zero-length arrays are returned as character(0),
+  	integer(0), numeric(0), logical(0), etc. as appropriate to the
+ 	element type or list(0). This is a change from returning NULL.
+    <dd>
+	
+    <dt>
+    <li> Fix in fromSOAPArray when computing the name of the type from
+  	 the arrayType attribute.
+    <dd> The array declaration is now parsed more thoroughly and an
+    	 ArrayType object with the dimensions is created.
+
+    <dt>
+    <li> Global option SSOAP:DefaultNamespace that can be set to "1.1"
+ 	 or "1.2"
+    <dt> The naming convention (pkg:variable name) is consistent with
+    	 XML attributes and probably a reasonable one to adopt for R's
+         namespace mechanism and options for particular packages.
+
+    <dt>
+    <li> Patch from Nigel Sim to handle soapenc: namespace entries.
+    <dd>
+	
+    <dt>
+    <li> dims field added to ArrayType class.
+    <dd>	
+  </dl>
+
+
+<h2>0.2-2</h2>
+
+<h2>0.2-1</h2>
+<dl>
+  <dt>
+  <li>  isHTTPError() recognizes status codes 100, 200, 201, ..., 206
+        as being error-free responses.
+  <dd>  The 100 error message is for CONTINUE, but hopefully can be
+        ignored since the entire request was sent by the client.
+
+  <dt>
+  <li>   Documentation updates and fixed trivial documentation links.
+  <dd>
+
+
+  <dt>
+  <li>  Support for WSDL still needs some work in the case of arrays
+      of complex types.  More to come on reading Schema generally.
+  <dd>
+      
+      
+</dl>
+
+
+<h2>0.2-0</h2>
+
+<dl>
+
+  <dt>
+  <li> Support for reading WSDL files  (either locally or via HTTP)
+       and generating S interface to the server and its methods.
+  <dd>
+      
+  <dt>
+  <li> UseDashInNames option in R can now be set to control whether
+     the function, field and class names generated during the
+     processing of the WSDL information are converted to
+     myRoutine or left as my_routine.
+
+  <dd>
+  
+  <dt>
+  <li> Use RCurl to implement the HTTP request.
+  <dd>
+</dl>
+
+
+
+<hr>
+<address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
+<a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
+<!-- hhmts start -->
+Last modified: Sat Aug 27 10:34:33 PDT 2011
+<!-- hhmts end -->
+</body> </html>

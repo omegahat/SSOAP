@@ -1,0 +1,52 @@
+In http://www.ncbi.nlm.nih.gov/soap/eutils/esearch 
+
+<s:complexType name="TranslationStackType">
+ <s:choice minOccurs="0" maxOccurs="unbounded">
+  <s:element name="TermSet" type="tns:TermSetType"/>
+  <s:element name="OP" type="s:string"/>
+ </s:choice>
+</s:complexType>
+
+And this blows up when calling UnionDef (line 206)
+with xmlSize(tmp) == 2
+
+Introduced a UnionDefinition class for describing the SOAP
+type and this descends from a CompositeTypeDefinition class and
+is parallel to ClassDefinition.
+
+<fix>We need code to create the setClassUnion in R.</fix>
+
+-----------------------------------------------------------------
+
+In the "http://www.ncbi.nlm.nih.gov/soap/eutils/elink" schema   (file elink.xsd)
+
+<s:complexType name="IdType">
+ <s:simpleContent>
+  <s:extension base="s:string">
+   <s:attribute name="HasLinkOut">
+    <s:simpleType>
+     <s:restriction base="s:NMTOKEN">
+      <s:enumeration value="Y"/>
+      <s:enumeration value="N"/>
+     </s:restriction>
+    </s:simpleType>
+   </s:attribute>
+   <s:attribute name="HasNeighbor">
+    <s:simpleType>
+     <s:restriction base="s:NMTOKEN">
+      <s:enumeration value="Y"/>
+      <s:enumeration value="N"/>
+     </s:restriction>
+    </s:simpleType>
+   </s:attribute>
+  </s:extension>
+ </s:simpleContent>
+</s:complexType>
+
+Does this mean that we have an element with two attributes,
+e.g
+ <IdType HasLinkOut="Y|N" HasNeighbor="Y|N">text...</IdType>
+
+If so, we could map it to a class definition that extends
+string and that has two addition slots
+new("ExtendedClassDefinition", name = "IdType", base = "string", list(HasLinkOut = "YN_Enum", HasNeighbor = "YN_Enum"))

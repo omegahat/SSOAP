@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<s:schema targetNamespace="http://www.ncbi.nlm.nih.gov/soap/eutils/espell" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.ncbi.nlm.nih.gov/soap/eutils/espell" elementFormDefault="qualified">
+
+	<!--   version="1.5"  -->
+	<!--   http://www.ncbi.nlm.nih.gov/entrez/query/DTD/eSpell.dtd  date: 2005/03/02 17:46:05  -->
+
+	<s:complexType name="SpelledQueryType">
+		<s:choice minOccurs="0" maxOccurs="unbounded">
+			<s:element name="Replaced" type="s:string"/>
+			<s:element name="Original" type="s:string"/>
+		</s:choice>
+	</s:complexType>
+	<s:element name="eSpellResult">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="ERROR" type="s:string"/>
+				<s:element name="Database" type="s:string"/>
+				<s:element name="Query" type="s:string"/>
+				<s:element name="CorrectedQuery" type="s:string"/>
+				<s:element name="SpelledQuery" type="tns:SpelledQueryType"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:element name="eSpellRequest">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="db" type="s:string" minOccurs="0"/>
+				<s:element name="term" type="s:string" minOccurs="0"/>
+				<s:element name="tool" type="s:string" minOccurs="0"/>
+				<s:element name="email" type="s:string" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:complexType name="eSpellResultType">
+		<s:sequence>
+			<s:element name="ERROR" type="s:string"/>
+			<s:element name="Database" type="s:string"/>
+			<s:element name="Query" type="s:string"/>
+			<s:element name="CorrectedQuery" type="s:string"/>
+			<s:element name="SpelledQuery" type="tns:SpelledQueryType"/>
+		</s:sequence>
+	</s:complexType>
+	<s:element name="eSpellResultMS">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="eSpellResult" type="tns:eSpellResultType" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:element name="eSpellRequestMS">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="db" type="s:string" minOccurs="0"/>
+				<s:element name="term" type="s:string" minOccurs="0"/>
+				<s:element name="tool" type="s:string" minOccurs="0"/>
+				<s:element name="email" type="s:string" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+</s:schema>

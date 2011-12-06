@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<s:schema targetNamespace="http://www.ncbi.nlm.nih.gov/soap/eutils/esearch" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.ncbi.nlm.nih.gov/soap/eutils/esearch" elementFormDefault="qualified">
+	
+    <!--  version="1.5" -->
+	<!--  http://www.ncbi.nlm.nih.gov/entrez/query/DTD/eSearch_020511.dtd  -->
+	
+	<s:element name="Count" type="s:string"/>
+	<s:element name="ERROR" type="s:string"/>
+	<s:element name="Explode" type="s:string"/>
+	<s:element name="Field" type="s:string"/>
+	<s:element name="FieldNotFound" type="s:string"/>
+	<s:element name="From" type="s:string"/>
+	<s:element name="Id" type="s:string"/>
+	<s:element name="OutputMessage" type="s:string"/>
+	<s:element name="PhraseIgnored" type="s:string"/>
+	<s:element name="PhraseNotFound" type="s:string"/>
+	<s:element name="QueryKey" type="s:string"/>
+	<s:element name="QueryTranslation" type="s:string"/>
+	<s:element name="QuotedPhraseNotFound" type="s:string"/>
+	<s:element name="RetMax" type="s:string"/>
+	<s:element name="RetStart" type="s:string"/>
+	<s:element name="Term" type="s:string"/>
+	<s:element name="To" type="s:string"/>
+	<s:element name="WebEnv" type="s:string"/>
+	<s:complexType name="ErrorListType">
+		<s:sequence>
+			<s:element ref="tns:PhraseNotFound" minOccurs="0" maxOccurs="unbounded"/>
+			<s:element ref="tns:FieldNotFound" minOccurs="0" maxOccurs="unbounded"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="IdListType">
+		<s:sequence>
+			<s:element ref="tns:Id" minOccurs="0" maxOccurs="unbounded"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="TermSetType">
+		<s:sequence>
+			<s:element ref="tns:Term"/>
+			<s:element ref="tns:Field"/>
+			<s:element ref="tns:Count"/>
+			<s:element ref="tns:Explode"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="TranslationType">
+		<s:sequence>
+			<s:element ref="tns:From"/>
+			<s:element ref="tns:To"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="TranslationSetType">
+		<s:sequence>
+			<s:element name="Translation" type="tns:TranslationType" minOccurs="0" maxOccurs="unbounded"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="TranslationStackType">
+		<s:choice minOccurs="0" maxOccurs="unbounded">
+			<s:element name="TermSet" type="tns:TermSetType"/>
+			<s:element name="OP" type="s:string" />
+		</s:choice>
+	</s:complexType>
+	<s:complexType name="WarningListType">
+		<s:sequence>
+			<s:element ref="tns:PhraseIgnored" minOccurs="0" maxOccurs="unbounded"/>
+			<s:element ref="tns:QuotedPhraseNotFound" minOccurs="0" maxOccurs="unbounded"/>
+			<s:element ref="tns:OutputMessage" minOccurs="0" maxOccurs="unbounded"/>
+		</s:sequence>
+	</s:complexType>
+	<s:element name="eSearchResult">
+		<s:complexType>
+			<s:sequence>
+				<s:sequence minOccurs="0">
+					<s:element ref="tns:ERROR" minOccurs="0"/>
+					<s:sequence minOccurs="0">
+						<s:element ref="tns:Count" minOccurs="0"/>
+						<s:sequence minOccurs="0">
+							<s:element ref="tns:RetMax" minOccurs="0"/>
+							<s:element ref="tns:RetStart" minOccurs="0"/>
+							<s:element ref="tns:QueryKey" minOccurs="0"/>
+							<s:element ref="tns:WebEnv" minOccurs="0"/>
+							<s:element name="IdList" type="tns:IdListType" minOccurs="0"/>
+							<s:element name="TranslationSet" type="tns:TranslationSetType" minOccurs="0"/>
+							<s:element name="TranslationStack" type="tns:TranslationStackType" minOccurs="0"/>
+							<s:element ref="tns:QueryTranslation" minOccurs="0"/>
+						</s:sequence>
+					</s:sequence>
+				</s:sequence>
+				<s:element name="ErrorList" type="tns:ErrorListType" minOccurs="0"/>
+				<s:element name="WarningList" type="tns:WarningListType" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:element name="eSearchRequest">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="db" type="s:string" minOccurs="0"/>
+				<s:element name="term" type="s:string" minOccurs="0"/>
+				<s:element name="WebEnv" type="s:string" minOccurs="0"/>
+				<s:element name="QueryKey" type="s:string" minOccurs="0"/>
+				<s:element name="usehistory" type="s:string" minOccurs="0"/>
+				<s:element name="tool" type="s:string" minOccurs="0"/>
+				<s:element name="email" type="s:string" minOccurs="0"/>
+				<s:element name="field" type="s:string" minOccurs="0"/>
+				<s:element name="reldate" type="s:string" minOccurs="0"/>
+				<s:element name="mindate" type="s:string" minOccurs="0"/>
+				<s:element name="maxdate" type="s:string" minOccurs="0"/>
+				<s:element name="datetype" type="s:string" minOccurs="0"/>
+				<s:element name="RetStart" type="s:string" minOccurs="0"/>
+				<s:element name="RetMax" type="s:string" minOccurs="0"/>
+				<s:element name="rettype" type="s:string" minOccurs="0"/>
+				<s:element name="sort" type="s:string" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:element name="eSearchRequestMS">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="db" type="s:string" minOccurs="0"/>
+				<s:element name="term" type="s:string" minOccurs="0"/>
+				<s:element name="WebEnv" type="s:string" minOccurs="0"/>
+				<s:element name="query_key" type="s:string" minOccurs="0"/>
+				<s:element name="usehistory" type="s:string" minOccurs="0"/>
+				<s:element name="tool" type="s:string" minOccurs="0"/>
+				<s:element name="email" type="s:string" minOccurs="0"/>
+				<s:element name="field" type="s:string" minOccurs="0"/>
+				<s:element name="reldate" type="s:string" minOccurs="0"/>
+				<s:element name="mindate" type="s:string" minOccurs="0"/>
+				<s:element name="maxdate" type="s:string" minOccurs="0"/>
+				<s:element name="datetype" type="s:string" minOccurs="0"/>
+				<s:element name="retstart" type="s:string" minOccurs="0"/>
+				<s:element name="retmax" type="s:string" minOccurs="0"/>
+				<s:element name="rettype" type="s:string" minOccurs="0"/>
+				<s:element name="sort" type="s:string" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:complexType name="eSearchResultType">
+		<s:sequence>
+			<s:sequence minOccurs="0">
+				<s:element ref="tns:ERROR" minOccurs="0"/>
+				<s:sequence minOccurs="0">
+					<s:element ref="tns:Count" minOccurs="0"/>
+					<s:sequence minOccurs="0">
+						<s:element ref="tns:RetMax" minOccurs="0"/>
+						<s:element ref="tns:RetStart" minOccurs="0"/>
+						<s:element ref="tns:QueryKey" minOccurs="0"/>
+						<s:element ref="tns:WebEnv" minOccurs="0"/>
+						<s:element name="IdList" type="tns:IdListType" minOccurs="0"/>
+						<s:element name="TranslationSet" type="tns:TranslationSetType" minOccurs="0"/>
+						<s:element name="TranslationStack" type="tns:TranslationStackType" minOccurs="0"/>
+						<s:element ref="tns:QueryTranslation" minOccurs="0"/>
+					</s:sequence>
+				</s:sequence>
+			</s:sequence>
+			<s:element name="ErrorList" type="tns:ErrorListType" minOccurs="0"/>
+			<s:element name="WarningList" type="tns:WarningListType" minOccurs="0"/>
+		</s:sequence>
+	</s:complexType>
+	<s:element name="eSearchResultMS">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="eSearchResult" type="tns:eSearchResultType" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+</s:schema>

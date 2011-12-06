@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- WSDL for http://daac.ornl.gov/cgi-bin/MODIS/GLBVIZ_1_Glb_subset/MODIS_webservice.pl created by Pod::WSDL version: 0.04 on Mon May 24 15:41:43 2010 -->
+<wsdl:definitions targetNamespace="http://daac.ornl.gov/MODIS_webservice" xmlns:impl="http://daac.ornl.gov/MODIS_webservice" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns1="http://daac.ornl.gov/MODIS_webservice">
+
+	<wsdl:types>
+		<schema targetNamespace="http://daac.ornl.gov/MODIS_webservice" xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+			<complexType name="ArrayOfString">
+				<complexContent>
+					<restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType" wsdl:arrayType="soapenc:string[]" />
+					</restriction>
+				</complexContent>
+			</complexType>
+			<complexType name="ModisData">
+				<sequence>
+					<element name="xllcorner" nillable="true" type="xsd:float">
+						<wsdl:documentation>X-Longitude of the corner of lower left pixel in Sinusoidal projection</wsdl:documentation>
+					</element>
+					<element name="yllcorner" nillable="true" type="xsd:float">
+						<wsdl:documentation>Y-Latitude of the corner of lower left pixel in Sinusoidal projection</wsdl:documentation>
+					</element>
+					<element name="cellsize" nillable="true" type="xsd:float">
+						<wsdl:documentation>Resolution of the data</wsdl:documentation>
+					</element>
+					<element name="nrows" nillable="true" type="xsd:float">
+						<wsdl:documentation>Number of rows</wsdl:documentation>
+					</element>
+					<element name="ncols" nillable="true" type="xsd:float">
+						<wsdl:documentation>Number of rows</wsdl:documentation>
+					</element>
+					<element name="band" nillable="true" type="xsd:string">
+						<wsdl:documentation>Band Name</wsdl:documentation>
+					</element>
+					<element name="units" nillable="true" type="xsd:string">
+						<wsdl:documentation>Units for the band</wsdl:documentation>
+					</element>
+					<element name="scale" nillable="true" type="xsd:float">
+						<wsdl:documentation>scale of the data values</wsdl:documentation>
+					</element>
+					<element name="latitude" nillable="true" type="xsd:float">
+						<wsdl:documentation>Latitude in degrees of the subset location</wsdl:documentation>
+					</element>
+					<element name="longitude" nillable="true" type="xsd:float">
+						<wsdl:documentation>Longitude in degrees of the subset location</wsdl:documentation>
+					</element>
+					<element name="header" nillable="true" type="xsd:string">
+						<wsdl:documentation>Header for the Subset returned</wsdl:documentation>
+					</element>
+					<element name="subset" nillable="true" type="tns1:ArrayOfString">
+						<wsdl:documentation>Subset data</wsdl:documentation>
+					</element>
+				</sequence>
+			</complexType>
+		</schema>
+	</wsdl:types>
+
+	<wsdl:message name="getproductsRequest">
+	</wsdl:message>
+
+	<wsdl:message name="getproductsResponse">
+		<wsdl:part name="getproductsReturn" type="tns1:ArrayOfString">
+			<wsdl:documentation>This returns the list of products available. Product shortname is used.</wsdl:documentation>
+		</wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="getbandsRequest">
+		<wsdl:part name="Product" type="xsd:string">
+			<wsdl:documentation>MODIS Product Shortname</wsdl:documentation>
+		</wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="getbandsResponse">
+		<wsdl:part name="getbandsReturn" type="tns1:ArrayOfString">
+			<wsdl:documentation>This returns the list of bands available for a product</wsdl:documentation>
+		</wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="getdatesRequest">
+		<wsdl:part name="Latitude" type="xsd:float">
+			<wsdl:documentation>Latitude in geographic Lat/Long WGS 84 coordinate system</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="Longitude" type="xsd:float">
+			<wsdl:documentation>Longitude in geographic Lat/Long WGS 84 coordinate system</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="Product" type="xsd:string">
+			<wsdl:documentation>MODIS Product Shortname</wsdl:documentation>
+		</wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="getdatesResponse">
+		<wsdl:part name="getdatesReturn" type="tns1:ArrayOfString">
+			<wsdl:documentation>This returns the list of composite dates available for the product,Latitude,Longitude combination</wsdl:documentation>
+		</wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="getsubsetRequest">
+		<wsdl:part name="Latitude" type="xsd:float">
+			<wsdl:documentation>Latitude in geographic Lat/Long WGS 84 coordinate system</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="Longitude" type="xsd:float">
+			<wsdl:documentation>Longitude in geographic Lat/Long WGS 84 coordinate system</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="Product" type="xsd:string">
+			<wsdl:documentation>MODIS Product Shortname</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="Band" type="xsd:string">
+			<wsdl:documentation>Enter the band you want to retreive. Enter all to get all bands.</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="MODIS_Subset_Start_Date" type="xsd:string">
+			<wsdl:documentation>MODIS Composite Date Start of the Subset period</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="MODIS_Subset_End_Date" type="xsd:string">
+			<wsdl:documentation>MODIS Composite Date End of the Subset period</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="Km_Above_Below" type="xsd:string">
+			<wsdl:documentation>Size in km of the subset above and below the center location</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="Km_Left_Right" type="xsd:string">
+			<wsdl:documentation>Size in km of the subset left and right the center location</wsdl:documentation>
+		</wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="getsubsetResponse">
+		<wsdl:part name="getsubsetReturn" type="tns1:ModisData">
+			<wsdl:documentation>This returns the subset for the location,product and date combination and detailed projection information.</wsdl:documentation>
+		</wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="getsubsetorderRequest">
+		<wsdl:part name="Latitude" type="xsd:float">
+			<wsdl:documentation>Latitude in geographic Lat/Long WGS 84 coordinate system</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="Longitude" type="xsd:float">
+			<wsdl:documentation>Longitude in geographic Lat/Long WGS 84 coordinate system</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="Product" type="xsd:string">
+			<wsdl:documentation>MODIS Product Shortname</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="Email" type="xsd:string">
+			<wsdl:documentation>Enter the email address to which you want to receive the order</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="UID" type="xsd:string">
+			<wsdl:documentation>Unique tag for the order</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="MODIS_Subset_Start_Date" type="xsd:string">
+			<wsdl:documentation>MODIS Composite Date Start of the Subset period</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="MODIS_Subset_End_Date" type="xsd:string">
+			<wsdl:documentation>MODIS Composite Date End of the Subset period</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="Km_Above_Below" type="xsd:string">
+			<wsdl:documentation>Size in km of the subset above and below the center location</wsdl:documentation>
+		</wsdl:part>
+		<wsdl:part name="Km_Left_Right" type="xsd:string">
+			<wsdl:documentation>Size in km of the subset left and right the center location</wsdl:documentation>
+		</wsdl:part>
+	</wsdl:message>
+
+	<wsdl:message name="getsubsetorderResponse">
+		<wsdl:part name="getsubsetorderReturn" type="xsd:string">
+			<wsdl:documentation>This returns the order ID for the subset ID. An email with a link to the subset order would be dispatched to the email address provided.</wsdl:documentation>
+		</wsdl:part>
+	</wsdl:message>
+
+	<wsdl:portType name="myServiceHandler">
+		<wsdl:operation name="getproducts" parameterOrder="">
+			<wsdl:input message="impl:getproductsRequest" name="getproductsRequest" />
+			<wsdl:output message="impl:getproductsResponse" name="getproductsResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="getbands" parameterOrder="Product">
+			<wsdl:input message="impl:getbandsRequest" name="getbandsRequest" />
+			<wsdl:output message="impl:getbandsResponse" name="getbandsResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="getdates" parameterOrder="Latitude Longitude Product">
+			<wsdl:input message="impl:getdatesRequest" name="getdatesRequest" />
+			<wsdl:output message="impl:getdatesResponse" name="getdatesResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="getsubset" parameterOrder="Latitude Longitude Product Band MODIS_Subset_Start_Date MODIS_Subset_End_Date Km_Above_Below Km_Left_Right">
+			<wsdl:input message="impl:getsubsetRequest" name="getsubsetRequest" />
+			<wsdl:output message="impl:getsubsetResponse" name="getsubsetResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="getsubsetorder" parameterOrder="Latitude Longitude Product Email UID MODIS_Subset_Start_Date MODIS_Subset_End_Date Km_Above_Below Km_Left_Right">
+			<wsdl:input message="impl:getsubsetorderRequest" name="getsubsetorderRequest" />
+			<wsdl:output message="impl:getsubsetorderResponse" name="getsubsetorderResponse" />
+		</wsdl:operation>
+
+	</wsdl:portType>
+
+	<wsdl:binding name="myServiceSoapBinding" type="impl:myServiceHandler">
+		<wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+
+		<wsdl:operation name="getproducts">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="getproductsRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://daac.ornl.gov/MODIS_webservice" use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="getproductsResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://daac.ornl.gov/MODIS_webservice" use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="getbands">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="getbandsRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://daac.ornl.gov/MODIS_webservice" use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="getbandsResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://daac.ornl.gov/MODIS_webservice" use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="getdates">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="getdatesRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://daac.ornl.gov/MODIS_webservice" use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="getdatesResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://daac.ornl.gov/MODIS_webservice" use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="getsubset">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="getsubsetRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://daac.ornl.gov/MODIS_webservice" use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="getsubsetResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://daac.ornl.gov/MODIS_webservice" use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="getsubsetorder">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="getsubsetorderRequest">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://daac.ornl.gov/MODIS_webservice" use="encoded" />
+			</wsdl:input>
+			<wsdl:output name="getsubsetorderResponse">
+				<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://daac.ornl.gov/MODIS_webservice" use="encoded" />
+			</wsdl:output>
+		</wsdl:operation>
+
+	</wsdl:binding>
+
+	<wsdl:service name="myServiceHandlerService">
+		<wsdl:port binding="impl:myServiceSoapBinding" name="myService">
+			<wsdlsoap:address location="http://daac.ornl.gov/cgi-bin/MODIS/GLBVIZ_1_Glb_subset/MODIS_webservice.pl" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

@@ -1,0 +1,36 @@
+createRPackage::
+
+include $(OMEGA_HOME)/Config/GNUmakefile.PackageConfig
+
+MAN_FILES=$(shell find man -name '*.Rd')
+
+DOC_FILES=Docs/overview.pdf \
+          $(OMEGA_HOME)/Docs/OmegaTech.css $(OMEGA_HOME)/Docs/html.css 
+# Src/ClassDefs.S Src/readWSDL.S Src/processWSDL.S  Src/wsdlTypes.R Src/wsdl.R
+# Src/schema.R Src/createConverters.R
+# Src/array.S
+
+R_SRC_FILES=Src/fault.S \
+            Src/SOAP.S Src/parseSOAP.S Src/http.S \
+            Src/SOAPServer.S  \
+	    Src/zSOAP.S Src/print.S Src/RPC.R \
+	    Src/duration.S Src/nativeWrite.R  \
+            Src/functionAccessors.R Src/writeGeneratedCode.R \
+            Src/wsdlProcess.R Src/ClassDefns.R  Src/utils.R Src/toSOAP.R \
+            Src/httpGet.R
+
+
+include $(OMEGA_HOME)/Config/GNUmakefile.PackageRules
+
+configureInstall: configureInstall.in
+	autoconf configureInstall.in > configureInstall
+	chmod +x configureInstall
+
+createRPackage::
+	cp NAMESPACE $(R_WORK_PACKAGE)
+	cp .Rbuildignore $(R_WORK_PACKAGE)
+	rmdir $(R_WORK_PACKAGE)/inst/data
+	mkdir $(R_WORK_PACKAGE)/inst/WSDLs
+	cp WSDLs/*wsdl WSDLs/*WSDL  $(R_WORK_PACKAGE)/inst/WSDLs
+
+

@@ -1,0 +1,7 @@
+<param SOAP-ENC:arrayType="xsd:ur-type[4]" xsi:type="SOAP-ENC:Array">
+   <item xsi:type="xsd:int">12</item>
+   <item xsi:type="xsd:string">Egypt</item>
+   <item xsi:type="xsd:boolean">0</item>
+   <item xsi:type="xsd:int">-31</item>
+   <item xsi:null="1"/>
+</param>

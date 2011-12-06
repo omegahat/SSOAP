@@ -1,0 +1,11 @@
+<SOAP-ENC:Array SOAP-ENC:arrayType="xyz:Order[2]">
+   <Order>
+       <Product>Apple</Product>
+       <Price>1.56</Price>
+   </Order>
+   <Order>
+       <Product>Peach</Product>
+       <Price>1.48</Price>
+   </Order>
+</SOAP-ENC:Array>
+

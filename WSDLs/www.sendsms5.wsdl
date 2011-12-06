@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="Service"
+ targetNamespace="http://www.csoft.co.uk/dtd/sendsms5.wsdl"
+ xmlns:tns="http://www.csoft.co.uk/dtd/sendsms5.wsdl"
+ xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+ xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:ns2="http://www.csoft.co.uk/dtd/sendsms5.xsd"
+ xmlns:SOAP="http://schemas.xmlsoap.org/wsdl/soap/"
+ xmlns:MIME="http://schemas.xmlsoap.org/wsdl/mime/"
+ xmlns:DIME="http://schemas.xmlsoap.org/ws/2002/04/dime/wsdl/"
+ xmlns:WSDL="http://schemas.xmlsoap.org/wsdl/"
+ xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<types>
+
+ <schema targetNamespace="http://www.csoft.co.uk/dtd/sendsms5.xsd"
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:ns2="http://www.csoft.co.uk/dtd/sendsms5.xsd"
+  xmlns="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="unqualified"
+  attributeFormDefault="unqualified">
+  <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+  <simpleType name="DeliveryOption">
+   <restriction base="xsd:string">
+    <enumeration value="Default"/>
+    <enumeration value="Premier"/>
+    <enumeration value="LeastCost"/>
+    <enumeration value="Economy"/>
+    <enumeration value="Gensho"/>
+   </restriction>
+  </simpleType>
+  <simpleType name="DataFormat">
+   <restriction base="xsd:string">
+    <enumeration value="FORMAT-UNDEFINED"/>
+    <enumeration value="RTTTL"/>
+    <enumeration value="OTA"/>
+   </restriction>
+  </simpleType>
+  <simpleType name="action">
+   <restriction base="xsd:string">
+    <enumeration value="signal-medium"/>
+    <enumeration value="signal-none"/>
+    <enumeration value="signal-low"/>
+    <enumeration value="signal-high"/>
+    <enumeration value="signal-delete"/>
+   </restriction>
+  </simpleType>
+  <complexType name="Reserved">
+   <sequence>
+     <element name="Field1" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Field2" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Field3" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Field4" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="SMS-SUBMIT-PDU">
+   <sequence>
+     <element name="DataCodingScheme" type="xsd:hexBinary" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="ProtocolIdentifier" type="xsd:hexBinary" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="UserDataHeader" type="xsd:hexBinary" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="UserData" type="xsd:hexBinary" minOccurs="1" maxOccurs="1" nillable="false"/>
+   </sequence>
+  </complexType>
+  <complexType name="MMSLibraryNumber">
+   <sequence>
+     <element name="LibraryNumber" type="xsd:positiveInteger" minOccurs="1" maxOccurs="1"/>
+     <element name="TextMessage" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="MMSFileUpload">
+   <sequence>
+     <element name="FileName1" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="FileData1" type="xsd:hexBinary" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="FileType1" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="FileTitle1" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ContentType1" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="indication">
+   <sequence>
+     <element name="href" type="xsd:anyURI" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="si-id" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="created" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+     <element name="si-expires" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+     <element name="action" type="ns2:action" minOccurs="0" maxOccurs="1"/>
+     <element name="content" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="item">
+   <sequence>
+     <element name="pcdata" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="class" type="xsd:NMTOKEN" minOccurs="1" maxOccurs="1" nillable="false"/>
+   </sequence>
+  </complexType>
+  <complexType name="info">
+   <sequence>
+     <element name="item" type="ns2:item" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="si">
+   <sequence>
+     <element name="indication" type="ns2:indication" minOccurs="1" maxOccurs="1"/>
+     <element name="info" type="ns2:info" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="SimplePush">
+   <sequence>
+     <element name="LibraryNumber" type="xsd:positiveInteger" minOccurs="1" maxOccurs="1"/>
+     <element name="TextMessage" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="WAPPush">
+   <sequence>
+     <element name="SimplePush" type="ns2:SimplePush" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="LibraryNumber" type="ns2:MMSLibraryNumber" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="FileUpload" type="ns2:MMSFileUpload" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="si" type="ns2:si" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="MMSNotification">
+   <sequence>
+     <element name="LibraryNumber" type="ns2:MMSLibraryNumber" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="FileUpload" type="ns2:MMSFileUpload" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="SendOptions">
+   <sequence>
+     <element name="SendTimeAbsolute" type="xsd:dateTime" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="SendTimeDelay" type="xsd:unsignedShort" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="DeliveryOption" type="ns2:DeliveryOption" minOccurs="0" maxOccurs="1"/>
+     <element name="DisableRepurposing" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+     <element name="DisableWalledGardenRule" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="Recipient">
+   <sequence>
+     <element name="SendTo" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="SendCc" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="SendBcc" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="SendToAddressBook" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="SendCcAddressBook" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="SendBccAddressBook" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PhoneMake" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PhoneModel" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="MCC" type="xsd:int" minOccurs="0" maxOccurs="1"/>
+     <element name="MNC" type="xsd:int" minOccurs="0" maxOccurs="1"/>
+     <element name="SendOptions" type="ns2:SendOptions" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="SmartMessage">
+   <sequence>
+     <element name="LibraryNumber" type="xsd:positiveInteger" minOccurs="0" maxOccurs="1"/>
+     <element name="Data" type="xsd:hexBinary" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Format" type="ns2:DataFormat" minOccurs="0" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="Message">
+   <sequence>
+     <element name="TextMessage" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="FlashMessage" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Ringtone" type="ns2:SmartMessage" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="OperatorLogo" type="ns2:SmartMessage" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PictureMessage" type="ns2:SmartMessage" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="GroupGraphic" type="ns2:SmartMessage" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="SmsSubmitPdu" type="ns2:SMS-SUBMIT-PDU" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="WAPPush" type="ns2:WAPPush" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="MMSNotification" type="ns2:MMSNotification" minOccurs="0" maxOccurs="1" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="MOMessage">
+   <sequence>
+     <element name="SendTo" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="ReplyTo" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="Timestamp1" type="xsd:dateTime" minOccurs="1" maxOccurs="1"/>
+     <element name="Message" type="ns2:Message" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="CollectedMessagesList">
+   <sequence>
+     <element name="item" type="ns2:MOMessage" minOccurs="1" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <!-- operation request element -->
+  <element name="SubmitMessage">
+   <complexType>
+    <sequence>
+     <element name="Username" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PIN" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Recipient" type="ns2:Recipient" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Message" type="ns2:Message" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="ReplyTo" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="MessageIdentifier" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Reserved" type="ns2:Reserved" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="SubmitMessageResponse">
+   <complexType>
+    <sequence>
+     <element name="MessageIdentifier" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="Report" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="Text" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="LibraryNumber" type="xsd:positiveInteger" minOccurs="0" maxOccurs="1"/>
+     <element name="Reserved" type="ns2:Reserved" minOccurs="0" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="AvailableMessages">
+   <complexType>
+    <sequence>
+     <element name="Username" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PIN" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="AvailableMessagesResponse">
+   <complexType>
+    <sequence>
+     <element name="Messages" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="Reserved" type="ns2:Reserved" minOccurs="0" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="AvailableCredit">
+   <complexType>
+    <sequence>
+     <element name="Username" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PIN" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="AvailableCreditResponse">
+   <complexType>
+    <sequence>
+     <element name="Currency" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="Credit" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="Reserved" type="ns2:Reserved" minOccurs="0" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="PermittedReplyTo">
+   <complexType>
+    <sequence>
+     <element name="Username" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PIN" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="PermittedReplyToResponse">
+   <complexType>
+    <sequence>
+     <element name="PermittedReplyTo" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="Reserved" type="ns2:Reserved" minOccurs="0" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="CollectMessages">
+   <complexType>
+    <sequence>
+     <element name="Username" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PIN" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="CollectMessagesResponse">
+   <complexType>
+    <sequence>
+     <element name="Report" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="MessageList" type="ns2:CollectedMessagesList" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="SubmitDeliveryReceipt">
+   <complexType>
+    <sequence>
+     <element name="Username" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="PIN" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Timestamp1" type="xsd:dateTime" minOccurs="1" maxOccurs="1"/>
+     <element name="SentTo" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="MessageIdentifier" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+     <element name="Report" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="SubmitDeliveryReceiptResponse">
+   <complexType>
+    <sequence>
+     <element name="MessageIdentifier" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="Report" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="Text" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="MobileMessengerVersion">
+   <complexType>
+    <sequence>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="MobileMessengerVersionResponse">
+   <complexType>
+    <sequence>
+     <element name="Version" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="ReleaseNotice" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="DownloadURL" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="ReleaseDate" type="xsd:dateTime" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+ </schema>
+
+</types>
+
+<message name="SubmitMessage">
+ <part name="parameters" element="ns2:SubmitMessage"/>
+</message>
+
+<message name="SubmitMessageResponse">
+ <part name="parameters" element="ns2:SubmitMessageResponse"/>
+</message>
+
+<message name="AvailableMessages">
+ <part name="parameters" element="ns2:AvailableMessages"/>
+</message>
+
+<message name="AvailableMessagesResponse">
+ <part name="parameters" element="ns2:AvailableMessagesResponse"/>
+</message>
+
+<message name="AvailableCredit">
+ <part name="parameters" element="ns2:AvailableCredit"/>
+</message>
+
+<message name="AvailableCreditResponse">
+ <part name="parameters" element="ns2:AvailableCreditResponse"/>
+</message>
+
+<message name="PermittedReplyTo">
+ <part name="parameters" element="ns2:PermittedReplyTo"/>
+</message>
+
+<message name="PermittedReplyToResponse">
+ <part name="parameters" element="ns2:PermittedReplyToResponse"/>
+</message>
+
+<message name="CollectMessages">
+ <part name="parameters" element="ns2:CollectMessages"/>
+</message>
+
+<message name="CollectMessagesResponse">
+ <part name="parameters" element="ns2:CollectMessagesResponse"/>
+</message>
+
+<message name="SubmitDeliveryReceipt">
+ <part name="parameters" element="ns2:SubmitDeliveryReceipt"/>
+</message>
+
+<message name="SubmitDeliveryReceiptResponse">
+ <part name="parameters" element="ns2:SubmitDeliveryReceiptResponse"/>
+</message>
+
+<message name="MobileMessengerVersion">
+ <part name="parameters" element="ns2:MobileMessengerVersion"/>
+</message>
+
+<message name="MobileMessengerVersionResponse">
+ <part name="parameters" element="ns2:MobileMessengerVersionResponse"/>
+</message>
+
+<portType name="ServicePortType">
+ <operation name="SubmitMessage">
+  <documentation>Service definition of function ns2__SubmitMessage</documentation>
+  <input message="tns:SubmitMessage"/>
+  <output message="tns:SubmitMessageResponse"/>
+ </operation>
+ <operation name="AvailableMessages">
+  <documentation>Service definition of function ns2__AvailableMessages</documentation>
+  <input message="tns:AvailableMessages"/>
+  <output message="tns:AvailableMessagesResponse"/>
+ </operation>
+ <operation name="AvailableCredit">
+  <documentation>Service definition of function ns2__AvailableCredit</documentation>
+  <input message="tns:AvailableCredit"/>
+  <output message="tns:AvailableCreditResponse"/>
+ </operation>
+ <operation name="PermittedReplyTo">
+  <documentation>Service definition of function ns2__PermittedReplyTo</documentation>
+  <input message="tns:PermittedReplyTo"/>
+  <output message="tns:PermittedReplyToResponse"/>
+ </operation>
+ <operation name="CollectMessages">
+  <documentation>Service definition of function ns2__CollectMessages</documentation>
+  <input message="tns:CollectMessages"/>
+  <output message="tns:CollectMessagesResponse"/>
+ </operation>
+ <operation name="SubmitDeliveryReceipt">
+  <documentation>Service definition of function ns2__SubmitDeliveryReceipt</documentation>
+  <input message="tns:SubmitDeliveryReceipt"/>
+  <output message="tns:SubmitDeliveryReceiptResponse"/>
+ </operation>
+ <operation name="MobileMessengerVersion">
+  <documentation>Service definition of function ns2__MobileMessengerVersion</documentation>
+  <input message="tns:MobileMessengerVersion"/>
+  <output message="tns:MobileMessengerVersionResponse"/>
+ </operation>
+</portType>
+
+<binding name="Service" type="tns:ServicePortType">
+ <SOAP:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+ <operation name="SubmitMessage">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="AvailableMessages">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="AvailableCredit">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="PermittedReplyTo">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="CollectMessages">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="SubmitDeliveryReceipt">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="MobileMessengerVersion">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+</binding>
+
+<service name="Service">
+ <documentation>Connection Software SOAP Web Services API v5.6 (Primary Server)</documentation>
+ <port name="Service" binding="tns:Service">
+  <SOAP:address location="http://www.csoft.co.uk/sendsms5"/>
+ </port>
+</service>
+
+</definitions>

@@ -1,0 +1,10 @@
+<SOAP:Envelope xmlns:SOAP='http://schemas.xmlsoap.org/soap/envelope/' 
+SOAP:encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' 
+xmlns:v='http://www.topxml.com/soapworkshop/'>
+<SOAP:Body>
+<SOAP:Fault>
+<faultcode>SOAP:MustUnderstand</faultcode>
+<faultstring>Unrecognized header</faultstring>
+</SOAP:Fault>
+</SOAP:Body>
+</SOAP:Envelope>

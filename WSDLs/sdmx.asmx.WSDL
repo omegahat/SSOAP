@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://stats.oecd.org/OECDStatWS/SDMX/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://stats.oecd.org/OECDStatWS/SDMX/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This service gives access to .Stat data and tries to be fully SDMX 2.0 compliant. However, the following additional rules are applied:&lt;br&gt;&lt;br&gt;&lt;b&gt;(1)&lt;/b&gt; .Stat provides currently only annual, bi-annual, quarterly, monthly and non-time-series data.&lt;br&gt;Independently from the presence of a FREQUENCY dimension, the requested time frequency should be specified using the TIME_FORMAT attribute as in this example:&lt;br&gt;&lt;br&gt;&amp;lt;And&amp;gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&lt;b&gt;&amp;lt;Attribute name="TIME_FORMAT"&amp;gt;P1M&amp;lt;/Attribute&amp;gt;&lt;/b&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;lt;Time&amp;gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;lt;StartTime&amp;gt;1960-01&amp;lt;/StartTime&amp;gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;lt;EndTime&amp;gt;2005-10&amp;lt;/EndTime&amp;gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;lt;/Time&amp;gt;&lt;br&gt;&amp;lt;/And&amp;gt;&lt;br&gt;&lt;br&gt;The TIME_FORMAT attribute should have the following value: 'P1Y' for annual, 'P6M' for bi-annual, 'P3M' for quarterly and 'P1M' for monthly data. This attribute is then also present in the resulting generic data message at the Series level of time-series data.&lt;br&gt;For non-time-series data, the TIME_PERIOD attribute and the 'Time' node should be omitted in the query message. In this case, the response messages use '9999' for the obligatory time periods.&lt;br&gt;&lt;br&gt;&lt;b&gt;(2)&lt;/b&gt; In the .Stat data warehouse each dataset (multidimensional cube) has its own Data Structure Definition.&lt;br&gt;&lt;br&gt;&lt;b&gt;(3)&lt;/b&gt; Structure your query by defining separate data 'cubes'. Each data cube must have a 'DataSet' node. This 'DataSet' node must be a direct child of one separate 'And' clause which must include all necessary dimension codes at any lower (child) level, and which itself must be a direct child of either of the clauses 'DataWhere' or 'Or'.&lt;br&gt;&lt;br&gt;&lt;b&gt;(4)&lt;/b&gt; For simplification reasons in this web service, the returned message headers only contain required information. As the 'message:ID' field is not (yet) used, its content is filled with a placeholder to conform to the standard.&lt;br&gt;&lt;br&gt;&lt;b&gt;(5)&lt;/b&gt; Our new SDMX web service version implements Streaming, and can therefore not set the 'Truncated' element in the response message. We are thus unable to take the 'defaultLimit' attribute in the Query message into account. To avoid errors, either implement streaming also at your (client) side to allow for greater-sized results or restrict the selection in the query message according to your limitation. In any case, please don't use the 'defaultLimit' attribute in the Query message.&lt;br&gt;&lt;br&gt;Want to test it? Have a look at our &lt;a href="..\SDMXQuery\Home.aspx"&gt;SDMX web service interface&lt;/a&gt; &lt;br&gt;&lt;br&gt;</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://stats.oecd.org/OECDStatWS/SDMX/">
+      <s:element name="GetDataStructureDefinition">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryMessage">
+              <s:complexType>
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDataStructureDefinitionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDataStructureDefinitionResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetGenericData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryMessage">
+              <s:complexType>
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetGenericDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetGenericDataResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCompactData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryMessage">
+              <s:complexType>
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCompactDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCompactDataResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMetadata">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryMessage">
+              <s:complexType>
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMetadataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMetadataResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDatasetMetadata">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryMessage">
+              <s:complexType>
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDatasetMetadataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDatasetMetadataResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDimensionMetadata">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryMessage">
+              <s:complexType>
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDimensionMetadataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDimensionMetadataResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDimensionMemberMetadata">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="QueryMessage">
+              <s:complexType>
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDimensionMemberMetadataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDimensionMemberMetadataResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMetadataStructure">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="XmlQuery">
+              <s:complexType>
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMetadataStructureResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMetadataStructureResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetReferenceMetadata">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="XmlQuery">
+              <s:complexType>
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetReferenceMetadataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetReferenceMetadataResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetDataStructureDefinitionSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDataStructureDefinition" />
+  </wsdl:message>
+  <wsdl:message name="GetDataStructureDefinitionSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDataStructureDefinitionResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetGenericDataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetGenericData" />
+  </wsdl:message>
+  <wsdl:message name="GetGenericDataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetGenericDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCompactDataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCompactData" />
+  </wsdl:message>
+  <wsdl:message name="GetCompactDataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCompactDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMetadataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMetadata" />
+  </wsdl:message>
+  <wsdl:message name="GetMetadataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMetadataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDatasetMetadataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDatasetMetadata" />
+  </wsdl:message>
+  <wsdl:message name="GetDatasetMetadataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDatasetMetadataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDimensionMetadataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDimensionMetadata" />
+  </wsdl:message>
+  <wsdl:message name="GetDimensionMetadataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDimensionMetadataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDimensionMemberMetadataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDimensionMemberMetadata" />
+  </wsdl:message>
+  <wsdl:message name="GetDimensionMemberMetadataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDimensionMemberMetadataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMetadataStructureSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMetadataStructure" />
+  </wsdl:message>
+  <wsdl:message name="GetMetadataStructureSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMetadataStructureResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetReferenceMetadataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetReferenceMetadata" />
+  </wsdl:message>
+  <wsdl:message name="GetReferenceMetadataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetReferenceMetadataResponse" />
+  </wsdl:message>
+  <wsdl:portType name="OECD.Stat_x0020_SDMX_x0020_web_x0020_serviceSoap">
+    <wsdl:operation name="GetDataStructureDefinition">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Use this method to retrieve the Data Structure Definitions (as well as Code lists and Concepts) from an .Stat dataset. &lt;br&gt;Note: As the requested input parameter is an xml document, you can not try the method using this webservice presentation page. &lt;br&gt;&lt;br&gt;Input: SDMX QueryMessage (in SDMX-ML format)&lt;br&gt;Output: SDMX StructureMessage (in SDMX-ML format)&lt;br&gt;&lt;br&gt;When authenticated access is needed, then previously do the following steps:&lt;br&gt;&lt;br&gt;Step n° 1: Get the current .Stat public encryption key: &lt;br&gt; &lt;a href="../DotStatWS_Authentication/OECDStatWS_Authentication.asmx"&gt;../DotStatWS_Authentication/OECDStatWS_Authentication.asmx&lt;/a&gt;?op=GetPublicKey&lt;br&gt;Step n° 2: RSA-encrypt your password using the public encryption key and authenticate yourself: &lt;br&gt; &lt;a href="../DotStatWS_Authentication/OECDStatWS_Authentication.asmx"&gt;../DotStatWS_Authentication/OECDStatWS_Authentication.asmx&lt;/a&gt;?op=Authenticate&lt;br&gt; The 'Authenticate' method returns a session ID. Provide this session ID, your user name and the domain as URL options 'sessionid', 'login' and 'domain' to the GetDataStructureDefinition method.&lt;br&gt;Note: You can reuse the same session ID for several SDMX requests within a certain timeout. The authentication procedure might be modified in the future.&lt;br&gt;</wsdl:documentation>
+      <wsdl:input message="tns:GetDataStructureDefinitionSoapIn" />
+      <wsdl:output message="tns:GetDataStructureDefinitionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGenericData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Use this method to retrieve data in Generic format from an .Stat dataset. &lt;br&gt;Note: As the requested input parameter is an xml document, you can not try the method using this webservice presentation page. &lt;br&gt;&lt;br&gt;Input: SDMX QueryMessage (in SDMX-ML format)&lt;br&gt;Output: SDMX GenericDataMessage (in SDMX-ML format)&lt;br&gt;&lt;br&gt;When authenticated access is needed, then previously do the following steps:&lt;br&gt;&lt;br&gt;Step n° 1: Get the current .Stat public encryption key: &lt;br&gt; &lt;a href="../DotStatWS_Authentication/OECDStatWS_Authentication.asmx"&gt;../DotStatWS_Authentication/OECDStatWS_Authentication.asmx&lt;/a&gt;?op=GetPublicKey&lt;br&gt;Step n° 2: RSA-encrypt your password using the public encryption key and authenticate yourself: &lt;br&gt; &lt;a href="../DotStatWS_Authentication/OECDStatWS_Authentication.asmx"&gt;../DotStatWS_Authentication/OECDStatWS_Authentication.asmx&lt;/a&gt;?op=Authenticate&lt;br&gt; The 'Authenticate' method returns a session ID. Provide this session ID, your user name and the domain as URL options 'sessionid', 'login' and 'domain' to the GetGenericData method.&lt;br&gt;&lt;br&gt;Note: You can reuse the same session ID for several SDMX requests within a certain timeout. The authentication procedure might be modified in the future.&lt;br&gt;Our new SDMX web service version implements Streaming, and can therefore not set the 'Truncated' element in the response message. We are thus unable to take the 'defaultLimit' attribute in the Query message into account. To avoid errors, either implement streaming also at your (client) side to allow for greater-sized results or restrict the selection in the query message according to your limitation. In any case, please don't use the 'defaultLimit' attribute in the Query message.</wsdl:documentation>
+      <wsdl:input message="tns:GetGenericDataSoapIn" />
+      <wsdl:output message="tns:GetGenericDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCompactData">
+      <wsdl:input message="tns:GetCompactDataSoapIn" />
+      <wsdl:output message="tns:GetCompactDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMetadata">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Use this method to retrieve a range of metadata in a dataset.&lt;br&gt;&lt;br&gt;- &lt;a href="Documentation/QueryCoordinatesMD.xml"&gt;Sample input&lt;/a&gt;&lt;br&gt;- &lt;a href="Documentation/CoordinatesMetadata.xml"&gt;Sample output&lt;/a&gt;&lt;br&gt;- &lt;a href="Documentation/GetMetadata.txt"&gt;Usage example (C# code)&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;&lt;hr/&gt;</wsdl:documentation>
+      <wsdl:input message="tns:GetMetadataSoapIn" />
+      <wsdl:output message="tns:GetMetadataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDatasetMetadata">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Use this method to retrieve the metadata associated with a dataset.&lt;br&gt;&lt;br&gt;- &lt;a href="Documentation/QueryDatasetMD.xml"&gt;Sample input&lt;/a&gt;&lt;br&gt;- &lt;a href="Documentation/DatasetMetadata.xml"&gt;Sample output&lt;/a&gt;&lt;br&gt;- &lt;a href="Documentation/GetDatasetMetadata.txt"&gt;Usage example (C# code)&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;&lt;hr/&gt;</wsdl:documentation>
+      <wsdl:input message="tns:GetDatasetMetadataSoapIn" />
+      <wsdl:output message="tns:GetDatasetMetadataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDimensionMetadata">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Use this method to retrieve the metadata associated with a dimension in a dataset.&lt;br&gt;&lt;br&gt;- &lt;a href="Documentation/QueryDimensionMD.xml"&gt;Sample input&lt;/a&gt;&lt;br&gt;- &lt;a href="Documentation/DimensionMetadata.xml"&gt;Sample output&lt;/a&gt;&lt;br&gt;- &lt;a href="Documentation/GetDimensionMetadata.txt"&gt;Usage example (C# code)&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;&lt;hr/&gt;</wsdl:documentation>
+      <wsdl:input message="tns:GetDimensionMetadataSoapIn" />
+      <wsdl:output message="tns:GetDimensionMetadataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDimensionMemberMetadata">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Use this method to retrieve the metadata associated with a member of a dimension in a dataset.&lt;br&gt;&lt;br&gt;- &lt;a href="Documentation/QueryDimensionMemberMD.xml"&gt;Sample input&lt;/a&gt;&lt;br&gt;- &lt;a href="Documentation/DimensionMemberMetadata.xml"&gt;Sample output&lt;/a&gt;&lt;br&gt;- &lt;a href="Documentation/GetDimensionMemberMetadata.txt"&gt;Usage example (C# code)&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;&lt;hr/&gt;</wsdl:documentation>
+      <wsdl:input message="tns:GetDimensionMemberMetadataSoapIn" />
+      <wsdl:output message="tns:GetDimensionMemberMetadataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMetadataStructure">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Use this method to retrieve all strucural informations about a given dataset.&lt;br&gt;&lt;br&gt;- &lt;a href="Documentation/QueryMSD.xml"&gt;Sample input&lt;/a&gt;&lt;br&gt;- &lt;a href="Documentation/MSD.xml"&gt;Sample output&lt;/a&gt;&lt;br&gt;- &lt;a href="Documentation/GetDatasetStructure.txt"&gt;Usage example (C# code)&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;&lt;hr/&gt;</wsdl:documentation>
+      <wsdl:input message="tns:GetMetadataStructureSoapIn" />
+      <wsdl:output message="tns:GetMetadataStructureSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetReferenceMetadata">
+      <wsdl:input message="tns:GetReferenceMetadataSoapIn" />
+      <wsdl:output message="tns:GetReferenceMetadataSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="OECD.Stat_x0020_SDMX_x0020_web_x0020_serviceSoap" type="tns:OECD.Stat_x0020_SDMX_x0020_web_x0020_serviceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetDataStructureDefinition">
+      <soap:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetDataStructureDefinition" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGenericData">
+      <soap:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetGenericData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCompactData">
+      <soap:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetCompactData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMetadata">
+      <soap:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetMetadata" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDatasetMetadata">
+      <soap:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetDatasetMetadata" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDimensionMetadata">
+      <soap:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetDimensionMetadata" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDimensionMemberMetadata">
+      <soap:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetDimensionMemberMetadata" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMetadataStructure">
+      <soap:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetMetadataStructure" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReferenceMetadata">
+      <soap:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetReferenceMetadata" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="OECD.Stat_x0020_SDMX_x0020_web_x0020_serviceSoap12" type="tns:OECD.Stat_x0020_SDMX_x0020_web_x0020_serviceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetDataStructureDefinition">
+      <soap12:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetDataStructureDefinition" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGenericData">
+      <soap12:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetGenericData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCompactData">
+      <soap12:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetCompactData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMetadata">
+      <soap12:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetMetadata" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDatasetMetadata">
+      <soap12:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetDatasetMetadata" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDimensionMetadata">
+      <soap12:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetDimensionMetadata" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDimensionMemberMetadata">
+      <soap12:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetDimensionMemberMetadata" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMetadataStructure">
+      <soap12:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetMetadataStructure" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReferenceMetadata">
+      <soap12:operation soapAction="http://stats.oecd.org/OECDStatWS/SDMX/GetReferenceMetadata" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OECD.Stat_x0020_SDMX_x0020_web_x0020_service">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This service gives access to .Stat data and tries to be fully SDMX 2.0 compliant. However, the following additional rules are applied:&lt;br&gt;&lt;br&gt;&lt;b&gt;(1)&lt;/b&gt; .Stat provides currently only annual, bi-annual, quarterly, monthly and non-time-series data.&lt;br&gt;Independently from the presence of a FREQUENCY dimension, the requested time frequency should be specified using the TIME_FORMAT attribute as in this example:&lt;br&gt;&lt;br&gt;&amp;lt;And&amp;gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&lt;b&gt;&amp;lt;Attribute name="TIME_FORMAT"&amp;gt;P1M&amp;lt;/Attribute&amp;gt;&lt;/b&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;lt;Time&amp;gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;lt;StartTime&amp;gt;1960-01&amp;lt;/StartTime&amp;gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;lt;EndTime&amp;gt;2005-10&amp;lt;/EndTime&amp;gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;lt;/Time&amp;gt;&lt;br&gt;&amp;lt;/And&amp;gt;&lt;br&gt;&lt;br&gt;The TIME_FORMAT attribute should have the following value: 'P1Y' for annual, 'P6M' for bi-annual, 'P3M' for quarterly and 'P1M' for monthly data. This attribute is then also present in the resulting generic data message at the Series level of time-series data.&lt;br&gt;For non-time-series data, the TIME_PERIOD attribute and the 'Time' node should be omitted in the query message. In this case, the response messages use '9999' for the obligatory time periods.&lt;br&gt;&lt;br&gt;&lt;b&gt;(2)&lt;/b&gt; In the .Stat data warehouse each dataset (multidimensional cube) has its own Data Structure Definition.&lt;br&gt;&lt;br&gt;&lt;b&gt;(3)&lt;/b&gt; Structure your query by defining separate data 'cubes'. Each data cube must have a 'DataSet' node. This 'DataSet' node must be a direct child of one separate 'And' clause which must include all necessary dimension codes at any lower (child) level, and which itself must be a direct child of either of the clauses 'DataWhere' or 'Or'.&lt;br&gt;&lt;br&gt;&lt;b&gt;(4)&lt;/b&gt; For simplification reasons in this web service, the returned message headers only contain required information. As the 'message:ID' field is not (yet) used, its content is filled with a placeholder to conform to the standard.&lt;br&gt;&lt;br&gt;&lt;b&gt;(5)&lt;/b&gt; Our new SDMX web service version implements Streaming, and can therefore not set the 'Truncated' element in the response message. We are thus unable to take the 'defaultLimit' attribute in the Query message into account. To avoid errors, either implement streaming also at your (client) side to allow for greater-sized results or restrict the selection in the query message according to your limitation. In any case, please don't use the 'defaultLimit' attribute in the Query message.&lt;br&gt;&lt;br&gt;Want to test it? Have a look at our &lt;a href="..\SDMXQuery\Home.aspx"&gt;SDMX web service interface&lt;/a&gt; &lt;br&gt;&lt;br&gt;</wsdl:documentation>
+    <wsdl:port name="OECD.Stat_x0020_SDMX_x0020_web_x0020_serviceSoap" binding="tns:OECD.Stat_x0020_SDMX_x0020_web_x0020_serviceSoap">
+      <soap:address location="http://stats.oecd.org/SDMXWS/sdmx.asmx" />
+    </wsdl:port>
+    <wsdl:port name="OECD.Stat_x0020_SDMX_x0020_web_x0020_serviceSoap12" binding="tns:OECD.Stat_x0020_SDMX_x0020_web_x0020_serviceSoap12">
+      <soap12:address location="http://stats.oecd.org/SDMXWS/sdmx.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

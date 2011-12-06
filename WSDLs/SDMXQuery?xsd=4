@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.4-hudson-208-. --><xs:schema xmlns:tns="http://webservices.sdw.ecb/" xmlns:ns2="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" xmlns:ns1="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://webservices.sdw.ecb/">
+
+<xs:import namespace="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/query" schemaLocation="http://sdw-ws.ecb.europa.eu:80/services/SDMXQuery?xsd=7" />
+
+<xs:import namespace="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" schemaLocation="http://sdw-ws.ecb.europa.eu:80/services/SDMXQuery?xsd=9" />
+
+<xs:element name="GetAgency" type="tns:GetAgency" />
+
+<xs:element name="GetAgencyResponse" type="tns:GetAgencyResponse" />
+
+<xs:element name="GetCategoryScheme" type="tns:GetCategoryScheme" />
+
+<xs:element name="GetCategorySchemeResponse" type="tns:GetCategorySchemeResponse" />
+
+<xs:element name="GetCodeList" type="tns:GetCodeList" />
+
+<xs:element name="GetCodeListResponse" type="tns:GetCodeListResponse" />
+
+<xs:element name="GetCompactData" type="tns:GetCompactData" />
+
+<xs:element name="GetCompactDataResponse" type="tns:GetCompactDataResponse" />
+
+<xs:element name="GetConcept" type="tns:GetConcept" />
+
+<xs:element name="GetConceptResponse" type="tns:GetConceptResponse" />
+
+<xs:element name="GetDataProvider" type="tns:GetDataProvider" />
+
+<xs:element name="GetDataProviderResponse" type="tns:GetDataProviderResponse" />
+
+<xs:element name="GetDataflow" type="tns:GetDataflow" />
+
+<xs:element name="GetDataflowResponse" type="tns:GetDataflowResponse" />
+
+<xs:element name="GetGenericData" type="tns:GetGenericData" />
+
+<xs:element name="GetGenericDataResponse" type="tns:GetGenericDataResponse" />
+
+<xs:element name="GetKeyFamily" type="tns:GetKeyFamily" />
+
+<xs:element name="GetKeyFamilyResponse" type="tns:GetKeyFamilyResponse" />
+
+<xs:element name="GetOrganisationScheme" type="tns:GetOrganisationScheme" />
+
+<xs:element name="GetOrganisationSchemeResponse" type="tns:GetOrganisationSchemeResponse" />
+
+<xs:complexType name="GetGenericData">
+<xs:sequence>
+<xs:element name="query" type="ns1:DataWhereType" minOccurs="0" />
+<xs:element name="lastAccessTime" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetGenericDataResponse">
+<xs:sequence>
+<xs:element ref="ns2:MessageGroup" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetKeyFamily">
+<xs:sequence>
+<xs:element name="in" type="ns1:KeyFamilyWhereType" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetKeyFamilyResponse">
+<xs:sequence>
+<xs:element name="out" type="tns:messageStructureTypeWrapper" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="messageStructureTypeWrapper">
+<xs:sequence>
+<xs:element ref="ns2:Structure" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetCompactData">
+<xs:sequence>
+<xs:element name="query" type="ns1:DataWhereType" minOccurs="0" />
+<xs:element name="lastAccessTime" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetCompactDataResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetCodeList">
+<xs:sequence>
+<xs:element name="in" type="ns1:CodelistWhereType" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetCodeListResponse">
+<xs:sequence>
+<xs:element name="out" type="tns:messageStructureTypeWrapper" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetDataProvider">
+<xs:sequence>
+<xs:element name="in" type="ns1:DataProviderWhereType" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetDataProviderResponse">
+<xs:sequence>
+<xs:element name="out" type="tns:messageStructureTypeWrapper" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetConcept">
+<xs:sequence>
+<xs:element name="in" type="ns1:ConceptWhereType" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetConceptResponse">
+<xs:sequence>
+<xs:element name="out" type="tns:messageStructureTypeWrapper" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetAgency">
+<xs:sequence>
+<xs:element name="in" type="ns1:AgencyWhereType" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetAgencyResponse">
+<xs:sequence>
+<xs:element name="out" type="tns:messageStructureTypeWrapper" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetOrganisationScheme">
+<xs:sequence>
+<xs:element name="in" type="ns1:OrganisationSchemeWhereType" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetOrganisationSchemeResponse">
+<xs:sequence>
+<xs:element name="out" type="tns:messageStructureTypeWrapper" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetCategoryScheme">
+<xs:sequence>
+<xs:element name="in" type="ns1:CategorySchemeWhereType" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetCategorySchemeResponse">
+<xs:sequence>
+<xs:element name="out" type="tns:messageStructureTypeWrapper" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetDataflow">
+<xs:sequence>
+<xs:element name="in" type="ns1:DataflowWhereType" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetDataflowResponse">
+<xs:sequence>
+<xs:element name="out" type="tns:messageStructureTypeWrapper" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

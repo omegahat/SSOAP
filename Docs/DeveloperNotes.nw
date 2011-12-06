@@ -1,0 +1,96 @@
+\input{SMacros}
+\input{XMLMacros}
+\title{An implementation of SOAP in S}
+\author{Duncan Temple Lang}
+
+@
+\begin{abstract}
+  
+\end{abstract}
+
+See \URL{http://www.w3.org/TR/SOAP/} for details
+on the specification of SOAP.
+And \URL{http://www.w3.org/TR/soap12-part0/}
+
+\section{The Client Interface}
+
+The basic function for invoking a SOAP 
+method is 
+\SFunction{.SOAP}.
+The basic elements of the call
+are 
+\begin{itemize}
+\item[server]
+The identity of the SOAP server to which the request is to be made.
+\item[method]
+The name of the SOAP method to invoke.
+\item[arguments]
+\item[header]
+attributes of the header
+\item[invocation mode]
+\item[action]
+\end{itemize}
+
+Method attributes.
+
+<<>>=
+value <- .SOAP(server, method, args, mode, header)
+
+
+@ 
+\section{Converters}
+
+Need both the node and the root node so that we can resolve href's
+within the node that point to other sibling nodes.
+
+Parsing the asize attribute \Escape{[]}.
+
+
+xsi:type attribute.  Value: xsd:string, xsd:int, xsd:boolean,
+xsd:float, xsd:double, xsd:timeInstant, SOAP-ENC:base64.
+
+Or an element name SOAP-ENC:int
+
+xsi:null="1"
+implies NULL.
+
+\subsection{arrays}
+SOAP-ENC:arrayType=xsd:type[n]
+xsi:type="SOAP-ENC:Array"
+
+ur-type means mixed element types.  Otherwise, for homogeneous
+elements, then the xsi:type attribute gives the type of the elements
+
+
+Map to a list if non-homogeneous or a vector if homogeneous and
+primitive type.
+
+\subsection{struct}
+Multi-child XML element.  Map to lists when converting to S or S4
+object if there exists a suitable class.  The class name can come from
+the name of the XML element or, if that is the variable name, the
+xsi:type value.
+
+Possibly nested 
+
+
+\section{Error Handling}
+Class \SClass{SOAPFault}.
+
+\section{}
+
+
+@
+\section{Examples}
+<<>>=
+fromSOAP("array2.xml", converters = list("xsd:uriReference"=function(x) x))
+
+
+
+
+@ 
+<<>>=
+server <- SOAPServer("www.nanonull.com", "TimeService/TimeService.asmx")
+.SOAP(server, "getTimeZoneTime", timezone="GMT",
+        action = "http://www.Nanonull.com/TimeService/getTimeZoneTime",
+        xmlns="http://www.Nanonull.com/TimeService/", debug=F)

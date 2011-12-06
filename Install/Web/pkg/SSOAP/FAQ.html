@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title></title>
+</head>
+
+<body>
+<h1></h1>
+
+<dl>
+  <dt>
+      Does the package handle all SOAP types?
+  <dd>
+      It currently doesn't handle arrays completely.
+      Specifically, it gets the single dimension array case,
+      but doesn't handle multi-dimensional arrays yet.
+      This is not that hard, but simply hasn't been done yet.
+
+  <dt> How are compound SOAP types handled?
+  <dd>
+      By default, compound objects are converted to S3 objects.
+      The XML elements in the SOAP tree are mapped to named
+      elements in the S3 list. The names of the XML elements
+      are used as names in the S list.
+      The value of each element in the S list is generated
+      by calling <code>fromSOAP()</code>
+      on that sub-node of the XML tree.
+      In other words, <code>fromSOAP</code> works recursively.
+
+  <dt> Why not use S4 classes for compound SOAP types?
+  <dd>
+      Ideally, we would. But when we see a compound SOAP object,
+      we don't necessarily have a class definition for it.
+      We could define one based on the type, but we don't
+      know that if we were to see the same basic SOAP type
+      again it would have the same fields or types.
+      Without an external definition for the class, we can't
+      define a general class based on a single instance.
+      However, this is exactly the strength of the S3 classes.
+
+  <dt> Does the package implement a SOAP server?
+  <dd>
+      No. In man respects, it is better to implement
+      a SOAP server that uses S functionality
+      via another programming language such as Perl, Python
+      or Java.
+      Since each of the systems has SOAP server capabilities
+      and R can be embedded in those systems, one can easily
+      implement a server that makes calls to S functions
+      there.
+      <p>
+      If you really want to implement a SOAP server directly
+      in S, you can use
+      <code>socketConnection()</code> to listen for requests
+      and the primitives provided by the SSOAP and
+      XML packages for S to process the HTTP and XML content and
+      implement the methods.
+      Doing so is not very hard, but details such as fault tolerance,
+      etc.
+
+  <dt>
+      The <code>.SOAP()</code> functionseems very slow.
+      What's the problem?
+  <dd>
+      Not certain.
+      There is of course a great deal of variation in the speed.
+      The usual factors such as how heavily loaded
+      your machine is, how much memory it has, etc.
+      are somewhat relevant. But of course,
+      network connectivity is the primary bottleneck.
+      However, even with this variation, the response
+      time does seem less favorable than compared
+      with Perl's SOAP::Lite.
+      And, if there is a problem, it seems to be in the
+      low-level code associated with
+      <code>readLines</code> on a <code>socketConnection</code>.
+      So I don't think  the problem is in the SSOAP package.
+
+  <dt> In almost every call to <code>.SOAP()</code>,
+      I get a warning such as
+<pre>
+Warning message: 
+incomplete final line found by readLines on `->services.soaplite.com:80'       
+</pre>
+      Is this a real problem?
+  <dd>
+     You can safely ignore this. It arises because R
+      things that input on every connection should end with a new
+      line.
+      However, when HTTP servers frequently write their messages
+      without this new line.
+
+  <dt> Why is there no way to specify a SOAP Header to the message?
+  <dd>
+      Because I haven't implemented it yet!
+      If you have need for it, please contact me
+      and let me know some of the details. I am looking
+      for good examples and motivation to add this.
+
+
+  <dt> Why isn't the XML message created using
+      the tools in the XML package, e.g.
+      XMLOutputBuffer,
+      XMLOutputDOM, xmlTree, etc.?
+  <dd>
+      This will be used in the near future.
+      We used this raw approach
+      for the purpose of testing the basic
+      communication with the HTTP server
+      and had to deal with many details
+      that redirected our attention.
+      These XML tools are much easier to use
+      and more robust.
+</dl>
+
+
+<hr>
+<address></address>
+<!-- hhmts start -->
+Last modified: Fri Oct  4 09:21:24 EDT 2002
+<!-- hhmts end -->
+</body> </html>

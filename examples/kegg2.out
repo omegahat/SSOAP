@@ -1,0 +1,23 @@
+SOAP::Lite = 0.69
+SOAP::Transport::HTTP::Client::send_receive: POST http://soap.genome.jp/keggapi/request_v6.2.cgi HTTP/1.1
+Accept: text/xml
+Accept: multipart/*
+Accept: application/soap
+Content-Length: 750
+Content-Type: text/xml; charset=utf-8
+SOAPAction: "SOAP/KEGG#mark_pathway_by_objects"
+
+<?xml version="1.0" encoding="UTF-8"?><soap:Envelope xmlns:typens="SOAP/KEGG" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><typens:mark_pathway_by_objects><pathway_id xsi:type="xsd:string">path:eco00010</pathway_id><object_id_list soapenc:arrayType="xsd:string[2]" xsi:type="typens:ArrayOfstring"><item xsi:type="xsd:string">eco:b1002</item><item xsi:type="xsd:string">eco:b2388</item></object_id_list></typens:mark_pathway_by_objects></soap:Body></soap:Envelope>
+SOAP::Transport::HTTP::Client::send_receive: HTTP/1.1 200 OK
+Connection: close
+Date: Sat, 23 Aug 2008 19:21:00 GMT
+Server: Apache/2.2.9 (Unix) DAV/2 mod_ssl/2.2.9 OpenSSL/0.9.8g PHP/5.2.6 mod_ruby/1.2.6 Ruby/1.8.6(2008-06-20)
+Content-Length: 603
+Content-Type: text/xml; charset=utf-8
+Client-Date: Sat, 23 Aug 2008 19:20:35 GMT
+Client-Peer: 133.103.100.196:80
+Client-Response-Num: 1
+SOAPServer: SOAP::Lite/Perl/0.55
+
+<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><SOAP-ENV:Body><namesp1:mark_pathway_by_objectsResponse xmlns:namesp1="SOAP/KEGG"><return xsi:type="xsd:string">http://soap.genome.jp/tmp/mark_pathway_www2_api373/eco00010.gif</return></namesp1:mark_pathway_by_objectsResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>
+http://soap.genome.jp/tmp/mark_pathway_www2_api373/eco00010.gif

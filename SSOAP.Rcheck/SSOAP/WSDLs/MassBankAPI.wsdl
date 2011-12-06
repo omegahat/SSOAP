@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://api.massbank" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ax21="http://api.massbank/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://api.massbank">
+    <wsdl:documentation>MassBankAPI</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://api.massbank/xsd">
+            <xs:complexType name="SearchResult">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="numResults" type="xs:int"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="results" nillable="true" type="ax21:Result"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Result">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="exactMass" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="formula" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="id" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="score" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="title" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="RecordInfo">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="id" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="info" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Peak">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="id" nillable="true" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="intensities" nillable="true" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="mzs" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="numPeaks" type="xs:int"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="JobStatus">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="requestDate" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="status" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="statusCode" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ResultSet">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="numResults" type="xs:int"/>
+                    <xs:element minOccurs="0" name="queryName" nillable="true" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="results" nillable="true" type="ax21:Result"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns:ax22="http://api.massbank/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://api.massbank">
+            <xs:import namespace="http://api.massbank/xsd"/>
+            <xs:complexType name="Exception">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="Exception" nillable="true" type="xs:anyType"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="searchSpectrum">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="mzs" nillable="true" type="xs:string"/>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="intensities" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="unit" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="tolerance" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="cutoff" nillable="true" type="xs:string"/>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="instrumentTypes" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="ionMode" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="maxNumResults" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="searchSpectrumResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax22:SearchResult"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="searchPeakDiff">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="mzs" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="relativeIntensity" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="tolerance" nillable="true" type="xs:string"/>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="instrumentTypes" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="ionMode" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="maxNumResults" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="searchPeakDiffResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax22:SearchResult"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="searchPeak">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="mzs" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="relativeIntensity" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="tolerance" nillable="true" type="xs:string"/>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="instrumentTypes" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="ionMode" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="maxNumResults" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="searchPeakResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax22:SearchResult"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getRecordInfo">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="ids" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getRecordInfoResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax22:RecordInfo"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getPeak">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="ids" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getPeakResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax22:Peak"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getJobStatus">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="jobId" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getJobStatusResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax22:JobStatus"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getJobResult">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="jobId" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getJobResultResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax22:ResultSet"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getInstrumentTypesResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="execBatchJob">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="type" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="mailAddress" nillable="true" type="xs:string"/>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="queryStrings" nillable="true" type="xs:string"/>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="instrumentTypes" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="ionMode" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="execBatchJobResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="searchPeakRequest">
+        <wsdl:part name="parameters" element="ns:searchPeak"/>
+    </wsdl:message>
+    <wsdl:message name="searchPeakResponse">
+        <wsdl:part name="parameters" element="ns:searchPeakResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getJobResultRequest">
+        <wsdl:part name="parameters" element="ns:getJobResult"/>
+    </wsdl:message>
+    <wsdl:message name="getJobResultResponse">
+        <wsdl:part name="parameters" element="ns:getJobResultResponse"/>
+    </wsdl:message>
+    <wsdl:message name="searchPeakDiffRequest">
+        <wsdl:part name="parameters" element="ns:searchPeakDiff"/>
+    </wsdl:message>
+    <wsdl:message name="searchPeakDiffResponse">
+        <wsdl:part name="parameters" element="ns:searchPeakDiffResponse"/>
+    </wsdl:message>
+    <wsdl:message name="execBatchJobRequest">
+        <wsdl:part name="parameters" element="ns:execBatchJob"/>
+    </wsdl:message>
+    <wsdl:message name="execBatchJobResponse">
+        <wsdl:part name="parameters" element="ns:execBatchJobResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getInstrumentTypesRequest"/>
+    <wsdl:message name="getInstrumentTypesResponse">
+        <wsdl:part name="parameters" element="ns:getInstrumentTypesResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getJobStatusRequest">
+        <wsdl:part name="parameters" element="ns:getJobStatus"/>
+    </wsdl:message>
+    <wsdl:message name="getJobStatusResponse">
+        <wsdl:part name="parameters" element="ns:getJobStatusResponse"/>
+    </wsdl:message>
+    <wsdl:message name="searchSpectrumRequest">
+        <wsdl:part name="parameters" element="ns:searchSpectrum"/>
+    </wsdl:message>
+    <wsdl:message name="searchSpectrumResponse">
+        <wsdl:part name="parameters" element="ns:searchSpectrumResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getRecordInfoRequest">
+        <wsdl:part name="parameters" element="ns:getRecordInfo"/>
+    </wsdl:message>
+    <wsdl:message name="getRecordInfoResponse">
+        <wsdl:part name="parameters" element="ns:getRecordInfoResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getPeakRequest">
+        <wsdl:part name="parameters" element="ns:getPeak"/>
+    </wsdl:message>
+    <wsdl:message name="getPeakResponse">
+        <wsdl:part name="parameters" element="ns:getPeakResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="MassBankAPIPortType">
+        <wsdl:operation name="searchPeak">
+            <wsdl:input message="ns:searchPeakRequest" wsaw:Action="urn:searchPeak"/>
+            <wsdl:output message="ns:searchPeakResponse" wsaw:Action="urn:searchPeakResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getJobResult">
+            <wsdl:input message="ns:getJobResultRequest" wsaw:Action="urn:getJobResult"/>
+            <wsdl:output message="ns:getJobResultResponse" wsaw:Action="urn:getJobResultResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="searchPeakDiff">
+            <wsdl:input message="ns:searchPeakDiffRequest" wsaw:Action="urn:searchPeakDiff"/>
+            <wsdl:output message="ns:searchPeakDiffResponse" wsaw:Action="urn:searchPeakDiffResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="execBatchJob">
+            <wsdl:input message="ns:execBatchJobRequest" wsaw:Action="urn:execBatchJob"/>
+            <wsdl:output message="ns:execBatchJobResponse" wsaw:Action="urn:execBatchJobResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getInstrumentTypes">
+            <wsdl:input message="ns:getInstrumentTypesRequest" wsaw:Action="urn:getInstrumentTypes"/>
+            <wsdl:output message="ns:getInstrumentTypesResponse" wsaw:Action="urn:getInstrumentTypesResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getJobStatus">
+            <wsdl:input message="ns:getJobStatusRequest" wsaw:Action="urn:getJobStatus"/>
+            <wsdl:output message="ns:getJobStatusResponse" wsaw:Action="urn:getJobStatusResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="searchSpectrum">
+            <wsdl:input message="ns:searchSpectrumRequest" wsaw:Action="urn:searchSpectrum"/>
+            <wsdl:output message="ns:searchSpectrumResponse" wsaw:Action="urn:searchSpectrumResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getRecordInfo">
+            <wsdl:input message="ns:getRecordInfoRequest" wsaw:Action="urn:getRecordInfo"/>
+            <wsdl:output message="ns:getRecordInfoResponse" wsaw:Action="urn:getRecordInfoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getPeak">
+            <wsdl:input message="ns:getPeakRequest" wsaw:Action="urn:getPeak"/>
+            <wsdl:output message="ns:getPeakResponse" wsaw:Action="urn:getPeakResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="MassBankAPISoap11Binding" type="ns:MassBankAPIPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="searchPeak">
+            <soap:operation soapAction="urn:searchPeak" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="searchPeakDiff">
+            <soap:operation soapAction="urn:searchPeakDiff" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getJobResult">
+            <soap:operation soapAction="urn:getJobResult" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getInstrumentTypes">
+            <soap:operation soapAction="urn:getInstrumentTypes" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="execBatchJob">
+            <soap:operation soapAction="urn:execBatchJob" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="searchSpectrum">
+            <soap:operation soapAction="urn:searchSpectrum" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getJobStatus">
+            <soap:operation soapAction="urn:getJobStatus" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getRecordInfo">
+            <soap:operation soapAction="urn:getRecordInfo" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPeak">
+            <soap:operation soapAction="urn:getPeak" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="MassBankAPISoap12Binding" type="ns:MassBankAPIPortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="searchPeak">
+            <soap12:operation soapAction="urn:searchPeak" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="searchPeakDiff">
+            <soap12:operation soapAction="urn:searchPeakDiff" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getJobResult">
+            <soap12:operation soapAction="urn:getJobResult" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getInstrumentTypes">
+            <soap12:operation soapAction="urn:getInstrumentTypes" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="execBatchJob">
+            <soap12:operation soapAction="urn:execBatchJob" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="searchSpectrum">
+            <soap12:operation soapAction="urn:searchSpectrum" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getJobStatus">
+            <soap12:operation soapAction="urn:getJobStatus" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getRecordInfo">
+            <soap12:operation soapAction="urn:getRecordInfo" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPeak">
+            <soap12:operation soapAction="urn:getPeak" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="MassBankAPIHttpBinding" type="ns:MassBankAPIPortType">
+        <http:binding verb="POST"/>
+        <wsdl:operation name="searchPeak">
+            <http:operation location="MassBankAPI/searchPeak"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="searchPeak"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="searchPeak"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="searchPeakDiff">
+            <http:operation location="MassBankAPI/searchPeakDiff"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="searchPeakDiff"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="searchPeakDiff"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getJobResult">
+            <http:operation location="MassBankAPI/getJobResult"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="getJobResult"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="getJobResult"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getInstrumentTypes">
+            <http:operation location="MassBankAPI/getInstrumentTypes"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="getInstrumentTypes"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="getInstrumentTypes"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="execBatchJob">
+            <http:operation location="MassBankAPI/execBatchJob"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="execBatchJob"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="execBatchJob"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="searchSpectrum">
+            <http:operation location="MassBankAPI/searchSpectrum"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="searchSpectrum"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="searchSpectrum"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getJobStatus">
+            <http:operation location="MassBankAPI/getJobStatus"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="getJobStatus"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="getJobStatus"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getRecordInfo">
+            <http:operation location="MassBankAPI/getRecordInfo"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="getRecordInfo"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="getRecordInfo"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPeak">
+            <http:operation location="MassBankAPI/getPeak"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="getPeak"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="getPeak"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="MassBankAPI">
+        <wsdl:port name="MassBankAPIHttpSoap11Endpoint" binding="ns:MassBankAPISoap11Binding">
+            <soap:address location="http://www.massbank.jp:80/api/services/MassBankAPI.MassBankAPIHttpSoap11Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="MassBankAPIHttpSoap12Endpoint" binding="ns:MassBankAPISoap12Binding">
+            <soap12:address location="http://www.massbank.jp:80/api/services/MassBankAPI.MassBankAPIHttpSoap12Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="MassBankAPIHttpEndpoint" binding="ns:MassBankAPIHttpBinding">
+            <http:address location="http://www.massbank.jp:80/api/services/MassBankAPI.MassBankAPIHttpEndpoint/"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

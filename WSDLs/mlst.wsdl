@@ -1,0 +1,1476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="mlst" targetNamespace="http://pubmlst.org/MLST"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://pubmlst.org/MLST"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://pubmlst.org/MLST">
+			<xsd:element name="getAlleleSequence">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							maxOccurs="1" minOccurs="1" />
+						<xsd:element name="locus" type="xsd:string"
+							maxOccurs="1" minOccurs="1">
+						</xsd:element>
+						<xsd:element name="allele" type="xsd:int"
+							maxOccurs="1" minOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getAlleleSequenceResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sequence" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="locusQuery">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1">
+						</xsd:element>
+						<xsd:element name="locus" type="xsd:string"
+							minOccurs="1">
+						</xsd:element>
+						<xsd:element name="sequence" type="xsd:string"
+							minOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="locusQueryResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="allele" type="xsd:int"
+							minOccurs="1">
+						</xsd:element>
+
+						<xsd:element name="differences"
+							type="tns:differenceList" maxOccurs="1" minOccurs="0">
+						</xsd:element>
+
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:complexType name="differenceList">
+				<xsd:sequence>
+					<xsd:element name="substitution"
+						type="tns:substitution" minOccurs="0" maxOccurs="unbounded">
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="substitution">
+				<xsd:sequence>
+					<xsd:element name="position" type="xsd:int"
+						minOccurs="1" maxOccurs="1">
+					</xsd:element>
+					<xsd:element name="nucleotide1" type="xsd:string"
+						maxOccurs="1" minOccurs="1">
+					</xsd:element>
+					<xsd:element name="nucleotide2" type="xsd:string"
+						minOccurs="1">
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="getDatabaseList">
+				<xsd:complexType>
+					<xsd:sequence>
+
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getDatabaseListResponse">
+				<xsd:complexType>
+					<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+						<xsd:element name="database" type="tns:database"
+							minOccurs="0" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:complexType name="database">
+				<xsd:sequence>
+					<xsd:element name="name" type="xsd:string"
+						minOccurs="1" maxOccurs="1">
+					</xsd:element>
+					<xsd:element name="description" type="xsd:string"
+						minOccurs="1" maxOccurs="1">
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="getLocusList">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getLocusListResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="locus" type="xsd:string"
+							minOccurs="0" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getAlleleSequences">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="locus" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getAlleleSequencesResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="allele" type="tns:allele"
+							minOccurs="0" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:complexType name="allele">
+				<xsd:sequence>
+					<xsd:element name="id" type="xsd:int"></xsd:element>
+					<xsd:element name="sequence" type="xsd:string"></xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="getProfiles">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database"
+							type="xsd:string">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getProfilesResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="stDefinition"
+							type="tns:stDefinition">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+
+			<xsd:complexType name="stDefinition">
+				<xsd:sequence>
+					<xsd:element name="ST" type="xsd:int"
+						minOccurs="1">
+					</xsd:element>
+					<xsd:element name="profile" type="tns:profile"
+						minOccurs="1">
+					</xsd:element>
+					<xsd:element name="complex" type="xsd:string"
+						minOccurs="0" maxOccurs="1">
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="profile">
+				<xsd:sequence>
+					<xsd:element name="alleleNumber"
+						type="tns:alleleNumber" minOccurs="0" maxOccurs="unbounded">
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="alleleNumber">
+				<xsd:sequence>
+					<xsd:element name="locus" type="xsd:string"></xsd:element>
+					<xsd:element name="id" type="xsd:int"></xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="getProfileListURL">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getProfileListURLResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="url" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getAlleleSequencesURL">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="locus" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getAlleleSequencesURLResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="url" type="xsd:string"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getProfile">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="ST" type="xsd:int"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getProfileResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="profile" type="tns:profile"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="complex" type="xsd:string"
+							minOccurs="0" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getSTs">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="alleleNumber"
+							type="tns:alleleNumber" minOccurs="0" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getSTsResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="ST" type="xsd:int"
+							minOccurs="0" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="blast">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="sequence" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="maxResults" type="xsd:int"
+							minOccurs="0" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="blastResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="blastMatch"
+							type="tns:blastMatch" minOccurs="0" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:complexType name="blastMatch">
+				<xsd:sequence>
+					<xsd:element name="locus" type="xsd:string"></xsd:element>
+					<xsd:element name="id" type="xsd:int"></xsd:element>
+					<xsd:element name="mismatches" type="xsd:int"></xsd:element>
+					<xsd:element name="gaps" type="xsd:int"></xsd:element>
+					<xsd:element name="length" type="xsd:int"></xsd:element>
+					<xsd:element name="alignment" type="xsd:int"></xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="getRelatedSTsByProfile">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="match" type="xsd:int"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="alleleNumber"
+							type="tns:alleleNumber" minOccurs="1" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getRelatedSTsByProfileResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="ST" type="xsd:int"
+							minOccurs="0" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getRelatedSTsByST">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="match" type="xsd:int"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="ST" type="xsd:int"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getRelatedSTsBySTResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="ST" type="xsd:int"
+							minOccurs="0" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getRelatedProfilesByST">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="match" type="xsd:int"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="ST" type="xsd:int"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getRelatedProfilesBySTResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="STDef"
+							type="tns:stDefinition" minOccurs="0" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getRelatedProfilesByProfile">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="match" type="xsd:int"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="alleleNumber"
+							type="tns:alleleNumber" minOccurs="1" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getRelatedProfilesByProfileResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="STDef"
+							type="tns:stDefinition" minOccurs="0" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getAlleleCount">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="locus" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getAlleleCountResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="count" type="xsd:int"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getProfileCount">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getProfileCountResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="count" type="xsd:int"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getLocusLength">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="locus" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getLocusLengthResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="length" type="xsd:int"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="variable" type="xsd:boolean"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getIsolateCount">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getIsolateCountResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="count" type="xsd:int"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getIsolateFields">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getIsolateFieldsResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="fieldDef" type="tns:fieldDef"
+							minOccurs="0" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:complexType name="fieldDef">
+				<xsd:sequence>
+					<xsd:element name="name" type="xsd:string"
+						minOccurs="1" maxOccurs="1">
+					</xsd:element>
+					<xsd:element name="type" type="xsd:string"
+						minOccurs="1" maxOccurs="1">
+					</xsd:element>
+					<xsd:element name="description" type="xsd:string"
+						minOccurs="0" maxOccurs="1">
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="getIsolate">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="id" type="xsd:int"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getIsolateResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="field" type="tns:field"
+							minOccurs="0" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:complexType name="field">
+				<xsd:sequence>
+					<xsd:element name="name" type="xsd:string"
+						minOccurs="1" maxOccurs="1">
+					</xsd:element>
+					<xsd:element name="value" minOccurs="1"
+						maxOccurs="1">
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="getClonalComplexes">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getClonalComplexesResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="complex" type="xsd:string"
+							minOccurs="0" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getClonalComplex">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="ST" type="xsd:int"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getClonalComplexResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="complex" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="isolateQuery">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="field" type="tns:field"
+							minOccurs="1" maxOccurs="unbounded">
+						</xsd:element>
+						<xsd:element name="exactMatch"
+							type="xsd:boolean" minOccurs="0" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="isolateQueryResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="id" type="xsd:int"
+							minOccurs="0" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getRelatedIsolateIdsByST">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="match" type="xsd:int"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="ST" type="xsd:int"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getRelatedIsolateIdsBySTResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="id" type="xsd:int"
+							minOccurs="0" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getRelatedIsolateIdsByProfile">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="match" type="xsd:int"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="alleleNumber"
+							type="tns:alleleNumber" minOccurs="1" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getRelatedIsolateIdsByProfileResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="id" type="xsd:int"
+							minOccurs="0" maxOccurs="unbounded">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getForwardConsensus">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="locus" type="xsd:string"
+							minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="length"
+							type="xsd:int" minOccurs="0" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getForwardConsensusResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sequence" type="xsd:string" minOccurs="1" maxOccurs="1"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getReverseConsensus">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database"
+							type="xsd:string" minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="locus" type="xsd:string" minOccurs="1" maxOccurs="1">
+						</xsd:element>
+						<xsd:element name="length"
+							type="xsd:int" minOccurs="0" maxOccurs="1">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="getReverseConsensusResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sequence" type="xsd:string" minOccurs="1" maxOccurs="1"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="locusBlast">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="database" type="xsd:string"
+							maxOccurs="1" minOccurs="1">
+						</xsd:element>
+						<xsd:element name="locus" type="xsd:string"
+							maxOccurs="1" minOccurs="1">
+						</xsd:element>
+						<xsd:element name="sequence" type="xsd:string"
+							maxOccurs="1" minOccurs="1">
+						</xsd:element>
+						<xsd:element name="maxResults"
+							type="xsd:int" maxOccurs="1" minOccurs="0">
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="locusBlastResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="blastMatch" type="tns:blastMatch" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="getAlleleSequenceRequest">
+		<wsdl:part element="tns:getAlleleSequence" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="getAlleleSequenceResponse">
+		<wsdl:part element="tns:getAlleleSequenceResponse"
+			name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="locusQueryRequest">
+		<wsdl:part name="parameters" element="tns:locusQuery"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="locusQueryResponse">
+		<wsdl:part name="parameters" element="tns:locusQueryResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getDatabaseListRequest">
+		<wsdl:part name="parameters" element="tns:getDatabaseList"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getDatabaseListResponse">
+		<wsdl:part name="parameters"
+			element="tns:getDatabaseListResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getLocusListRequest">
+		<wsdl:part name="parameters" element="tns:getLocusList"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getLocusListResponse">
+		<wsdl:part name="parameters"
+			element="tns:getLocusListResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAlleleSequencesRequest">
+		<wsdl:part name="parameters" element="tns:getAlleleSequences"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAlleleSequencesResponse">
+		<wsdl:part name="parameters"
+			element="tns:getAlleleSequencesResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getProfilesRequest">
+		<wsdl:part name="parameters" element="tns:getProfiles"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getProfilesResponse">
+		<wsdl:part name="parameters"
+			element="tns:getProfilesResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getProfileListURLRequest">
+		<wsdl:part name="parameters" element="tns:getProfileListURL"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getProfileListURLResponse">
+		<wsdl:part name="parameters"
+			element="tns:getProfileListURLResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAlleleSequencesURLRequest">
+		<wsdl:part name="parameters"
+			element="tns:getAlleleSequencesURL">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAlleleSequencesURLResponse">
+		<wsdl:part name="parameters"
+			element="tns:getAlleleSequencesURLResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getProfileRequest">
+		<wsdl:part name="parameters" element="tns:getProfile"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getProfileResponse">
+		<wsdl:part name="parameters" element="tns:getProfileResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getSTsRequest">
+		<wsdl:part name="parameters" element="tns:getSTs"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getSTsResponse">
+		<wsdl:part name="parameters" element="tns:getSTsResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="blastRequest">
+		<wsdl:part name="parameters" element="tns:blast"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="blastResponse">
+		<wsdl:part name="parameters" element="tns:blastResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getRelatedSTsByProfileRequest">
+		<wsdl:part name="parameters"
+			element="tns:getRelatedSTsByProfile">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getRelatedSTsByProfileResponse">
+		<wsdl:part name="parameters"
+			element="tns:getRelatedSTsByProfileResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getRelatedSTsBySTRequest">
+		<wsdl:part name="parameters" element="tns:getRelatedSTsByST"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getRelatedSTsBySTResponse">
+		<wsdl:part name="parameters"
+			element="tns:getRelatedSTsBySTResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getRelatedProfilesBySTRequest">
+		<wsdl:part name="parameters"
+			element="tns:getRelatedProfilesByST">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getRelatedProfilesBySTResponse">
+		<wsdl:part name="parameters"
+			element="tns:getRelatedProfilesBySTResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getRelatedProfilesByProfileRequest">
+		<wsdl:part name="parameters"
+			element="tns:getRelatedProfilesByProfile">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getRelatedProfilesByProfileResponse">
+		<wsdl:part name="parameters"
+			element="tns:getRelatedProfilesByProfileResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAlleleCountRequest">
+		<wsdl:part name="parameters" element="tns:getAlleleCount"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAlleleCountResponse">
+		<wsdl:part name="parameters"
+			element="tns:getAlleleCountResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getProfileCountRequest">
+		<wsdl:part name="parameters" element="tns:getProfileCount"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getProfileCountResponse">
+		<wsdl:part name="parameters"
+			element="tns:getProfileCountResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getLocusLengthRequest">
+		<wsdl:part name="parameters" element="tns:getLocusLength"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getLocusLengthResponse">
+		<wsdl:part name="parameters"
+			element="tns:getLocusLengthResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getIsolateCountRequest">
+		<wsdl:part name="parameters" element="tns:getIsolateCount"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getIsolateCountResponse">
+		<wsdl:part name="parameters"
+			element="tns:getIsolateCountResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getIsolateFieldsRequest">
+		<wsdl:part name="parameters" element="tns:getIsolateFields"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getIsolateFieldsResponse">
+		<wsdl:part name="parameters"
+			element="tns:getIsolateFieldsResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getIsolateRequest">
+		<wsdl:part name="parameters" element="tns:getIsolate"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getIsolateResponse">
+		<wsdl:part name="parameters" element="tns:getIsolateResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getClonalComplexesRequest">
+		<wsdl:part name="parameters" element="tns:getClonalComplexes"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getClonalComplexesResponse">
+		<wsdl:part name="parameters"
+			element="tns:getClonalComplexesResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getClonalComplexRequest">
+		<wsdl:part name="parameters" element="tns:getClonalComplex"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getClonalComplexResponse">
+		<wsdl:part name="parameters"
+			element="tns:getClonalComplexResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="isolateQueryRequest">
+		<wsdl:part name="parameters" element="tns:isolateQuery"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="isolateQueryResponse">
+		<wsdl:part name="parameters"
+			element="tns:isolateQueryResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getRelatedIsolateIdsBySTRequest">
+		<wsdl:part name="parameters"
+			element="tns:getRelatedIsolateIdsByST">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getRelatedIsolateIdsBySTResponse">
+		<wsdl:part name="parameters"
+			element="tns:getRelatedIsolateIdsBySTResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getRelatedIsolateIdsByProfileRequest">
+		<wsdl:part name="parameters"
+			element="tns:getRelatedIsolateIdsByProfile">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getRelatedIsolateIdsByProfileResponse">
+		<wsdl:part name="parameters"
+			element="tns:getRelatedIsolateIdsByProfileResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getForwardConsensusRequest">
+		<wsdl:part name="parameters" element="tns:getForwardConsensus"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getForwardConsensusResponse">
+		<wsdl:part name="parameters" element="tns:getForwardConsensusResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getReverseConsensusRequest">
+		<wsdl:part name="parameters" element="tns:getReverseConsensus"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getReverseConsensusResponse">
+		<wsdl:part name="parameters" element="tns:getReverseConsensusResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="locusBlastRequest">
+		<wsdl:part name="parameters" element="tns:locusBlast"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="locusBlastResponse">
+		<wsdl:part name="parameters" element="tns:locusBlastResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="mlst">
+		<wsdl:operation name="getAlleleSequence">
+			<wsdl:documentation>
+				Returns allele sequence based on locus name and allele
+				number
+			</wsdl:documentation>
+			<wsdl:input message="tns:getAlleleSequenceRequest" />
+			<wsdl:output message="tns:getAlleleSequenceResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="locusQuery">
+			<wsdl:documentation>
+				Finds a database match to an allele sequence. The
+				sequence must be trimmed to the start and end of the
+				locus with no extraneous bases. If an exact match is not
+				found, the id of the nearest sequence will be returned
+				along with a list of nucleotide differences.
+			</wsdl:documentation>
+			<wsdl:input message="tns:locusQueryRequest"></wsdl:input>
+			<wsdl:output message="tns:locusQueryResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getDatabaseList">
+			<wsdl:documentation>
+				Returns list of available databases
+			</wsdl:documentation>
+			<wsdl:input message="tns:getDatabaseListRequest"></wsdl:input>
+			<wsdl:output message="tns:getDatabaseListResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getLocusList">
+			<wsdl:documentation>
+				Returns list of loci defined for database
+			</wsdl:documentation>
+			<wsdl:input message="tns:getLocusListRequest"></wsdl:input>
+			<wsdl:output message="tns:getLocusListResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getAlleleSequences">
+			<wsdl:documentation>
+				Returns URL of FASTA file of sequences for particular
+				locus
+			</wsdl:documentation>
+			<wsdl:input message="tns:getAlleleSequencesRequest"></wsdl:input>
+			<wsdl:output message="tns:getAlleleSequencesResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getProfileListURL">
+			<wsdl:documentation>
+				Returns URL of a tab-delimited list of allelic profile
+				definitions
+			</wsdl:documentation>
+			<wsdl:input message="tns:getProfileListURLRequest"></wsdl:input>
+			<wsdl:output message="tns:getProfileListURLResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getAlleleSequencesURL">
+			<wsdl:documentation>
+				Returns URL of FASTA file of sequences for particular
+				locus
+			</wsdl:documentation>
+			<wsdl:input message="tns:getAlleleSequencesURLRequest"></wsdl:input>
+			<wsdl:output message="tns:getAlleleSequencesURLResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getProfile">
+			<wsdl:documentation>
+				Returns allelic profile defined for a ST
+			</wsdl:documentation>
+			<wsdl:input message="tns:getProfileRequest"></wsdl:input>
+			<wsdl:output message="tns:getProfileResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getSTs">
+			<wsdl:documentation>
+				Returns list of STs that contain allthe alleles
+				specified. Any number of loci can be included in a query
+				- include all loci for an exact match.
+			</wsdl:documentation>
+			<wsdl:input message="tns:getSTsRequest"></wsdl:input>
+			<wsdl:output message="tns:getSTsResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="blast">
+			<wsdl:documentation>
+				Performs a BLAST query against all loci for a particular
+				database
+			</wsdl:documentation>
+			<wsdl:input message="tns:blastRequest"></wsdl:input>
+			<wsdl:output message="tns:blastResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRelatedSTsByProfile">
+			<wsdl:documentation>
+				Returns list of STs that match at at least the specified
+				number of loci. Query is by allelic profile
+			</wsdl:documentation>
+			<wsdl:input message="tns:getRelatedSTsByProfileRequest"></wsdl:input>
+			<wsdl:output message="tns:getRelatedSTsByProfileResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRelatedSTsByST">
+			<wsdl:documentation>
+				Returns list of STs that match at at least the specified
+				number of loci. Query is by ST number
+			</wsdl:documentation>
+			<wsdl:input message="tns:getRelatedSTsBySTRequest"></wsdl:input>
+			<wsdl:output message="tns:getRelatedSTsBySTResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRelatedProfilesByST">
+			<wsdl:documentation>
+				Returns list of ST definitions (ST + profile) that match
+				at at least the specified number of loci. Query is by ST
+			</wsdl:documentation>
+			<wsdl:input message="tns:getRelatedProfilesBySTRequest"></wsdl:input>
+			<wsdl:output message="tns:getRelatedProfilesBySTResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRelatedProfilesByProfile">
+			<wsdl:documentation>
+				Returns list of ST definitions (ST + profile) that match
+				at at least the specified number of loci. Query is by
+				profile.
+			</wsdl:documentation>
+			<wsdl:input
+				message="tns:getRelatedProfilesByProfileRequest">
+			</wsdl:input>
+			<wsdl:output
+				message="tns:getRelatedProfilesByProfileResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getAlleleCount">
+			<wsdl:documentation>
+				Returns the number of alleles defined for specified
+				locus.
+			</wsdl:documentation>
+			<wsdl:input message="tns:getAlleleCountRequest"></wsdl:input>
+			<wsdl:output message="tns:getAlleleCountResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getProfileCount">
+			<wsdl:documentation>
+				Returns number of defined profile
+			</wsdl:documentation>
+			<wsdl:input message="tns:getProfileCountRequest"></wsdl:input>
+			<wsdl:output message="tns:getProfileCountResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getLocusLength">
+			<wsdl:documentation>
+				Returns standard length of locus and a boolean value
+				indicating whether variable lengths are allowed
+			</wsdl:documentation>
+			<wsdl:input message="tns:getLocusLengthRequest"></wsdl:input>
+			<wsdl:output message="tns:getLocusLengthResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getIsolateCount">
+			<wsdl:documentation>
+				Returns number of isolates submitted to database
+			</wsdl:documentation>
+			<wsdl:input message="tns:getIsolateCountRequest"></wsdl:input>
+			<wsdl:output message="tns:getIsolateCountResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getIsolateFields">
+			<wsdl:documentation>
+				Returns isolate fields defined for database
+			</wsdl:documentation>
+			<wsdl:input message="tns:getIsolateFieldsRequest"></wsdl:input>
+			<wsdl:output message="tns:getIsolateFieldsResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getIsolate">
+			<wsdl:documentation>
+				Returns isolate record
+			</wsdl:documentation>
+			<wsdl:input message="tns:getIsolateRequest"></wsdl:input>
+			<wsdl:output message="tns:getIsolateResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getClonalComplexes">
+			<wsdl:documentation>
+				Returns list of clonal complexes defined in database
+			</wsdl:documentation>
+			<wsdl:input message="tns:getClonalComplexesRequest"></wsdl:input>
+			<wsdl:output message="tns:getClonalComplexesResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getClonalComplex">
+			<wsdl:documentation>
+				Returns the clonal complex for a ST if it is defined
+			</wsdl:documentation>
+			<wsdl:input message="tns:getClonalComplexRequest"></wsdl:input>
+			<wsdl:output message="tns:getClonalComplexResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="isolateQuery">
+			<wsdl:documentation>
+				Returns a list of isolate ids that match all fields.
+				Searching is not case-sensitive. Any number of fields
+				can be passed as arguments. By passing an exactMatch
+				boolean parameter, you can set whether exact or partial
+				matches are used.
+			</wsdl:documentation>
+			<wsdl:input message="tns:isolateQueryRequest"></wsdl:input>
+			<wsdl:output message="tns:isolateQueryResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRelatedIsolateIdsByST">
+			<wsdl:documentation>
+				Returns list of isolate ids that have profiles that
+				match the specified ST at at least the specified number
+				of loci
+			</wsdl:documentation>
+			<wsdl:input message="tns:getRelatedIsolateIdsBySTRequest"></wsdl:input>
+			<wsdl:output
+				message="tns:getRelatedIsolateIdsBySTResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRelatedIsolateIdsByProfile">
+			<wsdl:documentation>
+				Returns list of isolate ids that have profiles that
+				match the specified profile at at least the specified number
+				of loci
+			</wsdl:documentation>
+			<wsdl:input
+				message="tns:getRelatedIsolateIdsByProfileRequest">
+			</wsdl:input>
+			<wsdl:output
+				message="tns:getRelatedIsolateIdsByProfileResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getForwardConsensus">
+			<wsdl:input message="tns:getForwardConsensusRequest"></wsdl:input>
+			<wsdl:output message="tns:getForwardConsensusResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getReverseConsensus">
+			<wsdl:input message="tns:getReverseConsensusRequest"></wsdl:input>
+			<wsdl:output message="tns:getReverseConsensusResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="locusBlast">
+			<wsdl:input message="tns:locusBlastRequest"></wsdl:input>
+			<wsdl:output message="tns:locusBlastResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="mlstSOAP" type="tns:mlst">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="getAlleleSequence">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getAlleleSequence" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="locusQuery">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/locusQuery" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getDatabaseList">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getDatabaseList" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getLocusList">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getLocusList" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getAlleleSequences">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getAlleleSequences" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getProfileListURL">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getProfileListURL" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getAlleleSequencesURL">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getAlleleSequencesURL" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getProfile">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getProfile" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getSTs">
+			<soap:operation soapAction="http://pubmlst.org/MLST/getSTs" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="blast">
+			<soap:operation soapAction="http://pubmlst.org/MLST/blast" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRelatedSTsByProfile">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getRelatedSTsByProfile" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRelatedSTsByST">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getRelatedSTsByST" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRelatedProfilesByST">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getRelatedProfilesByST" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRelatedProfilesByProfile">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getRelatedProfilesByProfile" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getAlleleCount">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getAlleleCount" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getProfileCount">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getProfileCount" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getLocusLength">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getLocusLength" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getIsolateCount">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getIsolateCount" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getIsolateFields">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getIsolateFields" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getIsolate">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getIsolate" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getClonalComplexes">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getClonalComplexes" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getClonalComplex">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getClonalComplex" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="isolateQuery">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/isolateQuery" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRelatedIsolateIdsByST">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getRelatedIsolateIdsByST" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRelatedIsolateIdsByProfile">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getRelatedIsolateIdsByProfile" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getForwardConsensus">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getForwardConsensus" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getReverseConsensus">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/getReverseConsensus" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="locusBlast">
+			<soap:operation
+				soapAction="http://pubmlst.org/MLST/locusBlast" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="mlst">
+		<wsdl:port binding="tns:mlstSOAP" name="mlstSOAP">
+			<soap:address
+				location="http://pubmlst.org/cgi-bin/mlstdbnet/mlstFetch.pl" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

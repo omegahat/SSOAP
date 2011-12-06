@@ -1,0 +1,14 @@
+<SOAP-ENV:Body>
+<e:Book>
+   <title>My Life and Work</title>
+   <author href="#Person-1"/>
+</e:Book>
+<e:Person id="Person-1">
+   <name>Henry Ford</name>
+   <address href="#Address-2"/>
+</e:Person>
+<e:Address id="Address-2">
+   <email>mailto:henryford@hotmail.com</email>
+   <web>http://www.henryford.com</web>
+</e:Address>
+</SOAP-ENV:Body>

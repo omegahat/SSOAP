@@ -1,0 +1,16 @@
+<SOAP-ENV:Body>
+<SOAP-ENC:Array SOAP-ENC:arrayType="xsd:string[][2]">
+   <item href="#array-1"/>
+   <item href="#array-2"/>
+</SOAP-ENC:Array>
+<SOAP-ENC:Array id="array-1" SOAP-ENC:arrayType="xsd:string[2]">
+   <item>r1c1</item>
+   <item>r1c2</item>
+   <item>r1c3</item>
+</SOAP-ENC:Array>
+<SOAP-ENC:Array id="array-2" SOAP-ENC:arrayType="xsd:string[2]">
+   <item>r2c1</item>
+   <item>r2c2</item>
+</SOAP-ENC:Array>
+</SOAP-ENV:Body>
+

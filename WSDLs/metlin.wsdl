@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Metlin SOAP WSDL [TSRI] -->
+<wsdl:definitions name="Metlin" 
+	xmlns:typens="http://metlin.scripps.edu/soap/" 
+	targetNamespace="http://metlin.scripps.edu/soap/metlin.wsdl" 
+	xmlns="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:tns="http://metlin.scripps.edu/soap/metlin.wsdl" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	attributeFormDefault="qualified" 
+	elementFormDefault="qualified">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://metlin.scripps.edu/soap/metlin.wsdl" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<!-- Function Variable Definitions -->
+			<!-- Defintion of parameters used for Metabolite Search function -->
+			<xsd:complexType name="ArrayOfString">
+			    <xsd:complexContent>
+			      <xsd:restriction base="soapenc:Array">
+				<xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:string[]"/>
+			      </xsd:restriction>
+			    </xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="ArrayOffloat">
+				<xsd:complexContent>
+					<xsd:restriction base="soapenc:Array">
+						<xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:float[]"/>
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:element name="MetaboliteRequest">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="unbounded" minOccurs="0" name="mass" nillable="true" type="xsd:float" />
+						<xsd:element maxOccurs="unbounded" minOccurs="0" name="adduct" nillable="true" type="xsd:string" />
+						<xsd:element minOccurs="0" name="tolerance" nillable="true" type="xsd:float"/>
+						<xsd:element minOccurs="0" name="tolunits" nillable="true" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!-- Function Variable Definitions -->
+			<!-- Defintion of parameters used for Fragment Search function -->
+			<xsd:element name="FragmentRequest">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="MZminimum" type="xsd:float"/>
+						<xsd:element name="MZmaximum" type="xsd:float"/>
+						<xsd:element name="Charge" type="xsd:float"/>
+						<xsd:element name="Filter" type="xsd:float"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="FragmentResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Response" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!-- Function Variable Definitions -->
+			<!-- Defintion of parameters used for Name Search function -->
+			<xsd:element name="NameRequest">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="MetlinID" type="xsd:float"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="NameResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Response" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="getMetaboliteRequest">
+		<wsdl:part name="parameters" element="tns:MetaboliteRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getMetaboliteResponse">
+		<wsdl:part name="Response" type="tns:ArrayOfString"/>
+	</wsdl:message>
+	<wsdl:message name="getFragmentRequest">
+		<wsdl:part name="parameters" element="tns:FragmentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getFragmentResponse">
+		<wsdl:part name="Response" type="tns:ArrayOfString"/>
+	</wsdl:message>
+	<wsdl:message name="getNameRequest">
+		<wsdl:part name="parameters" element="tns:NameRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getNameResponse">
+		<wsdl:part name="Response" type="tns:ArrayOfString"/>
+	</wsdl:message>
+	<wsdl:portType name="MetlinPortType">
+		<wsdl:operation name="MetaboliteSearch">
+			<wsdl:input message="tns:getMetaboliteRequest"/>
+			<wsdl:output message="tns:getMetaboliteResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="FragmentSearch">
+			<wsdl:input message="tns:getFragmentRequest"/>
+			<wsdl:output message="tns:getFragmentResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="NameSearch">
+			<wsdl:input message="tns:getNameRequest"/>
+			<wsdl:output message="tns:getNameResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="MetlinBinding" type="tns:MetlinPortType">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="MetaboliteSearch">
+			<soap:operation soapAction="urn:Metlin#MetaboliteSearch"/>
+			<wsdl:input>
+				<!-- soap:body use="encoded"/ -->
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:Metlin"/>
+			</wsdl:input>
+			<wsdl:output>
+				<!-- soap:body use="encoded"/-->
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:Metlin"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="FragmentSearch">
+			<soap:operation soapAction="urn:Metlin#FragmentSearch"/>
+			<wsdl:input>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:Metlin"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:Metlin"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="NameSearch">
+			<soap:operation soapAction="urn:Metlin#NameSearch"/>
+			<wsdl:input>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:Metlin"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:Metlin"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<service name="MetlinService">
+		<port name="MetlinPort" binding="tns:MetlinBinding">
+			<soap:address location="http://metlin.scripps.edu/soap/soapserver.php"/>
+		</port>
+	</service>
+	<!-- Messages -->
+</wsdl:definitions>

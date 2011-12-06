@@ -1,0 +1,22 @@
+<SOAP-ENV:Body>
+<e:Book>
+   <title>My Life and Work</title>
+   <firstauthor href="#Person-1"/>
+   <secondauthor href="#Person-2"/>
+</e:Book>
+<e:Person id="Person-1">
+   <name>Henry Ford</name>
+   <address xsi:type="m:Electronic-address">
+       <email>mailto:henryford@hotmail.com</email>
+       <web>http://www.henryford.com</web>
+   </address>
+</e:Person>
+<e:Person id="Person-2">
+   <name>Samuel Crowther</name>
+   <address xsi:type="n:Street-address">
+       <street>Martin Luther King Rd</street>
+       <city>Raleigh</city>
+       <state>North Carolina</state>
+   </address>
+</e:Person>
+</SOAP-ENV:Body>

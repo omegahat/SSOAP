@@ -1,0 +1,16 @@
+<!-- From http://www.xmlrpc.com/discuss/msgReader$1434 -->
+<?xml version="1.0"?>
+ <SOAP-ENV:Envelope SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+          xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+          xmlns:xsd="http://www.w3.org/1999/XMLSchema"
+          xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance"> 
+  <SOAP-ENV:Body>
+   <SOAP-ENV:Fault> 
+     <faultcode>SOAP-ENV:Client</faultcode> 
+     <faultstring>Can't call 'getStateName' because there are too many
+         parameters. 
+     </faultstring> 
+   </SOAP-ENV:Fault> 
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+

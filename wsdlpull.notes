@@ -1,0 +1,6 @@
+The wsdl application is in src/tools/wsdl.cpp
+
+See WsdlInvoker.cpp
+ WsdlParser(url, logger)
+
+   getNextElement()

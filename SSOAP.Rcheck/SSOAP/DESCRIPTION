@@ -1,0 +1,24 @@
+Package: SSOAP
+Version: 0.8-1
+Date: 2011/10/29
+Title: Client-side SOAP access for S
+Author: Duncan Temple Lang <duncan@wald.ucdavis.edu>
+Depends: R (>= 1.5.0), methods
+Imports: XML, RCurl, XMLSchema
+Maintainer: Duncan Temple Lang <duncan@wald.ucdavis.edu>
+Description: A package that provides a client
+     interface to SOAP (Simple Object Access Protocol) servers 
+     from within R. 
+LazyLoad: yes
+License: GPL2
+Collate: ClassDefns.R fault.S http.S parseSOAP.S print.S RPC.R
+       SOAP.S SOAPServer.S zSOAP.S duration.S nativeWrite.R
+       functionAccessors.R writeGeneratedCode.R wsdlProcess.R
+       utils.R toSOAP.R httpGet.R
+Note: There is an opportunity to do a lot of optimization in
+       the machine generated code to reduce the processing
+       time. This is a simple approach that "works" with little
+       regard for optimization.
+URL: http://www.omegahat.org/SSOAP, http://www.omegahat.org
+       http://www.omegahat.org/bugs
+Built: R 2.15.0; ; 2011-11-30 14:53:29 UTC; unix

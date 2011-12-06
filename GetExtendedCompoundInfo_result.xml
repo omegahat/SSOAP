@@ -1,0 +1,20 @@
+<ExtendedCompoundInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.chemspider.com/">
+<CSID>23078572</CSID>
+<MF>C23H40O4SSi2</MF>
+<SMILES>
+CC(C)(C)[Si](C)(C)OC1COC(=CC1O[Si](C)(C)C(C)(C)C)S(=O)c2ccccc2
+</SMILES>
+<InChI>
+InChI=1/C23H40O4SSi2/c1-22(2,3)29(7,8)26-19-16-21(28(24)18-14-12-11-13-15-18)25-17-20(19)27-30(9,10)23(4,5)6/h11-16,19-20H,17H2,1-10H3/t19-,20+,28+/m0/s1
+</InChI>
+<InChIKey>DLNBLGFSXORBDS-TWUWCHPWBD</InChIKey>
+<AverageMass>0</AverageMass>
+<MolecularWeight>468.7973</MolecularWeight>
+<MonoisotopicMass>0</MonoisotopicMass>
+<NominalMass>0</NominalMass>
+<ALogP>0</ALogP>
+<XLogP>0</XLogP>
+<CommonName>
+tert-butyl-[[(3R,4S)-4-[tert-butyl(dimethyl)silyl]oxy-6-[(R)-phen​ylsulfinyl]-3,4-dihydro-2H-pyran-3-yl]oxy]-dimethyl-silane
+</CommonName>
+</ExtendedCompoundInfo>

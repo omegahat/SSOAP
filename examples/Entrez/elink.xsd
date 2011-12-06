@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<s:schema targetNamespace="http://www.ncbi.nlm.nih.gov/soap/eutils/elink" xmlns:tns="http://www.ncbi.nlm.nih.gov/soap/eutils/elink" xmlns:s="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<!--   version="1.5" -->
+	<!--   http://www.ncbi.nlm.nih.gov/entrez/query/DTD/eLink_050511.dtd  -->
+
+	<s:element name="Attribute" type="s:string"/>
+	<s:element name="DbFrom" type="s:string"/>
+	<s:element name="DbTo" type="s:string"/>
+	<s:element name="ERROR" type="s:string"/>
+	<s:element name="IconUrl" type="s:string"/>
+	<s:element name="Info" type="s:string"/>
+	<s:element name="LinkName" type="s:string"/>
+	<s:element name="Name" type="s:string"/>
+	<s:element name="NameAbbr" type="s:string"/>
+	<s:element name="Score" type="s:string"/>
+	<s:element name="SubjectType" type="s:string"/>
+	<s:element name="Url" type="s:string"/>
+	<s:element name="MenuTag" type="s:string"/>
+	<s:complexType name="IdType">
+		<s:simpleContent>
+			<s:extension base="s:string">
+				<s:attribute name="HasLinkOut">
+					<s:simpleType>
+						<s:restriction base="s:NMTOKEN">
+							<s:enumeration value="Y"/>
+							<s:enumeration value="N"/>
+						</s:restriction>
+					</s:simpleType>
+				</s:attribute>
+				<s:attribute name="HasNeighbor">
+					<s:simpleType>
+						<s:restriction base="s:NMTOKEN">
+							<s:enumeration value="Y"/>
+							<s:enumeration value="N"/>
+						</s:restriction>
+					</s:simpleType>
+				</s:attribute>
+			</s:extension>
+		</s:simpleContent>
+	</s:complexType>
+	<s:complexType name="IdCheckListType">
+		<s:sequence>
+			<s:choice minOccurs="0" maxOccurs="unbounded">
+				<s:element name="Id" type="tns:IdType"/>
+				<s:element name="IdLinkSet" type="tns:IdLinkSetType"/>
+			</s:choice>
+			<s:element ref="tns:ERROR" minOccurs="0"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="IdLinkSetType">
+		<s:sequence>
+			<s:element name="LinkInfo" type="tns:LinkInfoType" minOccurs="0" maxOccurs="unbounded"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="IdListType">
+		<s:sequence>
+			<s:element name="Id" type="tns:IdType" minOccurs="0" maxOccurs="unbounded"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="IdUrlListType">
+		<s:sequence>
+			<s:element name="IdUrlSet" type="tns:IdUrlSetType" minOccurs="0" maxOccurs="unbounded"/>
+			<s:element ref="tns:ERROR" minOccurs="0"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="IdUrlSetType">
+		<s:sequence>
+			<s:element name="Id" type="tns:IdType"/>
+			<s:choice>
+				<s:element name="ObjUrl" type="tns:ObjUrlType" maxOccurs="unbounded"/>
+				<s:element ref="tns:Info"/>
+			</s:choice>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="LinkType">
+		<s:sequence>
+			<s:element name="Id" type="tns:IdType"/>
+			<s:element ref="tns:Score" minOccurs="0"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="LinkInfoType">
+		<s:sequence>
+			<s:element ref="tns:DbTo"/>
+			<s:element ref="tns:LinkName"/>
+			<s:element ref="tns:MenuTag"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="LinkSetType">
+		<s:sequence>
+			<s:element ref="tns:DbFrom"/>
+			<s:element ref="tns:ERROR" minOccurs="0"/>
+			<s:element name="IdList" type="tns:IdListType" minOccurs="0"/>
+			<s:element name="LinkSetDb" type="tns:LinkSetDbType" minOccurs="0" maxOccurs="unbounded"/>
+			<s:element name="IdUrlList" type="tns:IdUrlListType" minOccurs="0"/>
+			<s:element name="IdCheckList" type="tns:IdCheckListType" minOccurs="0"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="LinkSetDbType">
+		<s:sequence>
+			<s:element ref="tns:DbTo"/>
+			<s:element ref="tns:LinkName"/>
+			<s:choice>
+				<s:element name="Link" type="tns:LinkType" minOccurs="0" maxOccurs="unbounded"/>
+				<s:element ref="tns:Info"/>
+			</s:choice>
+			<s:element ref="tns:ERROR" minOccurs="0"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="ObjUrlType">
+		<s:sequence>
+			<s:element ref="tns:Url"/>
+			<s:element ref="tns:IconUrl" minOccurs="0"/>
+			<s:element ref="tns:LinkName" minOccurs="0"/>
+			<s:element ref="tns:SubjectType" minOccurs="0" maxOccurs="unbounded"/>
+			<s:element ref="tns:Attribute" minOccurs="0" maxOccurs="unbounded"/>
+			<s:element name="Provider" type="tns:ProviderType"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="ProviderType">
+		<s:sequence>
+			<s:element ref="tns:Name"/>
+			<s:element ref="tns:NameAbbr"/>
+			<s:element name="Id" type="tns:IdType"/>
+			<s:element ref="tns:Url"/>
+			<s:element ref="tns:IconUrl" minOccurs="0"/>
+		</s:sequence>
+	</s:complexType>
+	<s:element name="eLinkResult">
+		<s:complexType>
+			<s:sequence>
+				<s:element ref="tns:ERROR" minOccurs="0"/>
+				<s:element name="LinkSet" type="tns:LinkSetType" minOccurs="0" maxOccurs="unbounded"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:complexType name="eLinkResultType">
+		<s:sequence>
+			<s:element ref="tns:ERROR" minOccurs="0"/>
+			<s:element name="LinkSet" type="tns:LinkSetType" minOccurs="0" maxOccurs="unbounded"/>
+		</s:sequence>
+	</s:complexType>
+	<s:element name="eLinkResultMS">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="eLinkResult" type="tns:eLinkResultType" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:element name="eLinkRequest">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="db" type="s:string" minOccurs="0"/>
+				<s:element name="id" type="s:string" minOccurs="0" maxOccurs="unbounded"/>
+				<s:element name="reldate" type="s:string" minOccurs="0"/>
+				<s:element name="mindate" type="s:string" minOccurs="0"/>
+				<s:element name="maxdate" type="s:string" minOccurs="0"/>
+				<s:element name="datetype" type="s:string" minOccurs="0"/>
+				<s:element name="term" type="s:string" minOccurs="0"/>
+				<s:element name="dbfrom" type="s:string" minOccurs="0"/>
+				<s:element name="WebEnv" type="s:string" minOccurs="0"/>
+				<s:element name="query_key" type="s:string" minOccurs="0"/>
+				<s:element name="cmd" type="s:string" minOccurs="0"/>
+				<s:element name="tool" type="s:string" minOccurs="0"/>
+				<s:element name="email" type="s:string" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:element name="eLinkRequestMS">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="db" type="s:string" minOccurs="0"/>
+				<s:element name="id" type="s:string" minOccurs="0" maxOccurs="unbounded"/>
+				<s:element name="reldate" type="s:string" minOccurs="0"/>
+				<s:element name="mindate" type="s:string" minOccurs="0"/>
+				<s:element name="maxdate" type="s:string" minOccurs="0"/>
+				<s:element name="datetype" type="s:string" minOccurs="0"/>
+				<s:element name="term" type="s:string" minOccurs="0"/>
+				<s:element name="dbfrom" type="s:string" minOccurs="0"/>
+				<s:element name="WebEnv" type="s:string" minOccurs="0"/>
+				<s:element name="query_key" type="s:string" minOccurs="0"/>
+				<s:element name="cmd" type="s:string" minOccurs="0"/>
+				<s:element name="tool" type="s:string" minOccurs="0"/>
+				<s:element name="email" type="s:string" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+</s:schema>

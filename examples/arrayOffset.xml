@@ -1,0 +1,4 @@
+<SOAP-ENC:Array SOAP-ENC:arrayType="xsd:string[5]" SOAP-ENC:offset="[2]">
+   <item>The third element</item>
+   <item>The fourth element</item>
+</SOAP-ENC:Array>

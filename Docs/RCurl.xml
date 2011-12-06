@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+
+<article>
+
+Here we outline the steps for using a persistent
+curl handle in multiple SOAP calls.
+
+<para/>
+If we are making calls directly
+via the <r:func>.SOAP</r:func> function,
+then we can easily provide our own curl handle.
+
+<r:code>
+curl = getCurlHandle(url = toURL(server), userpwd = "bob", cookie = "myCookie=123")
+.SOAP(..., curlHandle = curl)
+</r:code>
+
+
+If we are not calling .SOAP directly, but via functions
+generated  from the WSDL via
+<r:func>genSOAPClientInterface</r:func>
+then we can specify the CURL handle 
+as the <r:arg>server</r:arg> 
+argument in the call
+to <r:func>genSOAPClientInterface</r:func>
+<r:code>
+kegg = processWSDL("KEGG.wsdl")
+curl = getCurlHandle(url = SSOAP:::toURL(kegg@server), verbose = TRUE, cookie = "myCookie=123")
+iface = genSOAPClientInterface(def = kegg, server = curl)
+
+iface@functions$list_databases()
+</r:code>
+
+When generating the interface in this manner, we
+introduce a slight problem.
+When we serialize the resulting collection
+of functions, the curl handle they refer to via
+their environments will be stored with its
+reference as NULL.
+When deserialized, we must create a new instance of
+the internal C-level object.
+One approach to this is to create
+the curl handle and
+then to assign to the .defaultServer
+variable in the environment of each function.
+<r:code>
+sapply(iface@functions,
+        function(f, server) {
+           environment(f)$.defaultServer <- server
+        }, newServer)
+</r:code>
+If, for some reason,  we wanted to simplify this step,
+we could use the following approach.
+We create an environment
+before calling <r:func>genSOAPClientInterface</r:func>
+and then pass this in the call along with 
+<r:null/> for the <r:arg>server</r:arg> argument.
+<r:code>
+e = new.env()
+iface = genSOAPClientInterface(def = kegg, server = NULL, env = e)
+</r:code>
+This environment becomes the parent environment of 
+the environment of each new function as it is created.
+The function's direct environment contains the
+operation description specific to the SOAP operation.
+The parent environment contains  the shared resources
+such as the server.
+<para/>
+When we want to use these, we specify the server once in this
+parent environment:
+<r:code>
+e$.defaultServer = getCurlHandle(url = SSOAP:::toURL(kegg@server), verbose = TRUE, cookie = "myCookie=123")
+</r:code>
+
+And the functions then work as expected.
+
+
+
+KeepAlive
+KeepAliveTimeout
+
+
+
+
+</article>

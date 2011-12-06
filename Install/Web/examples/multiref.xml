@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope
+   xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <SOAP-ENV:Body>
+  <ns1:getWeatherResponse 
+  SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+     xmlns:ns1="weather">
+   <getWeatherReturn href="#id0"/>
+  </ns1:getWeatherResponse>
+  <multiRef id="id0" SOAP-ENC:root="0"
+     encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+     xsi:type="ns3:Forecast" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+     xmlns:ns2="http://schemas.xmlsoap.org/soap/envelope/:encodingStyle"
+     xmlns:ns3="urn:ForecastService">
+   <date xsi:type="xsd:string">April 11, 2003</date>
+   <zip xsi:type="xsd:string">95008</zip>
+   <city xsi:type="xsd:string">Campbell</city>
+   <state xsi:type="xsd:string">CA</state>
+   <forecast xsi:type="xsd:string">20 percent chance of rain.</forecast>
+   <low xsi:type="xsd:byte">0</low>
+   <hi xsi:type="xsd:byte">0</hi>
+   <precip xsi:type="xsd:byte">0</precip>
+  </multiRef>
+ </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

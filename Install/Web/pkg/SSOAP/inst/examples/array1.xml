@@ -1,0 +1,6 @@
+<!-- example of using the element name as the type according to the 
+     Datatypes XML Schema -->
+<SOAP-ENC:Array SOAP-ENC:arrayType="xsd:int[2]">
+   <SOAP-ENC:int>3</SOAP-ENC:int>
+   <SOAP-ENC:int>4</SOAP-ENC:int>
+</SOAP-ENC:Array>

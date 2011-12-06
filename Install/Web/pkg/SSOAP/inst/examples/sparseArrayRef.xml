@@ -1,0 +1,7 @@
+<SOAP-ENC:Array SOAP-ENC:arrayType="xsd:string[,][4]">
+   <SOAP-ENC:Array href="#array-1" SOAP-ENC:position="[2]"/>
+</SOAP-ENC:Array>
+<SOAP-ENC:Array id="array-1" SOAP-ENC:arrayType="xsd:string[10,10]">
+   <item SOAP-ENC:position="[2,2]">Third row, third col</item>
+   <item SOAP-ENC:position="[7,2]">Eighth row, third col</item>
+</SOAP-ENC:Array>

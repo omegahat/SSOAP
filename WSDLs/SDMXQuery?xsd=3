@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.4-hudson-208-. --><xs:schema xmlns:tns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common">
+
+<xs:simpleType name="TextType">
+<xs:restriction base="xs:string" />
+</xs:simpleType>
+
+<xs:complexType name="AnnotationsType">
+<xs:sequence>
+<xs:element name="Annotation" type="tns:AnnotationType" form="qualified" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="AnnotationType">
+<xs:sequence>
+<xs:element name="AnnotationTitle" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="AnnotationType" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="AnnotationURL" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="AnnotationText" type="tns:TextType" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ConstraintType">
+<xs:sequence>
+<xs:element name="ConstraintID" type="xs:string" form="qualified" />
+<xs:element name="CubeRegion" type="tns:CubeRegionType" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="MetadataConceptSet" type="tns:MetadataConceptSetType" form="qualified" minOccurs="0" />
+<xs:element name="KeySet" type="tns:KeySetType" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="ReleaseCalendar" type="tns:ReleaseCalendarType" form="qualified" minOccurs="0" />
+<xs:element name="ReferencePeriod" type="tns:ReferencePeriodType" form="qualified" minOccurs="0" />
+</xs:sequence>
+<xs:attribute name="ConstraintType" type="tns:ConstraintTypeType" use="required" />
+</xs:complexType>
+
+<xs:complexType name="CubeRegionType">
+<xs:sequence>
+<xs:element name="Member" type="tns:MemberType" form="qualified" maxOccurs="unbounded" />
+</xs:sequence>
+<xs:attribute name="isIncluded" type="xs:boolean" use="required" />
+</xs:complexType>
+
+<xs:complexType name="MemberType">
+<xs:sequence>
+<xs:element name="ComponentRef" type="xs:string" form="qualified" />
+<xs:element name="MemberValue" type="tns:MemberValueType" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+</xs:sequence>
+<xs:attribute name="isIncluded" type="xs:boolean" use="required" />
+</xs:complexType>
+
+<xs:complexType name="MemberValueType">
+<xs:sequence>
+<xs:element name="Value" type="xs:string" form="qualified" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="MetadataConceptSetType">
+<xs:sequence>
+<xs:element name="Member" type="tns:MemberType" form="qualified" maxOccurs="unbounded" />
+</xs:sequence>
+<xs:attribute name="isIncluded" type="xs:boolean" use="required" />
+</xs:complexType>
+
+<xs:complexType name="KeySetType">
+<xs:sequence>
+<xs:element name="Key" type="tns:KeyType" form="qualified" />
+</xs:sequence>
+<xs:attribute name="isIncluded" type="xs:boolean" use="required" />
+</xs:complexType>
+
+<xs:complexType name="KeyType">
+<xs:sequence>
+<xs:choice minOccurs="0" maxOccurs="unbounded">
+<xs:element form="qualified" name="Value" type="xs:string" />
+<xs:element form="qualified" name="ComponentRef" type="xs:string" />
+</xs:choice>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ReleaseCalendarType">
+<xs:sequence>
+<xs:element name="Periodicity" type="xs:string" form="qualified" />
+<xs:element name="Offset" type="xs:string" form="qualified" />
+<xs:element name="Tolerance" type="xs:string" form="qualified" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ReferencePeriodType">
+<xs:sequence />
+<xs:attribute name="startTime" type="xs:anySimpleType" use="required" />
+<xs:attribute name="endTime" type="xs:anySimpleType" use="required" />
+</xs:complexType>
+
+<xs:simpleType name="ActionType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Append" />
+<xs:enumeration value="Replace" />
+<xs:enumeration value="Delete" />
+<xs:enumeration value="Information" />
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="ConstraintTypeType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Content" />
+<xs:enumeration value="Attachment" />
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>

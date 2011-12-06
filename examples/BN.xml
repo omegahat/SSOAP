@@ -1,0 +1,7 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance" xmlns:xsd="http://www.w3.org/1999/XMLSchema">
+<SOAP-ENV:Body>
+<ns1:getPrice xmlns:ns1="urn:xmethods-BNPriceCheck" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<isbn xsi:type="xsd:string">0439139597</isbn>
+</ns1:getPrice>
+</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

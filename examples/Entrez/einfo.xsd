@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<s:schema targetNamespace="http://www.ncbi.nlm.nih.gov/soap/eutils/einfo" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.ncbi.nlm.nih.gov/soap/eutils/einfo" elementFormDefault="qualified">
+
+	<!--   version="1.5" -->
+	<!--   http://www.ncbi.nlm.nih.gov/entrez/query/DTD/eInfo_020511.dtd  date: 2004/02/06 16:45:18 -->
+
+	<s:complexType name="DbInfoType">
+		<s:sequence>
+			<s:element name="DbName" type="s:string"/>
+			<s:element name="MenuName" type="s:string"/>
+			<s:element name="Description" type="s:string"/>
+			<s:element name="Count" type="s:string"/>
+			<s:element name="LastUpdate" type="s:string"/>
+			<s:element name="FieldList" type="tns:FieldListType"/>
+			<s:element name="LinkList" type="tns:LinkListType" minOccurs="0"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="DbListType">
+		<s:choice>
+			<s:element name="DbName" type="s:string" minOccurs="0" maxOccurs="unbounded"/>
+		</s:choice>
+	</s:complexType>
+	<s:complexType name="FieldType">
+		<s:sequence>
+			<s:element name="Name" type="s:string"/>
+			<s:element name="Description" type="s:string"/>
+			<s:element name="TermCount" type="s:string"/>
+			<s:element name="IsDate" type="s:string"/>
+			<s:element name="IsNumerical" type="s:string"/>
+			<s:element name="SingleToken" type="s:string"/>
+			<s:element name="Hierarchy" type="s:string"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="FieldListType">
+		<s:sequence>
+			<s:element name="Field" type="tns:FieldType" minOccurs="0" maxOccurs="unbounded"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="LinkType">
+		<s:sequence>
+			<s:element name="Name" type="s:string"/>
+			<s:element name="Menu" type="s:string"/>
+			<s:element name="Description" type="s:string"/>
+			<s:element name="DbTo" type="s:string"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="LinkListType">
+		<s:sequence>
+			<s:element name="Link" type="tns:LinkType" minOccurs="0" maxOccurs="unbounded"/>
+		</s:sequence>
+	</s:complexType>
+	<s:element name="eInfoResult">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="ERROR" type="s:string" minOccurs="0"/>
+				<s:element name="DbList" type="tns:DbListType" minOccurs="0"/>
+				<s:element name="DbInfo" type="tns:DbInfoType" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:element name="eInfoRequest">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="db" type="s:string" minOccurs="0"/>
+				<s:element name="tool" type="s:string" minOccurs="0"/>
+				<s:element name="email" type="s:string" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:element name="eInfoRequestMS">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="db" type="s:string" minOccurs="0"/>
+				<s:element name="tool" type="s:string" minOccurs="0"/>
+				<s:element name="email" type="s:string" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:complexType name="eInfoResultType">
+		<s:sequence>
+			<s:element name="ERROR" type="s:string" minOccurs="0"/>
+			<s:element name="DbList" type="tns:DbListType" minOccurs="0"/>
+			<s:element name="DbInfo" type="tns:DbInfoType" minOccurs="0"/>
+		</s:sequence>
+	</s:complexType>
+	<s:element name="eInfoResultMS">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="eInfoResult" type="tns:eInfoResultType" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+</s:schema>

@@ -1,0 +1,93 @@
+
+From 
+
+<pre>
+tmp@operations[[1]][[1]]
+An object of class "WSDLMethod"
+Slot "name":
+[1] "get_all_neighbors_by_gene"
+
+Slot "parameters":
+$kid
+An object of class "SOAPType"
+Slot "name":
+[1] "xsd:string"
+
+Slot "ns":
+[1] ""
+
+Slot "nsuri":
+[1] ""
+
+
+$threshold
+An object of class "SOAPType"
+Slot "name":
+[1] "xsd:int"
+
+Slot "ns":
+[1] ""
+
+Slot "nsuri":
+[1] ""
+
+
+$orgs
+An object of class "SOAPType"
+Slot "name":
+[1] "typens:ArrayOfstring"
+
+Slot "ns":
+[1] ""
+
+Slot "nsuri":
+[1] ""
+
+
+
+Slot "returnValue":
+An object of class "SOAPType"
+Slot "name":
+[1] "typens:SSDBResultArray"
+
+Slot "ns":
+[1] ""
+
+Slot "nsuri":
+[1] ""
+</pre>
+
+we want to generate the  function
+
+setMethod("getAllNeighborsByGene", 
+           "KEGGPort",
+           function(server, kid, threshold, orgs) {
+             val = .SOAP(server, "get_all_neighbors_by_gene", 
+                           kid = kid, threshold = threshold, orgs = orgs,
+                           action = [operation@action],  # substituted
+                           xmlns =  [operation@namespace], # substitute at definition time
+                           .types = # substituted at time,
+                           .convert
+               )
+              convertSOAP(val, [operation@returnValue])
+           })
+
+
+f = function(){}
+formals(f) <- alist(server=, kid=, threshold=, orgs=)
+body(f) <- substitute({
+  val = .SOAP(server, .opName,
+               )
+x = action; y = 2; x+y}, 
+  list(.opName= operation@name,
+       .action = operation@action,
+       .namespace = operation@namespace,
+       .types = operation@))
+
+
+
+KEGGPort =
+function()
+{
+   .MetaInfo@server
+}

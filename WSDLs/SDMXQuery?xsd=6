@@ -1,0 +1,570 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.4-hudson-208-. --><xs:schema xmlns:tns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/registry" xmlns:ns2="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/structure" xmlns:ns1="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/registry">
+
+<xs:import namespace="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" schemaLocation="http://sdw-ws.ecb.europa.eu:80/services/SDMXQuery?xsd=3" />
+
+<xs:import namespace="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/structure" schemaLocation="http://sdw-ws.ecb.europa.eu:80/services/SDMXQuery?xsd=5" />
+
+<xs:complexType name="SubmitSubscriptionRequestType">
+<xs:sequence>
+<xs:element name="Subscription" type="tns:SubscriptionType" form="qualified" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SubscriptionType">
+<xs:sequence>
+<xs:element name="Action" type="ns1:ActionType" form="qualified" />
+<xs:element name="RegistryURN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="NotificationMailTo" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="NotificationHTTP" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="SubscriberAssignedID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="ValidityPeriod" type="tns:ValidityPeriodType" form="qualified" />
+<xs:element name="EventSelector" type="tns:EventSelectorType" form="qualified" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ValidityPeriodType">
+<xs:sequence>
+<xs:element name="StartDate" type="xs:date" form="qualified" />
+<xs:element name="EndDate" type="xs:date" form="qualified" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="EventSelectorType">
+<xs:sequence>
+<xs:element name="StructuralRepositoryEvents" type="tns:StructuralRepositoryEventsType" form="qualified" minOccurs="0" />
+<xs:element name="ProvisioningRepositoryEvents" type="tns:ProvisioningRepositoryEventsType" form="qualified" minOccurs="0" />
+<xs:element name="DataRegistrationEvents" type="tns:DataRegistrationEventsType" form="qualified" minOccurs="0" />
+<xs:element name="MetadataRegistrationEvents" type="tns:MetadataRegistrationEventsType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="StructuralRepositoryEventsType">
+<xs:sequence>
+<xs:element name="AgencyID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="AllEventsID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="KeyFamilyID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="ConceptSchemeID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="CodeListID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="MetadataStructureID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="CategorySchemeID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="DataflowID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="MetadataflowID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="OrganisationSchemeID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="HierarchicalCodelistID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="StructureSetID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="ReportingTaxonomyID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="ProcessID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ProvisioningRepositoryEventsType">
+<xs:sequence>
+<xs:element name="ProvisionAgreementID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="DataProviderID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="DataflowID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="MetadataflowID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="AllEventsID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DataRegistrationEventsType">
+<xs:sequence>
+<xs:element name="AllEventsID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="DataProviderID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="ProvisionAgreementID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="DataflowID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="KeyFamilyID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="CategoryID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="CategorySchemeID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="CategorySchemeAgencyID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="MetadataRegistrationEventsType">
+<xs:sequence>
+<xs:element name="AllEventsID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="DataProviderID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="ProvisionAgreementID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="MetadataflowID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="MetadatastructureID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="CategoryID" type="xs:string" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SubmitSubscriptionResponseType">
+<xs:sequence>
+<xs:element name="SubscriptionURN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="SubscriberAssignedID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="SubscriptionStatus" type="tns:StatusMessageType" form="qualified" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="StatusMessageType">
+<xs:sequence>
+<xs:element name="MessageText" type="ns1:TextType" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+</xs:sequence>
+<xs:attribute name="status" type="tns:StatusType" use="required" />
+</xs:complexType>
+
+<xs:complexType name="NotifyRegistryEventType">
+<xs:sequence>
+<xs:element name="EventTime" type="xs:anySimpleType" form="qualified" />
+<xs:element name="ObjectURN" type="xs:anyURI" form="qualified" />
+<xs:element name="SubscriptionURN" type="xs:anyURI" form="qualified" />
+<xs:element name="EventAction" type="ns1:ActionType" form="qualified" />
+<xs:element name="StructuralEvent" type="tns:StructuralEventType" form="qualified" minOccurs="0" />
+<xs:element name="ProvisioningEvent" type="tns:ProvisioningEventType" form="qualified" minOccurs="0" />
+<xs:element name="RegistrationEvent" type="tns:RegistrationEventType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="StructuralEventType">
+<xs:sequence>
+<xs:element name="OrganisationSchemes" type="ns2:OrganisationSchemesType" form="qualified" minOccurs="0" />
+<xs:element name="Dataflows" type="ns2:DataflowsType" form="qualified" minOccurs="0" />
+<xs:element name="Metadataflows" type="ns2:MetadataflowsType" form="qualified" minOccurs="0" />
+<xs:element name="CategorySchemes" type="ns2:CategorySchemesType" form="qualified" minOccurs="0" />
+<xs:element name="CodeLists" type="ns2:CodeListsType" form="qualified" minOccurs="0" />
+<xs:element name="HierarchicalCodelists" type="ns2:HierarchicalCodelistsType" form="qualified" minOccurs="0" />
+<xs:element name="Concepts" type="ns2:ConceptsType" form="qualified" minOccurs="0" />
+<xs:element name="MetadataStructureDefinitions" type="ns2:MetadataStructureDefinitionsType" form="qualified" minOccurs="0" />
+<xs:element name="KeyFamilies" type="ns2:KeyFamiliesType" form="qualified" minOccurs="0" />
+<xs:element name="StructureSets" type="ns2:StructureSetsType" form="qualified" minOccurs="0" />
+<xs:element name="Processes" type="ns2:ProcessesType" form="qualified" minOccurs="0" />
+<xs:element name="ReportingTaxonomies" type="ns2:ReportingTaxonomiesType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ProvisioningEventType">
+<xs:sequence>
+<xs:element name="DataProviderRef" type="tns:DataProviderRefType" form="qualified" minOccurs="0" />
+<xs:element name="DataflowRef" type="tns:DataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="MetadataflowRef" type="tns:MetadataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="ProvisionAgreement" type="tns:ProvisionAgreementType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DataProviderRefType">
+<xs:sequence>
+<xs:element name="URN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="OrganisationSchemeAgencyID" type="xs:string" form="qualified" />
+<xs:element name="OrganisationSchemeID" type="xs:string" form="qualified" />
+<xs:element name="DataProviderID" type="xs:string" form="qualified" />
+<xs:element name="Version" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="Datasource" type="tns:DatasourceType" form="qualified" minOccurs="0" />
+<xs:element name="Constraint" type="ns1:ConstraintType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DatasourceType">
+<xs:sequence>
+<xs:element name="SimpleDatasource" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="QueryableDatasource" type="tns:QueryableDatasourceType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="QueryableDatasourceType">
+<xs:sequence>
+<xs:element name="DataUrl" type="xs:anyURI" form="qualified" />
+<xs:element name="WSDLUrl" type="xs:anyURI" form="qualified" minOccurs="0" />
+</xs:sequence>
+<xs:attribute name="isRESTDatasource" type="xs:boolean" use="required" />
+<xs:attribute name="isWebServiceDatasource" type="xs:boolean" use="required" />
+</xs:complexType>
+
+<xs:complexType name="DataflowRefType">
+<xs:sequence>
+<xs:element name="URN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="AgencyID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="DataflowID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="Version" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="Datasource" type="tns:DatasourceType" form="qualified" minOccurs="0" />
+<xs:element name="Constraint" type="ns1:ConstraintType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="MetadataflowRefType">
+<xs:sequence>
+<xs:element name="URN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="AgencyID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="MetadataflowID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="Version" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="Datasource" type="tns:DatasourceType" form="qualified" minOccurs="0" />
+<xs:element name="Constraint" type="ns1:ConstraintType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ProvisionAgreementType">
+<xs:sequence>
+<xs:element name="Name" type="ns1:TextType" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="Description" type="ns1:TextType" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="DataflowRef" type="tns:DataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="MetadataflowRef" type="tns:MetadataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="DataProviderRef" type="tns:DataProviderRefType" form="qualified" />
+<xs:element name="Datasource" type="tns:QueryableDatasourceType" form="qualified" minOccurs="0" />
+<xs:element name="Constraint" type="ns1:ConstraintType" form="qualified" minOccurs="0" />
+<xs:element name="Annotations" type="ns1:AnnotationsType" form="qualified" minOccurs="0" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" />
+<xs:attribute name="uri" type="xs:anyURI" />
+<xs:attribute name="urn" type="xs:anyURI" />
+<xs:attribute name="action" type="ns1:ActionType" />
+<xs:attribute name="indexTimeSeries" type="xs:boolean" />
+<xs:attribute name="indexDataSet" type="xs:boolean" />
+<xs:attribute name="indexReportingPeriod" type="xs:boolean" />
+<xs:attribute name="validFrom" type="xs:string" />
+<xs:attribute name="validTo" type="xs:string" />
+</xs:complexType>
+
+<xs:complexType name="RegistrationEventType">
+<xs:sequence>
+<xs:element name="Registration" type="tns:RegistrationType" form="qualified" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="RegistrationType">
+<xs:sequence>
+<xs:element name="LastUpdated" type="xs:anySimpleType" form="qualified" minOccurs="0" />
+<xs:element name="ValidFrom" type="xs:anySimpleType" form="qualified" minOccurs="0" />
+<xs:element name="ValidTo" type="xs:anySimpleType" form="qualified" minOccurs="0" />
+<xs:element name="Action" type="ns1:ActionType" form="qualified" />
+<xs:element name="Datasource" type="tns:DatasourceType" form="qualified" minOccurs="0" />
+<xs:element name="DataflowRef" type="tns:DataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="MetadataflowRef" type="tns:MetadataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="ProvisionAgreementRef" type="tns:ProvisionAgreementRefType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ProvisionAgreementRefType">
+<xs:sequence>
+<xs:element name="URN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="OrganisationSchemeAgencyID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="OrganisationSchemeID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="DataProviderID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="DataProviderVersion" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="DataflowAgencyID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="DataflowID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="DataflowVersion" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="Datasource" type="tns:DatasourceType" form="qualified" minOccurs="0" />
+<xs:element name="Constraint" type="ns1:ConstraintType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SubmitRegistrationRequestType">
+<xs:sequence>
+<xs:element name="Registration" type="tns:RegistrationType" form="qualified" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SubmitRegistrationResponseType">
+<xs:sequence>
+<xs:element name="RegistrationStatus" type="tns:RegistrationStatusType" form="qualified" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="RegistrationStatusType">
+<xs:sequence>
+<xs:element name="StatusMessage" type="tns:StatusMessageType" form="qualified" />
+<xs:element name="Datasource" type="tns:DatasourceType" form="qualified" minOccurs="0" />
+<xs:element name="DataProviderRef" type="tns:DataProviderRefType" form="qualified" minOccurs="0" />
+<xs:element name="DataflowRef" type="tns:DataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="MetadaflowRef" type="tns:MetadataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="ProvisionAgreementRef" type="tns:ProvisionAgreementRefType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="QueryRegistrationRequestType">
+<xs:sequence>
+<xs:element name="QueryType" type="tns:QueryTypeType" form="qualified" />
+<xs:element name="ProvisionAgreementRef" type="tns:ProvisionAgreementRefType" form="qualified" minOccurs="0" />
+<xs:element name="DataflowRef" type="tns:DataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="MetadataflowRef" type="tns:MetadataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="DataProviderRef" type="tns:DataProviderRefType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="QueryRegistrationResponseType">
+<xs:sequence>
+<xs:element name="QueryResult" type="tns:QueryResultType" form="qualified" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="QueryResultType">
+<xs:sequence>
+<xs:element name="DataResult" type="tns:ResultType" form="qualified" minOccurs="0" />
+<xs:element name="MetadataResult" type="tns:ResultType" form="qualified" minOccurs="0" />
+<xs:element name="StatusMessage" type="tns:StatusMessageType" form="qualified" minOccurs="0" />
+</xs:sequence>
+<xs:attribute name="timeSeriesMatch" type="xs:boolean" use="required" />
+</xs:complexType>
+
+<xs:complexType name="ResultType">
+<xs:sequence>
+<xs:element name="Datasource" type="tns:DatasourceType" form="qualified" minOccurs="0" />
+<xs:element name="ProvisionAgreementRef" type="tns:ProvisionAgreementRefType" form="qualified" minOccurs="0" />
+<xs:element name="DataflowRef" type="tns:DataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="MetadataflowRef" type="tns:DataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="DataProviderRef" type="tns:DataProviderRefType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SubmitStructureRequestType">
+<xs:sequence>
+<xs:element name="StructureLocation" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="Structure" type="tns:StructureType" form="qualified" minOccurs="0" />
+<xs:element name="SubmittedStructure" type="tns:SubmittedStructureType" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="StructureType">
+<xs:sequence>
+<xs:element name="OrganisationSchemes" type="ns2:OrganisationSchemesType" form="qualified" minOccurs="0" />
+<xs:element name="Dataflows" type="ns2:DataflowsType" form="qualified" minOccurs="0" />
+<xs:element name="Metadataflows" type="ns2:MetadataflowsType" form="qualified" minOccurs="0" />
+<xs:element name="CategorySchemes" type="ns2:CategorySchemesType" form="qualified" minOccurs="0" />
+<xs:element name="CodeLists" type="ns2:CodeListsType" form="qualified" minOccurs="0" />
+<xs:element name="HierarchicalCodelists" type="ns2:HierarchicalCodelistsType" form="qualified" minOccurs="0" />
+<xs:element name="Concepts" type="ns2:ConceptsType" form="qualified" minOccurs="0" />
+<xs:element name="MetadataStructureDefinitions" type="ns2:MetadataStructureDefinitionsType" form="qualified" minOccurs="0" />
+<xs:element name="KeyFamilies" type="ns2:KeyFamiliesType" form="qualified" minOccurs="0" />
+<xs:element name="StructureSets" type="ns2:StructureSetsType" form="qualified" minOccurs="0" />
+<xs:element name="Processes" type="ns2:ProcessesType" form="qualified" minOccurs="0" />
+<xs:element name="ReportingTaxonomies" type="ns2:ReportingTaxonomiesType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SubmittedStructureType">
+<xs:sequence>
+<xs:element name="DataflowRef" type="tns:DataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="MetadataflowRef" type="tns:MetadataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="CodelistRef" type="tns:CodelistRefType" form="qualified" minOccurs="0" />
+<xs:element name="HierarchicalCodelistRef" type="tns:HierarchicalCodelistRefType" form="qualified" minOccurs="0" />
+<xs:element name="CategorySchemeRef" type="tns:CategorySchemeRefType" form="qualified" minOccurs="0" />
+<xs:element name="ConceptSchemeRef" type="tns:ConceptSchemeRefType" form="qualified" minOccurs="0" />
+<xs:element name="OrganisationSchemeRef" type="tns:OrganisationSchemeRefType" form="qualified" minOccurs="0" />
+<xs:element name="KeyFamilyRef" type="tns:KeyFamilyRefType" form="qualified" minOccurs="0" />
+<xs:element name="MetadataStructureRef" type="tns:MetadataStructureRefType" form="qualified" minOccurs="0" />
+<xs:element name="ProcessRef" type="tns:ProcessRefType" form="qualified" minOccurs="0" />
+<xs:element name="StructureSetRef" type="tns:StructureSetRefType" form="qualified" minOccurs="0" />
+<xs:element name="ReportingTaxonomyRef" type="tns:ReportingTaxonomyRefType" form="qualified" minOccurs="0" />
+</xs:sequence>
+<xs:attribute name="externalDependencies" type="xs:boolean" />
+<xs:attribute name="action" type="ns1:ActionType" />
+<xs:attribute name="isFinal" type="xs:boolean" />
+</xs:complexType>
+
+<xs:complexType name="CodelistRefType">
+<xs:sequence>
+<xs:element name="URN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="AgencyID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="CodelistID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="Version" type="xs:string" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="HierarchicalCodelistRefType">
+<xs:sequence>
+<xs:element name="URN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="AgencyID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="HierarchicalCodelistID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="Version" type="xs:string" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="CategorySchemeRefType">
+<xs:sequence>
+<xs:element name="URN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="AgencyID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="CategorySchemeID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="Version" type="xs:string" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ConceptSchemeRefType">
+<xs:sequence>
+<xs:element name="URN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="AgencyID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="ConceptSchemeID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="Version" type="xs:string" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="OrganisationSchemeRefType">
+<xs:sequence>
+<xs:element name="URN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="AgencyID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="OrganisationSchemeID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="Version" type="xs:string" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="KeyFamilyRefType">
+<xs:sequence>
+<xs:element name="URN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="AgencyID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="KeyFamilyID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="Version" type="xs:string" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="MetadataStructureRefType">
+<xs:sequence>
+<xs:element name="URN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="AgencyID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="MetadataStructureID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="Version" type="xs:string" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ProcessRefType">
+<xs:sequence>
+<xs:element name="URN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="AgencyID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="ProcessID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="Version" type="xs:string" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="StructureSetRefType">
+<xs:sequence>
+<xs:element name="URN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="AgencyID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="StructureSetID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="Version" type="xs:string" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ReportingTaxonomyRefType">
+<xs:sequence>
+<xs:element name="URN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="AgencyID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="ReportingTaxonomyID" type="xs:string" form="qualified" minOccurs="0" />
+<xs:element name="Version" type="xs:string" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SubmitStructureResponseType">
+<xs:sequence>
+<xs:element name="SubmissionResult" type="tns:SubmissionResultType" form="qualified" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SubmissionResultType">
+<xs:sequence>
+<xs:element name="SubmittedStructure" type="tns:SubmittedStructureType" form="qualified" />
+<xs:element name="StatusMessage" type="tns:StatusMessageType" form="qualified" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="QueryStructureRequestType">
+<xs:sequence>
+<xs:choice minOccurs="0" maxOccurs="unbounded">
+<xs:element name="CategorySchemeRef" type="tns:CategorySchemeRefType" form="qualified" />
+<xs:element name="MetadataflowRef" type="tns:MetadataflowRefType" form="qualified" />
+<xs:element name="OrganisationSchemeRef" type="tns:OrganisationSchemeRefType" form="qualified" />
+<xs:element name="HierarchicalCodelistRef" type="tns:HierarchicalCodelistRefType" form="qualified" />
+<xs:element name="ConceptSchemeRef" type="tns:ConceptSchemeRefType" form="qualified" />
+<xs:element name="DataProviderRef" type="tns:DataProviderRefType" form="qualified" />
+<xs:element name="DataflowRef" type="tns:DataflowRefType" form="qualified" />
+<xs:element name="KeyFamilyRef" type="tns:KeyFamilyRefType" form="qualified" />
+<xs:element name="StructureSetRef" type="tns:StructureSetRefType" form="qualified" />
+<xs:element name="AgencyRef" type="tns:AgencyRefType" form="qualified" />
+<xs:element name="ReportingTaxonomyRef" type="tns:ReportingTaxonomyRefType" form="qualified" />
+<xs:element name="CodelistRef" type="tns:CodelistRefType" form="qualified" />
+<xs:element name="ProcessRef" type="tns:ProcessRefType" form="qualified" />
+<xs:element name="MetadataStructureRef" type="tns:MetadataStructureRefType" form="qualified" />
+</xs:choice>
+</xs:sequence>
+<xs:attribute name="resolveReferences" type="xs:boolean" use="required" />
+</xs:complexType>
+
+<xs:complexType name="AgencyRefType">
+<xs:sequence>
+<xs:element name="URN" type="xs:anyURI" form="qualified" minOccurs="0" />
+<xs:element name="OrganisationSchemeAgencyID" type="xs:string" form="qualified" />
+<xs:element name="OrganisationSchemeID" type="xs:string" form="qualified" />
+<xs:element name="AgencyID" type="xs:string" form="qualified" />
+<xs:element name="Version" type="xs:string" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="QueryStructureResponseType">
+<xs:sequence>
+<xs:element name="StatusMessage" type="tns:StatusMessageType" form="qualified" />
+<xs:element name="OrganisationSchemes" type="ns2:OrganisationSchemesType" form="qualified" minOccurs="0" />
+<xs:element name="Dataflows" type="ns2:DataflowsType" form="qualified" minOccurs="0" />
+<xs:element name="Metadataflows" type="ns2:MetadataflowsType" form="qualified" minOccurs="0" />
+<xs:element name="CategorySchemes" type="ns2:CategorySchemesType" form="qualified" minOccurs="0" />
+<xs:element name="CodeLists" type="ns2:CodeListsType" form="qualified" minOccurs="0" />
+<xs:element name="HierarchicalCodelists" type="ns2:HierarchicalCodelistsType" form="qualified" minOccurs="0" />
+<xs:element name="Concepts" type="ns2:ConceptsType" form="qualified" minOccurs="0" />
+<xs:element name="MetadataStructureDefinitions" type="ns2:MetadataStructureDefinitionsType" form="qualified" minOccurs="0" />
+<xs:element name="KeyFamilies" type="ns2:KeyFamiliesType" form="qualified" minOccurs="0" />
+<xs:element name="StructureSets" type="ns2:StructureSetsType" form="qualified" minOccurs="0" />
+<xs:element name="ReportingTaxonomies" type="ns2:ReportingTaxonomiesType" form="qualified" minOccurs="0" />
+<xs:element name="Processes" type="ns2:ProcessesType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SubmitProvisioningRequestType">
+<xs:sequence>
+<xs:choice minOccurs="0" maxOccurs="unbounded">
+<xs:element name="DataProviderRef" type="tns:DataProviderRefType" form="qualified" />
+<xs:element name="MetadatataflowRef" type="tns:MetadataflowRefType" form="qualified" />
+<xs:element name="DataflowRef" type="tns:DataflowRefType" form="qualified" />
+<xs:element name="ProvisionAgreement" type="tns:ProvisionAgreementType" form="qualified" />
+</xs:choice>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SubmitProvisioningResponseType">
+<xs:sequence>
+<xs:element name="ProvisioningStatus" type="tns:ProvisioningStatusType" form="qualified" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ProvisioningStatusType">
+<xs:sequence>
+<xs:element name="ProvisionAgreementRef" type="tns:ProvisionAgreementRefType" form="qualified" minOccurs="0" />
+<xs:element name="DataProviderRef" type="tns:DataProviderRefType" form="qualified" minOccurs="0" />
+<xs:element name="DataflowRef" type="tns:DataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="MetadataflowRef" type="tns:MetadataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="StatusMessage" type="tns:StatusMessageType" form="qualified" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="QueryProvisioningRequestType">
+<xs:sequence>
+<xs:element name="ProvisionAgreementRef" type="tns:ProvisionAgreementRefType" form="qualified" minOccurs="0" />
+<xs:element name="DataflowRef" type="tns:DataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="MetadataflowRef" type="tns:MetadataflowRefType" form="qualified" minOccurs="0" />
+<xs:element name="DataProviderRef" type="tns:DataProviderRefType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="QueryProvisioningResponseType">
+<xs:sequence>
+<xs:element name="ProvisionAgreement" type="tns:ProvisionAgreementType" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="DataflowRef" type="tns:DataflowRefType" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="MetadataflowRef" type="tns:MetadataflowRefType" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="DataProviderRef" type="tns:DataProviderRefType" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="StatusMessage" type="tns:StatusMessageType" form="qualified" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:simpleType name="StatusType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Success" />
+<xs:enumeration value="Warning" />
+<xs:enumeration value="Failure" />
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="QueryTypeType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="DataSets" />
+<xs:enumeration value="MetadataSets" />
+<xs:enumeration value="AllSets" />
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>

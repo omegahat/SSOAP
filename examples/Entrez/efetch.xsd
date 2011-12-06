@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<s:schema 
+    xmlns:tns="http://www.ncbi.nlm.nih.gov/soap/eutils/efetch"
+    xmlns:s="http://www.w3.org/2001/XMLSchema" 
+    targetNamespace="http://www.ncbi.nlm.nih.gov/soap/eutils/efetch"
+    elementFormDefault="qualified"
+    >
+<!--    version="1.5" -->
+
+<s:include schemaLocation="efetch_taxon.xsd" /> 
+<s:include schemaLocation="efetch_bio.xsd" />
+<s:include schemaLocation="efetch_nlmc.xsd" /> 
+<s:include schemaLocation="efetch_pubmed.xsd" /> 
+<s:include schemaLocation="efetch_pmc.xsd" />  
+
+  <s:complexType name="IdListType">
+    <s:sequence>
+      <s:element minOccurs="0" maxOccurs="unbounded" name="Id" type="s:string" />
+    </s:sequence>
+  </s:complexType>
+
+<!-- Request/Response -->
+
+  <s:element name="eFetchRequest">
+    <s:complexType>
+      <s:sequence>
+        <s:element minOccurs="0" maxOccurs="1" name="db" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="WebEnv" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="query_key" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="tool" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="retstart" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="retmax" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="rettype" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="strand" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="seq_start" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="seq_stop" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="complexity" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="report" type="s:string" />
+      </s:sequence>
+    </s:complexType>
+  </s:element>
+
+  <s:element name="eFetchRequestMS">
+    <s:complexType>
+      <s:sequence>
+        <s:element minOccurs="0" maxOccurs="1" name="db" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="WebEnv" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="query_key" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="tool" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="retstart" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="retmax" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="rettype" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="strand" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="seq_start" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="seq_stop" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="complexity" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="report" type="s:string" />
+      </s:sequence>
+    </s:complexType>
+  </s:element>
+
+  
+<!-- All in one -->  
+
+  <s:element name="eFetchResult">
+    <s:complexType>
+      <s:sequence>
+        <s:element minOccurs="0" maxOccurs="1" name="ERROR" type="s:string" />
+
+        <s:element minOccurs="0" maxOccurs="1" name="NLMCatalogRecordSet" type="tns:NLMCatalogRecordSetType" />
+        <s:element minOccurs="0" maxOccurs="1" name="PubmedArticleSet" type="tns:PubmedArticleSetType" />
+        <s:element minOccurs="0" maxOccurs="1" name="pmc-articleset" type="tns:pmc-articlesetType" />
+        <s:element minOccurs="0" maxOccurs="1" ref="tns:Mim-entries" />
+
+        <s:element minOccurs="0" maxOccurs="1" name="TaxaSet" type="tns:TaxaSetType" />
+        <s:element minOccurs="0" maxOccurs="1" ref="tns:TSeqSet"/>
+        <s:element minOccurs="0" maxOccurs="1" ref="tns:GBSet" />
+        <s:element minOccurs="0" maxOccurs="1" name="Bioseq-set" type="tns:Bioseq-setType" />
+        <s:element minOccurs="0" maxOccurs="1" ref="tns:Entrezgene-Set" />
+        <s:element minOccurs="0" maxOccurs="1" ref="tns:ExchangeSet" /> 
+        <s:element minOccurs="0" maxOccurs="1" name="IdList" type="tns:IdListType" />
+      </s:sequence>
+    </s:complexType>
+  </s:element>
+
+    <s:complexType name="eFetchResultType">
+      <s:sequence>
+        <s:element minOccurs="0" maxOccurs="1" name="ERROR" type="s:string" />
+
+        <s:element minOccurs="0" maxOccurs="1" name="NLMCatalogRecordSet" type="tns:NLMCatalogRecordSetType" />
+        <s:element minOccurs="0" maxOccurs="1" name="PubmedArticleSet" type="tns:PubmedArticleSetType" />
+        <s:element minOccurs="0" maxOccurs="1" name="pmc-articleset" type="tns:pmc-articlesetType" />
+        <s:element minOccurs="0" maxOccurs="1" ref="tns:Mim-entries" />
+
+        <s:element minOccurs="0" maxOccurs="1" name="TaxaSet" type="tns:TaxaSetType" />
+        <s:element minOccurs="0" maxOccurs="1" ref="tns:TSeqSet"/>
+        <s:element minOccurs="0" maxOccurs="1" ref="tns:GBSet" />
+        <s:element minOccurs="0" maxOccurs="1" name="Bioseq-set" type="tns:Bioseq-setType" />
+        <s:element minOccurs="0" maxOccurs="1" ref="tns:Entrezgene-Set" />
+        <s:element minOccurs="0" maxOccurs="1" ref="tns:ExchangeSet" /> 
+        <s:element minOccurs="0" maxOccurs="1" name="IdList" type="tns:IdListType" />
+      </s:sequence>
+    </s:complexType>
+
+  <s:element name="eFetchResultMS">
+    <s:complexType>
+      <s:sequence>
+        <s:element minOccurs="0" maxOccurs="1" name="eFetchResult" type="tns:eFetchResultType" />
+      </s:sequence>
+    </s:complexType>
+  </s:element>
+  
+  
+</s:schema>

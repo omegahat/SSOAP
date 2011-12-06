@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.4-hudson-208-. --><xs:schema xmlns:tns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/generic" xmlns:ns1="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/generic">
+
+<xs:import namespace="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" schemaLocation="http://sdw-ws.ecb.europa.eu:80/services/SDMXQuery?xsd=3" />
+
+<xs:element name="DataSet" nillable="true" type="tns:DataSetType" />
+
+<xs:complexType name="DataSetType">
+<xs:sequence>
+<xs:element name="KeyFamilyRef" type="xs:string" form="qualified" />
+<xs:element name="Attributes" type="tns:ValuesType" form="qualified" minOccurs="0" />
+<xs:choice minOccurs="0" maxOccurs="unbounded">
+<xs:element name="Series" type="tns:SeriesType" form="qualified" />
+<xs:element name="Group" type="tns:GroupType" form="qualified" />
+</xs:choice>
+<xs:element name="Annotations" type="ns1:AnnotationsType" form="qualified" minOccurs="0" />
+</xs:sequence>
+<xs:attribute name="keyFamilyURI" type="xs:anyURI" />
+<xs:attribute name="datasetID" type="xs:string" />
+<xs:attribute name="dataProviderSchemeAgencyId" type="xs:string" />
+<xs:attribute name="dataProviderSchemeId" type="xs:string" />
+<xs:attribute name="dataProviderID" type="xs:string" />
+<xs:attribute name="dataflowAgencyID" type="xs:string" />
+<xs:attribute name="dataflowID" type="xs:string" />
+<xs:attribute name="action" type="ns1:ActionType" />
+<xs:attribute name="reportingBeginDate" type="xs:string" />
+<xs:attribute name="reportingEndDate" type="xs:string" />
+<xs:attribute name="validFromDate" type="xs:string" />
+<xs:attribute name="validToDate" type="xs:string" />
+<xs:attribute name="publicationYear" type="xs:gYear" />
+<xs:attribute name="publicationPeriod" type="xs:string" />
+</xs:complexType>
+
+<xs:complexType name="ValuesType">
+<xs:sequence>
+<xs:element name="Value" type="tns:ValueType" form="qualified" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ValueType">
+<xs:sequence />
+<xs:attribute name="concept" type="xs:string" />
+<xs:attribute name="value" type="xs:string" />
+<xs:attribute name="startTime" type="xs:anySimpleType" />
+</xs:complexType>
+
+<xs:complexType name="SeriesType">
+<xs:sequence>
+<xs:element name="SeriesKey" type="tns:SeriesKeyType" form="qualified" />
+<xs:element name="Attributes" type="tns:ValuesType" form="qualified" minOccurs="0" />
+<xs:element name="Obs" type="tns:ObsType" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="Annotations" type="ns1:AnnotationsType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SeriesKeyType">
+<xs:sequence>
+<xs:element name="Value" type="tns:ValueType" form="qualified" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ObsType">
+<xs:sequence>
+<xs:element name="Time" type="xs:string" form="qualified" />
+<xs:element name="ObsValue" type="tns:ObsValueType" form="qualified" minOccurs="0" />
+<xs:element name="Attributes" type="tns:ValuesType" form="qualified" minOccurs="0" />
+<xs:element name="Annotations" type="ns1:AnnotationsType" form="qualified" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ObsValueType">
+<xs:sequence />
+<xs:attribute name="value" type="xs:double" />
+<xs:attribute name="startTime" type="xs:anySimpleType" />
+</xs:complexType>
+
+<xs:complexType name="GroupType">
+<xs:sequence>
+<xs:element name="GroupKey" type="tns:ValuesType" form="qualified" minOccurs="0" />
+<xs:element name="Attributes" type="tns:ValuesType" form="qualified" minOccurs="0" />
+<xs:element name="Series" type="tns:SeriesType" form="qualified" minOccurs="0" maxOccurs="unbounded" />
+<xs:element name="Annotations" type="ns1:AnnotationsType" form="qualified" minOccurs="0" />
+</xs:sequence>
+<xs:attribute name="type" type="xs:NMTOKEN" use="required" />
+</xs:complexType>
+</xs:schema>

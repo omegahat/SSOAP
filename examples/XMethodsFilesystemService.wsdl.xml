@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<definitions name="XMethodsFilesystemService" targetNamespace="http://www.xmethods.net/sd/XMethodsFilesystemService.wsdl"  xmlns:tns="http://www.xmethods.net/sd/XMethodsFilesystemService.wsdl"  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+	<message name="readFileNoPWRequest">
+		<part name="userid" type="xsd:string"/>
+		<part name="filename" type="xsd:string"/>
+	</message>
+	<message name="readFileRequest">
+		<part name="userid" type="xsd:string"/>
+		<part name="filename" type="xsd:string"/>
+		<part name="password" type="xsd:string"/>
+	</message>
+	<message name="readFileNoPWResponse">
+		<part name="return" type="xsd:string"/>
+	</message>
+	<message name="readFileResponse">
+		<part name="return" type="xsd:string"/>
+	</message>
+	<message name="writeFileNoPWRequest">
+		<part name="userid" type="xsd:string"/>
+		<part name="filedata" type="xsd:string"/>
+		<part name="filename" type="xsd:string"/>
+	</message>
+	<message name="writeFileRequest">
+		<part name="userid" type="xsd:string"/>
+		<part name="filedata" type="xsd:string"/>
+		<part name="filename" type="xsd:string"/>
+		<part name="password" type="xsd:string"/>
+	</message>
+	<message name="writeFileResponse">
+		<part name="return" type="xsd:string"/>
+	</message>
+	<message name="writeFileNoPWResponse">
+		<part name="return" type="xsd:string"/>
+	</message>
+	<message name="removeFileNoPWRequest">
+		<part name="userid" type="xsd:string"/>
+		<part name="filename" type="xsd:string"/>
+	</message>
+	<message name="removeFileRequest">
+		<part name="userid" type="xsd:string"/>
+		<part name="filename" type="xsd:string"/>
+		<part name="password" type="xsd:string"/>
+	</message>
+	<message name="removeFileNoPWResponse">
+		<part name="return" type="xsd:string"/>
+	</message>
+	<message name="removeFileResponse">
+		<part name="return" type="xsd:string"/>
+	</message>
+	<message name="listFilesRequest">
+		<part name="userid" type="xsd:string"/>
+		<part name="password" type="xsd:string"/>
+	</message>
+	<message name="listFilesResponse">
+		<part name="return" type="xsd:string"/>
+	</message>
+	<portType name="XMethodsFilesystemPortType">
+		<operation name="readFile">
+			<input message="tns:readFileRequest" name="readFile"/>
+			<output message="tns:readFileResponse" name="readFileResponse"/>
+		</operation>
+		<operation name="readFileNoPW">
+			<input message="tns:readFileNoPWRequest" name="readFileNoPW"/>
+			<output message="tns:readFileNoPWResponse" name="readFileNoPWResponse"/>
+		</operation>
+		<operation name="writeFile">
+			<input message="tns:writeFileRequest" name="writeFile"/>
+			<output message="tns:writeFileResponse" name="writeFileResponse"/>
+		</operation>
+		<operation name="writeFileNoPW">
+			<input message="tns:writeFileNoPWRequest" name="writeFileNoPW"/>
+			<output message="tns:writeFileNoPWResponse" name="writeFileNoPWResponse"/>
+		</operation>
+		<operation name="removeFile">
+			<input message="tns:removeFileRequest" name="removeFile"/>
+			<output message="tns:removeFileResponse" name="removeFileResponse"/>
+		</operation>
+		<operation name="removeFileNoPW">
+			<input message="tns:removeFileNoPWRequest" name="removeFileNoPW"/>
+			<output message="tns:removeFileNoPWResponse" name="removeFileNoPWResponse"/>
+		</operation>
+		<operation name="listFiles">
+			<input message="tns:listFilesRequest" name="listFiles"/>
+			<output message="tns:listFilesResponse" name="listFilesResponse"/>
+		</operation>
+	</portType>
+	<binding name="XMethodsFilesystemBinding" type="tns:XMethodsFilesystemPortType">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="readFile">
+			<soap:operation soapAction=""/>
+			<input name="readFile">
+				<soap:body use="encoded" namespace="urn:xmethodsXFS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output name="readFileResponse">
+				<soap:body use="encoded" namespace="urn:xmethodsXFS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+		</operation>
+		<operation name="readFileNoPW">
+			<soap:operation soapAction=""/>
+			<input name="readFileNoPW">
+				<soap:body use="encoded" namespace="urn:xmethodsXFS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output name="readFileNoPWResponse">
+				<soap:body use="encoded" namespace="urn:xmethodsXFS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+		</operation>
+		<operation name="writeFile">
+			<soap:operation soapAction=""/>
+			<input name="writeFile">
+				<soap:body use="encoded" namespace="urn:xmethodsXFS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output name="writeFileResponse">
+				<soap:body use="encoded" namespace="urn:xmethodsXFS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+		</operation>
+		<operation name="writeFileNoPW">
+			<soap:operation soapAction=""/>
+			<input name="writeFileNoPW">
+				<soap:body use="encoded" namespace="urn:xmethodsXFS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output name="writeFileNoPWResponse">
+				<soap:body use="encoded" namespace="urn:xmethodsXFS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+		</operation>
+		<operation name="removeFile">
+			<soap:operation soapAction=""/>
+			<input name="removeFile">
+				<soap:body use="encoded" namespace="urn:xmethodsXFS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output name="removeFileResponse">
+				<soap:body use="encoded" namespace="urn:xmethodsXFS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+		</operation>
+		<operation name="removeFileNoPW">
+			<soap:operation soapAction=""/>
+			<input name="removeFileNoPW">
+				<soap:body use="encoded" namespace="urn:xmethodsXFS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output name="removeFileNoPWResponse">
+				<soap:body use="encoded" namespace="urn:xmethodsXFS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+		</operation>
+		<operation name="listFiles">
+			<soap:operation soapAction=""/>
+			<input name="listFiles">
+				<soap:body use="encoded" namespace="urn:xmethodsXFS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output name="listFilesResponse">
+				<soap:body use="encoded" namespace="urn:xmethodsXFS" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="XMethodsFilesystemService">
+		<documentation>Provides read, write, delete and list access to XFS</documentation>
+		<port name="XMethodsFilesystemPort" binding="tns:XMethodsFilesystemBinding">
+			<soap:address location="http://services.xmethods.net:80/soap/servlet/rpcrouter"/>
+		</port>
+	</service>
+</definitions>

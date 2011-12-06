@@ -1,0 +1,2549 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<?xml-stylesheet type="text/xsl" href="Todo.xsl" ?> 
+
+<topics xmlns:r="http://www.r-project.org"
+	 xmlns:omg="http://www.omegahat.org"
+	 xmlns:xi="http://www.w3.org/2003/XInclude">
+<title>SOAP</title>
+
+<topic>
+<title>XMLSchema</title>
+<items>
+
+<item>
+Handle keys.
+</item>
+
+<item>
+Get the type definitions in <xml:tag>types</xml:tag> in a WSDL that are not in a schema.
+See makeSchemaCollection.R
+</item>
+
+<item status="done">
+Fixed the immediate example, but now CreateSession doesn't work in wsGoBioBase.
+The short nodes don't get a value. .literal is true.
+<br/>
+Problem with whether to create a text node for a toSOAP(vector, XMLInternalElement, BasicSOAPType)
+or to just return the value.
+Issue is exemplified in the ndfdXMLserver.php.wsdl and MassSpecAPI.wsdl interfaces.
+The former uses a type in the &lt;art&gt;. The latter uses an element for the mass, etc.
+So we either create the node for the former and pass that as the parent,
+or we can add an argument to toSOAP.
+Check  writeSOAPBody(con = "XMLInternalDocument"),
+SearchByMass2 is literal = TRUE.
+NDFDgenByDay is literal = FALSE.
+That's the difference! Implemented now for vector.
+</item>
+
+<item>
+Implement the converters for date, time, dateTime classes.
+Test with
+<r:code>
+library(SSOAP)
+w = processWSDL("http://www.weather.gov/forecasts/xml/SOAP_server/ndfdXMLserver.php?wsdl")
+f = genSOAPClientInterface(,w)
+str = f@functions$NDFDgenByDay(38.9936, -77.0224, Sys.time() + 60*24*60, 5, "12 hourly")
+</r:code>
+</item>
+
+<item status="done">
+Put the XML schema on the functions we create so we don't need to load the XML package explicitly.
+</item>
+
+<item>
+readSchema and then defineClasses for XMCDA-2.0.0.xsd causes infinite recursion.
+This is after enabling attributeGroup processing.
+This is genuine recursive definitions. description
+has a choice that includes bibliography and bibliography includes description.
+<r:code>
+library(XMLSchema)
+x = readSchema("../XMLSchema/inst/samples/XMCDA-2.0.0.xsd")
+trace(resolve, quote({print(c(class(obj), class(context))); print(obj)}))
+o = defineClasses(x, verbose = TRUE)
+</r:code>
+</item>
+
+<item status="done">
+Implement types for ID, NCName, etc.
+</item>
+
+
+
+<item>
+Construct the functions to take an instance of one of our generated classes to XML.
+</item>
+
+<item status="medium">
+Look at "alternatives". 
+<r:code>
+x = readSchema("../XMLSchema/inst/samples/XMCDA-2.0.0.xsd")
+class(x[[1]]$alternatives)
+</r:code>
+This is a SimpleSequenceType and we didn't pull in the attributes.
+<br/>
+Check we deal with attribute groups. kml21.xsd and ObjectType. See XMCDA-2.0.0.xsd and the complexType categories
+<br/>
+EPO and ops.wsdl has examples of these. But it doesn't use them!
+</item>
+
+<item status="done">
+Implement restriction for a hexBinary. See kml21.xsd in color. Length = 4.
+</item>
+
+<item status="done">
+Check we handle restrictions on numbers such as angles in kml21.xsd (e.g. between -360 and 360).
+We do handle them, but turn them into EnumValueDefs. 
+<br/>
+When we generate code/classes for them, need to create the validity
+methods. What about constructors.
+<br/>
+Now we handle integer and doubles as the base. See restriction.R
+<r:code>
+s  = readSchema("../XMLSchema/inst/samples/kml21.xsd")
+XMLSchema:::defClass(s[["anglepos90"]])
+as(45, "anglepos90")
+as(145, "anglepos90")
+as(90, "anglepos90")
+as(0, "anglepos90")
+as(-10, "anglepos90")
+</r:code>
+<br/>
+Need to handle hexBinary. See kml21.xsd and color.
+
+</item>
+
+<item status="done">
+In kml21.xsd, not processing &lt;all&gt; nodes.
+See &lt;extension name = "kml:ObjectType"&gt;
+<br/>
+Also &lt;xtension base="kml:FeatureType"&gt; which contains no children.
+</item>
+
+<item status="done">
+kml schema.
+[FIXED] Now a problem with computeName in a UnionDef. Processing ChangeType.
+The first of slotTypes is <r:null/>. This was an annotation node. So use
+dropAnnotationNodes() to get the relevant kids to process.
+<br/>
+[FIXED] Problem with extension for SnippetType.
+baseType is NULL but should be an actual SOAPType (or Element?).
+Is the problem that we are not resolving string properly because it doesn't
+appear to have a namespace.
+We are using lookupType rather than resolve. 
+And SOAPType may do what we want.
+<r:code>
+a = readSchema("/Users/duncan/Rpackages/XMLSchema/samples/kml21.xsd")
+</r:code>
+</item>
+
+<item status="done">
+Problems with TimeValue in pmml. The element referring to Timestamp has
+no name.
+<br/>
+Use the ref attribute for the name if no name. Possibly should use it even if there is a name
+since creating a SOAPTypeReference.
+</item>
+
+<item>
+For makeRestrictionType, deal with the namespace to find the underlying type.
+Specifically, make certain it is in XSD.
+If not, need to create an extension of type defined in the schema we are processing.
+</item>
+
+
+<item status="done">
+LatLonBoxType has a null/NULL in the repn.
+<br/>
+Was processing the annotation node.
+</item>
+
+<item status="done">
+infinite recursion for geometryElements
+<r:code>
+k = readSchema("../XMLSchema/inst/samples/kml21.xsd")
+o = defineClasses(k, verbose = TRUE, baseClass = "VirtualXMLSchemaClass")
+k[[1]]$PointType@slotTypes[[1]]  # has the correct URI
+</r:code>
+But
+<r:code>
+XMLSchema:::resolve(k[[1]]$PointType@slotTypes[[1]], k)
+</r:code>
+gives a SOAPTypeReference and has the wrong nsuri. Points to 2001/XMLSchema (xsd)
+<br/>
+"Fixed" resolve(sig = c(SOAPType, SchemaCollection)), but now causes other problems earlier.
+</item>
+
+<item status="done">
+CoordinatesType and resolve failing on string.
+The nsuri was not set.
+<br/>
+Call to SOAPType in processSimpleList did not include the namespaceDefs.
+</item>
+
+
+<item status="check">
+Should SOAPDateTime be the class for the instance and SOAPDataTimeType represent the type.
+Need to export them.
+</item>
+
+<item status="done">
+Handle SOAPGroupType in defClass (geometryElements).
+We can define a class for the group and then have
+elements/types that reference it  extend that class.
+Alternatively, those references can include the group directly.
+Possibly better to do the class extension.
+</item>
+
+<item status="check">
+Problem with DocumentType, extending ContainerType extending FeatureType extending ObjectType.
+We end up with NA = NULL as  a slot in ContainerType!
+</item>
+
+<item status="check">
+Problem with LookAtType in kml21.xsd.
+<r:code>
+library(XMLSchema)
+k = readSchema("../XMLSchema/inst/samples/kml21.xsd")
+k[[1]]$LookAtType
+</r:code>
+This is an ExtendedClassDefinition.
+</item>
+
+<item status="done">
+Get the default values for the elements.
+(And attributes). See LookAtType.
+Captured for the element, but not used yet.
+</item>
+
+
+<item>
+Need to include ClassUnion classes that aren't in our list in the schema collection but implicitly as we
+process the local/anonymous types.
+Order is not correct, but okay.  Try to reorder several times.
+<br/>
+Problem with LatLonBoxType. Superclass not found.
+We can compute the order from the R objects.
+Is there already a function for serializing classes, e.g. when installing a package.
+unitsEnum is not in defined?
+<br/>
+Check we can define and serialize code for a schema, e.g. kml21.xsd.
+<br/>
+See XMLSchema/tests/kml.R
+<br/>
+Problem with dataTimeType. A ClassUnion.  Done now.
+</item>
+</items>
+</topic>
+
+
+<topic>
+<items>
+
+<item>
+Move toSOAP to toXML and house it in XMLSchema.
+</item>
+<item>
+Fix the SOAPDate, SOAPDateTime SOAPTime references in SSOAP to refer to the new classes in
+XMLSchema.
+</item>
+
+<item status="done">
+Is the kegg binding broken? Compare with KEGGSOAP.
+That seems to be broken also. 
+<br/>
+Wrong version of the WSDL!!!!
+</item>
+
+<item status="high">
+PurgeSession in wsGoBioBase has an empty Element as the return value
+with a NULL for the type. Should be SOAPVoidType?
+</item>
+
+<item status="done">
+Broken readSchema thanks to the way we now implement processSchemaTypes.
+Suceeds for ops.xsd, but misses the top-level schema.
+</item>
+
+<item status="high">
+Problems now with iType in w@types[[2]]$iType. 
+This is genuine recursion as iType has a choice with
+bType, uType and smallcapsType but
+smallcapsType  has a bType, uType and a iType.
+So there is cross-referencing of types.
+We need a different strategy to deal with this.
+One approach is that we only need their names and do not necessarily need to resolve
+the elements. 
+Another approach is that we eagerly resolve XML nodes when reading the
+schema and so avoid references. This is not necessarily possible to implement completely. 
+We can detect such recursion by passing a collection of pending names.
+Technically, we want the namespace and name. Or we could pass a list of objects
+and see if any is in there. A named character vector of name and uri as the name.
+What do we do when we detect this? What does resolve return - a pending object?
+<br/>
+setClass doesn't need the classes for the slots to be defined. It is only setClassUnion.
+(Why is I believe an implementation detail.) 
+So if we can work around this, we can solve the problem.
+So defClass for UnionDefinition could avoid resolving the slots
+completely, but just get their names.
+
+<br/>
+Below is FIXED<br/>
+recursive problems in ops.wsdl with rangeType.
+But there is no nsuri. It is character(). There is one in ops.xsd at the top-level of the 
+schema.
+This is handled in processSchemaType in the 
+<r:code><![CDATA[
+if(xmlName(type) == 'complexType' && all(names(type) %in% c("attribute", "attributeGroup")))
+]]></r:code>
+clause at line 402 (now).
+<br/>
+I have turned off the processing of this type and we still end up with a SOAPComplexType
+but with the correct nsuri. So this is good. But this should be a ClassDefinition
+with two slots.
+Now being processed at line 528. Here we explicitly create a SOAPComplexType.
+Should be a ClassDefinition.
+<br/>
+What WSDL and type was the original clause implemented for?
+<br/>
+What if we remove the SOAPComplexType methods for resolve? Still problem
+but not the same warnings!!!!
+</item>
+
+<item status="done">
+Now problem in ops.wsdl with 
+<r:error><![CDATA[
+Error in setClassUnion(name, elTypes, where = where) : 
+  the member classes must be defined: not true of "exchange.publication-reference", "exchange.application-reference", "exchange.priority-claim", "publication-reference", "application-reference", "priority-claim"
+]]></r:error>
+This is defining any-referenceType. 
+Looks like we are getting the names from the Elements, but not from their types.
+This is in mapSOAPTypeToS.
+</item>
+
+<item status="done">
+For ops.wsdl, now get a "  attempt to use zero-length variable name"
+error in getClassDef().  Trying to define priority-claimType,
+and that induces its base class definition and that involves a Union
+office-of-filingType.  
+The repn for this has a "" in the first element.
+The first element of slotTypes has "" as its name. It is a ClassDefinition.
+The XML is 
+<pre><![CDATA[
+	<complexType name = "office-of-filingType">
+		<choice>
+			<sequence>
+				<element name = "region" type = "exch:regionType"/>
+				<element name = "country" type = "exch:countryType" minOccurs = "0"/>
+			</sequence>
+			<element name = "country" type = "exch:countryType"/>
+		</choice>
+	</complexType>
+]]></pre>
+So we see we do have an issue with the first element - the sequence.
+The name should be a composition of these.
+</item>
+
+
+<item status="done">
+Changes now cause MassSpecAPI wsdl to infinitely recurse
+when resolving StringArray.
+<br/>
+The problem is that we have two ArrayOfString elements in w@types[[1]].
+Now they are both Element objects. In the older versions (0.4-0) of XMLSchema,
+these were SimpleSequenceType and Element. So the first one has become an element.
+There is no reason for this:
+<pre><![CDATA[
+ <s:complexType name="ArrayOfString">
+   <s:sequence>
+     <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+   </s:sequence>
+ </s:complexType>
+]]></pre>
+Are we just inserting them by name in the new processSchemaTypes and processSchemaNodes. No that's still the same.
+It is the fixTypeNames.
+</item>
+
+<item status="done">
+Now problem in ops.xsd (not exchange) for priority-claimType.
+That extends the one in exchange with the same name.
+When we try to define that class, we end up a with a NULL 
+The slotType for priority-active-indicator seems to be NULL
+in createClassRepresentation and above that in defineClassDefinition.
+This happens when we resolve the baseType in defineClassDefinition for the
+derived class.
+Turns out, priority-active-indicator in w@types[[2]][["priority-active-indicator"]] is
+<r:null/>.
+This is an element and then a simpleType with a restriction.
+Problem was processSchemaElement was not handling that case and returning NULL explicitly.
+</item>
+
+<item status="done">
+4th slot in priority-claimType, i.e. priority-linkage-type.
+When we resolve the type slot, we end up with <r:null/>.
+The problem s that  the reference to a string has the wrong nsuri. It points
+to exchange, not XSD.
+<r:code>
+XMLSchema:::resolve(w@types[[2]]$"priority-claimType"@slotTypes[[4]], w@types)
+</r:code>
+This goes through SOAPTypeReference first and then tries to resolve the type.
+But that element for priority-linkage-type has the wrong nsuri.
+<solution>
+getElementRef wasn't matching the prefix against the names of the namespaceDefs.
+</solution>
+</item>
+
+<item status="done">
+Defining the class document-id from EPO/ops.wsdl
+causes serious infinite recursion.
+This is a built-in type from the XSD schema defn.
+So we need to define this as a built-in.
+</item>
+
+<item status="done">
+Recheck the case where we need a "" as the prototype value for slots.
+?listOrganisms? and the species = ""?  See r:code[@id="testProtos"
+</item>
+
+<item status="done">
+Lift nested SchemaCollection and SchemaTypes due to imports up to top-level of types.
+See ops.xsd and ops.wsdl.
+</item>
+
+<item status="done">
+<br/>
+This is broken again. 
+But this works. Not it doesn't. CSID and token are the parameters.
+<r:code>
+ o@functions$GetExtendedCompoundInfoArray(list(CSIDs = c(23500L, 23543L)), token = token))
+</r:code>
+But 
+<r:code>
+f@functions$GetExtendedCompoundInfoArray(c(23500, 23543), token)
+</r:code>
+fails in the conversion.
+<br/>
+See createVectorCoercions in genCode.R (called from createArrayClass) <br/>
+Make the coercion methods that we generate for arrays/sequences
+first coerce to the base type and then to the new class
+so that we get to include the other base types, e.g. integer, numeric, etc.
+<r:code>
+library(SSOAP)
+w = processWSDL("WSDLs/MassSpecAPI.asmx?WSDL", port = "MassSpecAPIHttpPost")  
+f = genSOAPClientInterface(w)
+f@functions$GetExtendedCompoundInfoArray(c(23500, 23543), token)
+</r:code>
+</item>
+
+<item status="done">
+Why do fromXML() return a list when it could simplify to a vector
+<br/>
+Was passing the type as the second argument, not the type argument.
+<r:code>
+w = processWSDL("WSDLs/MassSpecAPI.asmx?WSDL", port = 3)
+z = genSOAPClientInterface(w, verbose = TRUE)
+db = z@functions$GetDatabases()
+</r:code>
+This  returns a list.
+</item>
+
+<item status="done">
+<solution>
+Changed processRestriction to recognize result of resolving the sub-type and stripping away the
+SOAPComplexType. 
+</solution>
+Resolve for StringArray in port = 3. 
+Ending up with ComplexType for the StringArray type in types[[2]][[1]]
+and its content is a SimpleSequenceType.
+Goes through processRestriction because we have 
+<pre><![CDATA[
+<s:complexType name="StringArray">
+  <s:complexContent mixed="false">
+    <s:restriction base="soapenc:Array">
+      <s:sequence>
+        <s:element minOccurs="0" maxOccurs="unbounded" name="String" type="s:string"/>
+      </s:sequence>
+    </s:restriction>
+  </s:complexContent>
+</s:complexType> 
+]]></pre>
+Then this gets resolved oddly.
+</item>
+
+<item status="done">
+ChemSpider breaks in processWSDL for port = 3
+<r:code>
+w = processWSDL("../../SOAP/WSDLs/MassSpecAPI.asmx?WSDL", port = 3)
+</r:code>
+StringArray issue.
+This is as a result of IsEmptyParameter being called at this stage.
+If we comment that out in wsdlProcess.R (#555), things are fine.
+Deferred until createOperationDefinition and generating code.
+</item>
+
+<item status="done">
+defining dependent classes is not working for eutils.
+<br/>
+The warning about ItemType is legitimate as it is a self-reference to the class being defined.
+<br/>
+Are these due to them being Element objects and do not have a corresponding
+ class? If so, should we have mapSOAPTypeToS map an element to its actual type, (it does for Info)
+or should we create alias classes?
+The error about Info, when resolved, we have an Element with NA as its name and then a type which is an Element too
+and that is the .
+<br/>
+<r:output><![CDATA[
+undefined slot classes in definition of "eGqueryRequest": term(class "term"), tool(class "tool"), email(class "email")
+undefined slot classes in definition of "eInfoRequest": db(class "db"), tool(class "tool"), email(class "email")
+undefined slot classes in definition of "ErrorListType": PhraseNotFound(class "PhraseNotFound"), FieldNotFound(class "FieldNotFound")
+undefined slot classes in definition of "TermSetType": Count(class "Count"), Explode(class "Explode")
+undefined slot classes in definition of "TranslationType": From(class "From"), To(class "To")
+undefined slot classes in definition of "WarningListType": PhraseIgnored(class "PhraseIgnored"), QuotedPhraseNotFound(class "QuotedPhraseNotFound"), OutputMessage(class "OutputMessage")
+undefined slot classes in definition of "eSearchResult": ERROR(class "ERROR"), Count(class "Count"), RetMax(class "RetMax"), RetStart(class "RetStart"), QueryKey(class "QueryKey"), WebEnv(class "WebEnv"), QueryTranslation(class "QueryTranslation")
+undefined slot classes in definition of "eSearchRequest": db(class "db"), term(class "term"), WebEnv(class "WebEnv"), QueryKey(class "QueryKey"), usehistory(class "usehistory"), tool(class "tool"), email(class "email"), field(class "field"), reldate(class "reldate"), mindate(class "mindate"), maxdate(class "maxdate"), datetype(class "datetype"), RetStart(class "RetStart"), RetMax(class "RetMax"), rettype(class "rettype"), sort(class "sort")
+Class "StringEnum" is defined (with package slot ‘XMLSchema’) but no metadata object found to revise subclass information---not exported?  Making a copy in package ‘.GlobalEnv’
+undefined slot classes in definition of "ItemType": Item(class "ItemType")
+undefined slot classes in definition of "eSummaryRequest": db(class "db"), id(class "id"), WebEnv(class "WebEnv"), query_key(class "query_key"), retstart(class "retstart"), retmax(class "retmax"), tool(class "tool"), email(class "email")
+undefined slot classes in definition of "IdCheckListType": ERROR(class "ERROR")
+]]></r:output>
+</item>
+
+<item>
+Create converters from a class definition that "compile" the definition
+rather than query the type and class definition at run time.
+</item>
+
+<item status="medium">
+Provide explicit arguments for the slots of the single class in the parameters
+object if there is a single parameter, i.e. we have an element as the input.
+<br/>
+We have this functionality since we accept named arguments and
+do partial matching.
+<r:code>
+  f@functions$SearchByMass2(mas = 89.0476, ran = .01)
+</r:code>
+The only gain would be that the user could see the names of the 
+expected arguments and the defaults would be explicit.
+<br/>
+Instead of a single parameter, unravel the parameters to be the slots
+of the complex type or the elements.
+For example, the pug GetIDList method and ListKey, Start and Count.
+This would involve us getting rid of the ... and replacing
+these with actual parameters. Then we'd have to check which are missing,
+etc. and then build the object.
+</item>
+
+<item status="medium">
+In wsGoBioBase, the Depositor class could be a simple string with a slot
+for the ID.
+More generally, when we merge the attributes and other elements at line 377 (or so) in 
+processSchemaType int a ClassDefinition, we could make this an extension class
+and keep the first one as the base. 
+</item>
+
+<item status="done">
+Call wsGoBioBase method.
+<br/> 
+We can create a session using the GET interface.
+SearchMassC12 is not in that collection of methods, so we
+then have to switch over to the SOAP interface.
+<r:code>
+library(SSOAP)
+z = processWSDL("WSDLs/wsGoBioSpace.asmx?WSDL", port = "wsGoBioSpaceHttpGet")
+f = genSOAPClientInterface(z)
+session = f@functions$CreateSession(AdductIds = c(2,3), DepositorIds = c(3,6,8))
+f@functions$GetMonoisotopicWeight("H2O")
+f@functions$GetMolecularWeight("H2O")
+</r:code>
+Now the SOAP interface:
+<r:code>
+library(SSOAP)
+zs = processWSDL("WSDLs/wsGoBioSpace.asmx?WSDL", port = 1)
+fs = genSOAPClientInterface(zs)
+
+session = fs@functions$CreateSession(AdductIds = c(2L,3L), DepositorIds = c(3,6,8))
+fs@functions$SearchMass12C(SessionID = session, mass = 579.1705, tolerance = 0.001)
+</r:code>
+[FIXED] Problem in converting the result.  
+Had a NULL type for the adduct slot in the MassSearchHit in newSOAPClass.
+Explicitly determine slot if type is NULL. But is this an inherited slot
+and that's why we don't have the type? Yes.
+Perhaps when we resolve the type to put in the parameters or in the return value slot, 
+we have to collect all the inherited slots.  This can just merge the slot types.
+Can add an argument to resolve() to merge these, or create a new function that calls resolve and
+then merge.
+<br/>
+Also, figure out how to call CreateSession with SOAP interface.
+</item>
+<item status="done">
+CreateSession in wsGoBioBase.
+<br/>
+For now, let's use GET or POST
+<r:code>
+z = processWSDL("WSDLs/wsGoBioSpace.asmx?WSDL", port = "wsGoBioSpaceHttpGet")
+f = genSOAPClientInterface(z)
+f@functions$CreateSession(AdductIds = c(2,3), DepositorIds = c(3,6,8))
+</r:code>
+GUID should be "04729173-A960-4A1A-83A8-538B2C1E3806"
+<br/>
+Not being converted
+<br/>
+Not getting converted from the string returned by getForm. 
+That was because we have an Element which is not a SOAPType. So check for GenericSchemaType.
+<br/>
+base64 conversion.
+</item>
+
+<item status="done">
+Build converters that understand attributes, etc. [Mostly done for ClassDefinition at least].
+<br/>
+[Fixed] Dropping the Name element on Depositor.
+<br/>
+For wsGoBioSpace, the null arguments are elements that have a null type. Is that okay?
+<br/>
+Also, the return from  GetDepositors is wrong. We don't get the attribute
+and we miss the name.
+We need to mark the slots that are attributes as attributes and/or write
+a converter to get them.
+<r:code>
+z = processWSDL("WSDLs/wsGoBioSpace.asmx?WSDL")
+f = genSOAPClientInterface(, z)
+
+f@functions$GetDepositors()
+</r:code>
+</item>
+
+<item status="done">
+eutils.wsdl. DbListType. The slot has an NA for name.
+But this is a curious one we can reduce.
+This is a choice with only one element, but that element can occur 0 or more times.
+We could represent this as a SimpleSequenceType with an Element DbName as the elType.
+<br/>
+eutils.wsdl (and pmml schema [FIXED])  seem to give same problem with EnumValuesDef and NULL.
+<br/>
+Fixed the processWSDL() for eutils. but genSOAPClientInterface() fails.
+<r:error><![CDATA[
+Error in FUN(X[[1L]], ...) : Don't have a meaningful value for type
+In addition: Warning messages:
+1: undefined slot classes in definition of "eGqueryRequest": term(class "term"), tool(class "tool"), email(class "email") 
+2: In is.na(type) : is.na() applied to non-(list or vector) of type 'S4'
+]]></r:error>
+The type is a SimpleSequenceType of string elements. But the name is NA.
+This is a slot in DbListType. The name of the element should be DbName.
+But the name of the class could be DbListType. This need not be a slot 
+but the actual class definition as it is zero or more elements &lt;DbName&gt;
+
+<br/>
+[FIXED] Issue is setting the target namespace to the nsuri slot. The targetNamespace value is NULL.
+<br/>
+
+<br/>
+
+</item>
+
+<item status="done">
+      "http://xml.nig.ac.jp/wsdl/ARSA.wsdl" is broken with
+<r:output><![CDATA[
+Error in UseMethod("xmlNamespaceDefinitions") : 
+  no applicable method for 'xmlNamespaceDefinitions' applied to an object of class "NULL"
+]]></r:output>
+</item>
+
+<item status="implementationNote">
+I have added a mechanism by which processSchemaTypes
+computes the namespace definitions in effect for that node
+and passes them along through all the processSchemaTypes.
+Then we store these in the SchemaTypes object as the namespaceDefs
+slots so we can reuse these when we resolve matters.
+</item>
+
+<item status="done">
+Put back the check for empty parameters in processWSDLOperation
+in wsdlProcess.R which induces resolving types.
+Turned off while debugging.
+<br/>
+This can be deferred to the code generation stage.
+</item>
+
+
+<item status="done" when="Fri Aug 19 09:53:03 2011" fixed="Fri Aug 19 14:22:42 2011">
+Broken  the following:  <br/>
+[FIXED - interface not tested] "http://www.massbank.jp/api/services/MassBankAPI?wsdl" <br/>
+[FIXED - interface not tested] "WSDLs/webservice.php?wsdl" <br/>
+ "http://www.brenda-enzymes.org/soap/brenda.wsdl"     - in genSOAPClientInterface() as part of mapSOAPTypeToS.
+<r:error><![CDATA[
+Error in resolve(type, types, namespaceDefs) : 
+  can't find namespace ws.brenda of SOAPTypeReference ArrayOfIntegers in context
+]]></r:error>
+The names on context are NULL.
+We should have 2 elements in the context, but we have only one.
+This is because we have types schema list of actual typedefs.
+<br/>
+Need to use the names paces from each of the SchemaTypes
+<br/>
+"WSDLs/webservice.php?wsdl"
+ [FIXED]   got the wrong URI on WSAuth SOAPTypeReference for updatePathway slot.
+<br/>
+<br/>
+
+Do we need to store the namespace map. Compute it from the XML document
+with xmlNamespaceDefinitions(doc) and perhaps store it in the SOAPServerDescription
+and then pass it to genSOAPClientInterface() from that. 
+But why did we not need it in the past?  We must have resolved everything.
+<br/>
+"http://www.brenda-enzymes.org/soap/brenda.wsdl"      
+The types we end up with here is a SchemaTypes, not a SchemaCollection.
+Use to be fine. So something has changed.
+The namespaceDefs() we pass along to resolve is an empty list and is so in
+defineClasses.
+
+</item>
+
+<item status="done">
+Can process wsGoBio...  but that now breaks pretty much everything
+but KEGG.   pug_soap_csi, MassSpec
+and @topic="testing" doesn't give us back anything but NULL or try-error.
+<br/>
+BIG problem is that we are repeating the element names when serializing: e.g.
+<pre><![CDATA[
+    <SearchByMass2 xmlns="http://www.chemspider.com/">
+      <mass>
+        <mass xmlns="http://www.chemspider.com/">89.04767</mass>
+      </mass>
+      <range>
+        <range xmlns="http://www.chemspider.com/">0.01</range>
+      </range>
+    </SearchByMass2>
+]]></pre></item>
+
+<item status="done">
+pmml again. 
+<r:code>
+library(XMLSchema)
+tt = readSchema("/Users/duncan/Rpackages/XMLSchema/samples/pmml-4-0.xsd")
+</r:code>
+</item>
+
+<item topic="testing">
+Check the WSDLs at http://www.ncbi.nlm.nih.gov/entrez/query/static/esoap_help.html.
+Many of them.
+See @testing below for a similar overlapping list.
+</item>
+
+<item status="partial">
+When processing sequences (see categories in XMCDA-2.0.0.xsd), discard the annotation nodes and
+process the other children. Seems we are doing it, but we currently issue a warning.
+<br/>
+Use dropAnnotationNodes. Use this in other places.
+Also, we return immediately in processSchemaType if we get one of these.
+But that means we may end up with a NULL in a list of types.
+</item>
+
+<item status="check">
+Check we are collecting the documentation. Do this generically for each type.
+<br/>
+Added setting docString in processSchemaTypes when we return with if(done)...
+</item>
+
+
+<item status="done">
+pmml schema. Problem with the group element. There is no name.
+Need to merge the group into the slot types list. processSequence.
+We do process the group (with processGroup) and that resolves the elements
+but not necessarily correctly. It also returns them as a single object
+(in this case SOAPComplexType). But shouldn't this really be a group
+and we know that we should merge the elements.
+<r:code>
+tt = readSchema("/Users/duncan/Rpackages/XMLSchema/samples/pmml-4-0.xsd")
+</r:code>
+<pre><![CDATA[
+<xs:sequence>
+  <xs:element ref="Extension" minOccurs="0" maxOccurs="unbounded"/>
+  <xs:group ref="PREDICATE"/>
+  <xs:choice>
+    <xs:sequence>
+      <xs:element ref="Partition" minOccurs="0"/>
+      <xs:element ref="ScoreDistribution" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="Node" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:group ref="EmbeddedModel"/>
+  </xs:choice>
+</xs:sequence> 
+]]></pre>
+</item>
+
+<item status="high" topic="Rcompression (or RCurl)">
+Why is gunzip failing on the FTP file we retrieve. See pugDemo.
+</item>
+
+<item status="gone">
+NOTE: arguments in definition for coerce changed from (obj) to (from)
+
+coming from createRestrictedStringDefinition
+<br/>
+Why are these being used as coercion methods?
+</item>
+
+
+<item status="check">
+Add support to serializing code for setAs methods.
+See genCode.R for character, numeric, list, XMLInternalElementNode,
+and base to i@name.
+e.g. fromXML
+<br/>
+Add the prototype when serializing classes.
+<br/>
+Check that we can serialize the generated code to a file.
+<br/>
+ Write the generated code to a file for use in a package,
+  including the classes, NAMESPACE entries
+</item>
+
+<item status="done">
+When creating a class that extends string, create a coercion method for it.
+</item>
+
+<item status="done">
+Make certain the counts are on the different elements/types so that we know
+if they are option.
+See  GetIDList
+<br/>
+getElementRef() computes them.
+</item>
+
+<item status="check">							       <!--status="check"-->
+Note that with this in place, we don't need the prototypes for strings to be "".
+Deal with NAs for empty vectors which are optional.
+e.g.  in wikipaths:
+<r:code>
+x = wk@functions$getPathwayAs(list(fileType = "png", pwId = "WP1984"))
+</r:code>
+GetIDList is an example from pug.  The Start and Count are optional.
+<r:code>
+pug = processWSDL("http://pubchem.ncbi.nlm.nih.gov/pug_soap/pug_soap.cgi?wsdl")
+pugi = genSOAPClientInterface(, pug)
+z = pugi@functions$InputStructure(structure = "c1ccccc1", format = "eFormat_SMILES")
+x = pugi@functions$GetIDList(ListKey = z,Start = 1L, Count = 10L) #Fails now.
+x = pugi@functions$GetIDList(ListKey = z)
+</r:code>
+Then check that these still work.  Unfortunately, they won't because the WSDL
+doesn't say the species, etc. are optional. So leave the makePrototype
+option on.
+<r:code id="testProto">
+w = processWSDL("WSDLs/wikipathways.wsdl")
+wk = genSOAPClientInterface(, w)
+wk@functions$findPathwaysByText(list(query = "apoptosis")) 
+wk@functions$findPathwaysByXref(list(ids = 'P45985'))  # Done
+</r:code>
+</item>
+
+<item status="done">
+pug_soap broken again now that we have fixed up some of the schema
+stuff in processSchemaType (with groups, gluing together additional attributes, etc.)
+Also MassSpec. computeName with NULL.
+<br/>
+Issue for pug_soap is in resolve of GetOperationStatus - AGAIN!!!
+The ns is wrong in the SOAPTypeReference. It is AnyKeyType which is the value of the
+type.
+
+</item>
+
+
+<item status="note">
+Documentation for PubChem /pug_soap_cgi is @ http://www.biocatalogue.org/soap_operations/15279
+http://pubchem.ncbi.nlm.nih.gov/pug_soap/pug_soap_help.html
+<br/>
+Example at bottom of http://pubchem.ncbi.nlm.nih.gov/pug_soap/examples/perl/PUG_SOAP.pl.txt
+<br/>
+Adapted from the Perl code.
+<r:code id="pugDemo">
+pug = processWSDL("http://pubchem.ncbi.nlm.nih.gov/pug_soap/pug_soap.cgi?wsdl")
+pugi = genSOAPClientInterface(, pug, putFunctions = TRUE)
+
+strKey = pugi@functions$InputStructure(structure = "c1ccccc1", format = "eFormat_SMILES")
+std = pugi@functions$Standardize(list(strKey))
+
+listKey = pugi@functions$IdentitySearch(StrKey = strKey, idOptions = list(eIdentity = "eIdentity_SameConnectivity"))
+
+pugi@functions$GetListItemsCount(listKey)
+pugi@functions$GetListItemsCount(list(ListKey = listKey))  # works too.
+
+pugi@functions$GetIDList(list(ListKey = listKey))
+
+
+ekey = pugi@functions$GetEntrezKey(list(ListKey = listKey))
+u = pugi@functions$GetEntrezUrl(ekey)
+
+
+xx = pugi@functions$Download(list(ListKey = listKey, eFormat = "eFormat_XML", eCompress = "eCompress_GZip"))
+xx@DownloadKey
+
+  # nothing in the DataBlob
+ slotNames(xx@DataBlob)
+ xx@DataBlob@BlobFormat
+ v = as(xx@DataBlob@Data, "raw")
+
+  # Get the URL of the file
+u = pugi@functions$GetDownloadUrl(xx@DownloadKey)
+
+library(RCurl)
+v = getURLContent(u, binary = TRUE, isHTTP = FALSE)
+library(Rcompression)
+val = gunzip(v)
+</r:code>
+
+</item>
+
+<item status="done">
+Make certain we can handle base64Binary as a PrimitiveSOAPType
+<r:code>
+w = processWSDL("WSDLs/wikipathways.wsdl")
+wk = genSOAPClientInterface(, w)
+x = wk@functions$getPathwayAs(list(fileType = "svg", pwId = "WP1984"))
+</r:code>
+And now when we convert this to raw
+<r:code>
+z = as(x@data, "character")
+substring(z, 1, 1000)
+</r:code>
+<r:code>
+x = wk@functions$getPathwayAs(list(fileType = "png", pwId = "WP1984"))
+z = as(x@data, "raw")
+writeBin(z, "/tmp/foo.png")  # or use rasterImage to draw it.
+</r:code>
+<r:code>
+pug = processWSDL("http://pubchem.ncbi.nlm.nih.gov/pug_soap/pug_soap.cgi?wsdl")
+pugi = genSOAPClientInterface(, pug)
+</r:code>
+i.e. that we have the R classes already defined
+<br/>
+Or use wikipathways and getPathwayAs.
+</item>
+
+<item>
+in some SOAP types in wSGoBioSpace, we have two uris!
+This is the MassSearchHit, I believe.
+<pre style="display: none;">
+An object of class "ClassDefinition"
+Slot "slotTypes":
+$fID
+An object of class "LocalElement"
+Slot "count":
+min max 
+  1   1 
+
+Slot "type":
+An object of class "SOAPTypeReference"
+Slot "count":
+min max 
+  1   1 
+
+Slot "abstract":
+logical(0)
+
+Slot "name":
+[1] "int"
+
+Slot "ns":
+[1] "s"
+
+Slot "nsuri":
+[1] "http://gmd.mpimp-golm.mpg.de/GoBioSpace/v02/"
+
+Slot "documentation":
+character(0)
+
+
+Slot "name":
+[1] "fID"
+
+Slot "attributes":
+list()
+
+Slot "xmlAttrs":
+character(0)
+
+Slot "ns":
+character(0)
+
+Slot "nsuri":
+[1] "http://gmd.mpimp-golm.mpg.de/GoBioSpace/v02/"
+
+Slot "documentation":
+character(0)
+
+
+$formula
+An object of class "LocalElement"
+Slot "count":
+min max 
+  0   1 
+
+Slot "type":
+An object of class "SOAPTypeReference"
+Slot "count":
+min max 
+  0   1 
+
+Slot "abstract":
+logical(0)
+
+Slot "name":
+[1] "string"
+
+Slot "ns":
+[1] "s"
+
+Slot "nsuri":
+[1] "http://gmd.mpimp-golm.mpg.de/GoBioSpace/v02/"
+
+Slot "documentation":
+character(0)
+
+
+Slot "name":
+[1] "formula"
+
+Slot "attributes":
+list()
+
+Slot "xmlAttrs":
+character(0)
+
+Slot "ns":
+character(0)
+
+Slot "nsuri":
+[1] "http://gmd.mpimp-golm.mpg.de/GoBioSpace/v02/"
+
+Slot "documentation":
+character(0)
+
+
+
+Slot "uris":
+[1] "http://gmd.mpimp-golm.mpg.de/GoBioSpace/v02/"
+[2] "http://gmd.mpimp-golm.mpg.de/GoBioSpace/v02/"
+
+Slot "fromConverter":
+function () 
+NULL
+
+Slot "toConverter":
+function () 
+NULL
+
+Slot "count":
+numeric(0)
+
+Slot "abstract":
+logical(0)
+
+Slot "name":
+[1] ""
+
+Slot "ns":
+character(0)
+
+Slot "nsuri":
+[1] "http://gmd.mpimp-golm.mpg.de/GoBioSpace/v02/"
+
+Slot "documentation":
+character(0)
+</pre>
+</item>
+
+<item status="done">
+wsGoBioSpace fails. 
+Now because of a zero-length name of a slot in MassSearchHit.
+<br/>
+[FIXED] Currently because of short and unsignedByte.
+<r:code>
+w = processWSDL("WSDLs/wsGoBioSpace.asmx?WSDL")
+f = genSOAPClientInterface(, w)
+</r:code>
+</item>
+
+<item status="done">
+GET and POST support <br/>
+Now that we can generate the interface, we have to deal with HttpGet methods.
+Done, but need to handle arrays.
+(See http://www.chemspider.com/MassSpecAPI.asmx?op=GetExtendedCompoundInfoArray)
+<r:code>
+z = getForm("http://www.chemspider.com/MassSpecAPI.asmx/SearchByMass2", 
+               mass = 89.0476, range = 0.01, .opts = list(httpheader = c("Content-Type" = "application/soap+xml")))
+z = getURLContent("http://www.chemspider.com/MassSpecAPI.asmx/GetDatabases", .opts = list(httpheader = c("Content-Type" = "application/soap+xml")))
+
+z = getForm("http://www.chemspider.com/MassSpecAPI.asmx/SearchByFormula2", formula = "H2O", .opts = list(httpheader = c("Content-Type" = "application/soap+xml")))
+
+z = getForm("http://www.chemspider.com/MassSpecAPI.asmx/GetExtendedCompoundInfo", csid = "23543", token = token,
+              .opts = list(httpheader = c("Content-Type" = "application/soap+xml")))
+</r:code>
+<r:function><![CDATA[
+chemSpi =
+function(op, ..., token = getOption("ChemSpiderToken", NA), server = "http://www.chemspider.com/MassSpecAPI.asmx/")
+{
+  u = sprintf("%s%s", server, op)
+  args = list(...)
+  if(!is.na(token))
+     args$token = token
+
+  z = getForm(u, .params = args, .opts = list(httpheader = c("Content-Type" = "application/soap+xml")))<xml:attr></xml:attr>
+
+  z
+}
+]]></r:function>
+
+<r:function><![CDATA[
+makeFun = 
+function(op, params, type, location = "http://www.chemspider.com/MassSpecAPI.asmx/")
+{
+    u = sprintf("%s%s", location, op)
+   
+}
+]]></r:function>
+
+
+
+So it looks like if we had a .SOAPHttpGet function, this would just
+change the way we package the arguments and then convert the result in the same way as .SOAP
+<br/>
+[FIXED] ChemSpider breaks in processWSDL for port = 3
+<r:code>
+library(SSOAP)
+trace(XMLSchema:::resolve, quote({print(c(class(obj), class(context))); print(obj)}))
+cs = processWSDL("http://www.chemspider.com/MassSpecAPI.asmx?WSDL", port = 3)
+o = genSOAPClientInterface(, cs)
+</r:code>
+</item>
+
+<item status="done">
+The names for the complex type seem to have disappeared in eutils.wsdl,
+e.g.
+<r:code>
+w = processWSDL("WSDLs/eutils.wsdl")
+names(w@types[[4]])
+</r:code>
+Caused by the new code to handle additional attributes.
+</item>
+
+<item status="done">
+KEGG now gets into infinite recursion for resolve() because
+of a SOAPTypeReference with name ArrayOfSubtype in the XSD namespace.
+<br/>
+[FIXED] So does ChemSpider!!! Because of "GetExtendedCompoundInfoResponse"
+</item>
+
+<item status="done">
+WORKS - but calls don't
+Broke chemspider. Problem with recursively finding string.
+Looks like we may be making a mistake on the ns slot (s rather than the XSD ns).
+But I don't think we use this.
+<r:code>
+o = XMLSchema:::resolve(cs@types[[1]]$GetRecordMol, cs@types)
+</r:code>
+???Need to recognize that the string is in XSD???.
+No, it is the local one that then extends the XSD string.
+</item>
+
+<item status="done">
+ChemSpider.   After removing new("SOAPTypeReference") in getElementRef
+and using SOAPType(), get 
+Warning message:
+undefined slot classes in definition of "GetCompressedRecordsSdf": eComp(class "ECompression") 
+<br/>
+The name of the element is being used as the name of the class ECompression.
+<br/>
+The slotTypes in GetCompressedRecordsSdf are LocalElement objects
+and the first two are primitives so they are okay. But the third is
+a simple SOAPType which just refers to ECompression.
+Shouldn't it be a SOAPTypeReference. Yes. That fixes it.
+</item>
+
+<item status="done">
+Fix the undefined slots now arising in MassSpecAPI.
+All are ArrayOfString.  Broken when we we did not collapse
+the Element to a SimpleSequenceType.
+These appear to be pending for some reason.
+<br/>
+Fixed now by stripping away the Elements and LocaElements down to the actual types.
+</item>
+
+
+<item status="done">
+ChemSpider doesn't work now.  Problem is with a LocalElement.
+<r:code>
+cs = processWSDL("http://www.chemspider.com/MassSpecAPI.asmx?WSDL")
+o = genSOAPClientInterface(, cs)
+o@functions$SearchByMass2(list(mass = 89.04767, range = 0.01)) 
+o@functions$SearchByMass2(mass = 89.04767, range = 0.01) # also works 
+o@functions$GetExtendedCompoundInfo(list(CSID=23078572L, token = "717cf9b9-9721-4e8b-825a-b6a65e106c1e"))
+o@functions$GetExtendedCompoundInfo(CSID=23078572L, token = "717cf9b9-9721-4e8b-825a-b6a65e106c1e") # works too.
+</r:code>
+<br/>
+Is it the LocalElement?
+Should we get rid of this? (in getElementRef.)  If we do, then genSOAPClientInterface() fails!
+Our ArrayOfString class is a SimpleSequenceType, but its element type
+has also become a SimpleSequenceType! 
+If we leave it there, the WSDL method fails.
+So we leave it in. 
+<br/>
+Now we fail converting the result.
+The return value name is SearchByMass2Response.
+This is the name of the element for the response. The next node is
+SearchByMass2Result and then we have a collection of strings.
+</item>
+
+<item status="gone">
+warning about  AttributeType not being exported.
+It is in XMLSchema as a ClassUnion.
+<br/>
+Also get message about StringEnum if XMLSchema is not explicitly loaded, but just imported.
+<br/>So now we explicitly export it from SSOAP.
+</item>
+
+<item status="done">
+Problem with referencing enum types in setClass() which 
+we don't define an actual class for. The name is
+the anonymous name @LNG.
+<r:error>
+11: undefined slot classes in definition of "IconUrlType": attribute(class "@LNG.Enum")
+ undefined slot classes in definition of "IdType": attribute(class "@HasLinkOut.Enum")
+</r:error>
+<br/>
+We now have a method for defClass for EnumValuesDef.
+There is a chance that the name may be wrong if the
+type is not defined in an attribute definition (AttributeDef)
+but that is easy to fix.
+</item>
+
+<item status="check">
+For IdUrlSetType, the choice in the second element is
+really two lists of separate types. So we can recognize this
+special case and extend list with a validity class
+that says they must be homogeneous elements and
+from either ObjUrl or Info.
+<br/>
+Done for UnionDefinition and defUnionClass
+</item>
+
+<item status="done">
+When defining IdUrlSetType, we don't have the union type yet defined.
+undefined slot classes in definition of "IdUrlSetType": NA(class "ListOfObjUrlType.character") 
+<br/>
+Still got an issue with the IdUrlSetType. 
+undefined slot classes in definition of "IdUrlSetType": NA(class "list.Info") 
+<br/>
+eutils.wsdl Problem in IdUrlListType. 
+The slot types in the choice refer to the @name of the element, not they @type.
+<br/>
+In eutils.wsdl and IdUrlSetType. What do we call the UnionDefinition when we need to refer to it in the
+representation.  We can use any name as long is it is consistent.
+</item>
+
+<item status="done">
+Similarly, ERROR is not getting defined and all the other classes that give rise to warnings.
+<br/>
+For eGqueryRequest, the term, tool and email classes are not yet defined.
+These are now resolved.
+</item>
+
+<item status="done">
+Get rid of the namespace prefixes on the slot names, e.g. eGquerResult
+and tns:term, tns:tool, etc..
+<br/>
+Is getElementName() the only place where this happens? It is now (check).
+</item>
+
+<item status="check">
+Broken again!  Fixed now, but lots of things to check.
+24 warnings, most about undefined slot classes definitions.
+But 2 about "Can't match XML Schema type" coming from mapSOAPTypeToS.
+These are cleaned up now and we return the name.
+<br/>
+However, for the ObjUrlType, do we want to pass the elType or the SimpleSequenceElement?
+We do, but instead of returning "list", we should make this a listOf&lt;ElementType&gt;.
+Done.  But where do we define the class and compute that  name.
+<br/>
+<r:code>
+library(SSOAP)
+w = processWSDL("WSDLs/eutils.wsdl")
+iface = genSOAPClientInterface(, w)
+</r:code>
+IdCheckListType (in <r:expr>w@types[[5]]$IdCheckListType</r:expr>)
+is a ClassDefinition but the first element is a SimpleSequenceType
+and has no name. So when we try to force its class def, we have an
+empty name - "".
+<br/>
+Since the slot is a sequence, we should extend list
+and create an ExtendedClassDefinition.
+We can either create this in processSchemaType and friends,
+or recognize this configuration in defClass.  
+<br/>
+Currently do it in defineClassDefinition.
+</item>
+
+
+
+<item status="done">
+readSchema doesn't work for pmml.
+<r:code>
+library(XMLSchema)
+pm = readSchema("../XMLSchema/inst/samples/pmml-4-0.xsd")
+</r:code>
+The issue is the attribute named "type". 
+We try to create an AttributeDef object and set its
+type slot with a RestrictedStringDefinition rather than the
+expected AttributeType.  The RestrictedStringDefinition has 
+potentially more information (e.g. the converter), but the AttributeType is just the EnumValues or a string.
+Do we really want the type slot of AttributeDef to be AttributeType or something richer.
+Or instead of EnumValuesDef, allow a RestrictedStringType which would include a RestrictedStringPatternDefinition
+</item>
+
+<item status="done">
+We end up with undefined slot classes in definition of setClass and these are warnings.
+Some are not defined. Others are defined later(?).
+<r:code>
+w = processWSDL("http://www.ncbi.nlm.nih.gov/entrez/eutils/soap/v2.0/eutils.wsdl")
+iface = genSOAPClientInterface(, w)
+</r:code>
+</item>
+
+<item>
+Generalize this so that we know when elements are local in all process* operations.
+<br/>
+Added locaElements parameter in processSchemaType but it is not used yet!
+<br/>
+If we can resolve the type of an element directly from its @type attribute,
+let's do so, e.g. the DbListType complex type in eutils.wsdl (line 81)
+We cannot find DbName via mapSOAPTypeToS()
+but we could resolve it immediately when we are processing
+DbListType.
+This is a locally defined element, so we have to resolve it when
+processing the parent type/container.
+<br/>
+We need to add an argument to tell processSchemaType that element
+nodes need to be "resolved" now.
+This can be just a level indicator, i.e. top-level or not or a counter.
+<br/>
+Alternatively, in processChoice (for now) replace the Element  with its type slot.
+Need to generalize to other XML node types.
+<br/>
+<r:code>
+library(SSOAP)
+w = processWSDL("http://www.ncbi.nlm.nih.gov/entrez/eutils/soap/v2.0/eutils.wsdl")
+iface = genSOAPClientInterface(, w)
+</r:code>
+</item>
+
+<item status="check">
+Warning in defClass that we have no code for some SOAPTypes.
+An example is "eGQueryResultType" in eutils.wsdl as we are defining Result. 
+We have a simple SOAPType and not a SOAPTypeReference or whatever.
+Where did this get generated - since it is an element and has a name and a type?
+<br/>
+We can resolve this and so keep going. 
+This causes infinite recursion for ItemType in eutils.wsdl (4th schema).
+<br/>
+This is a genuine instance of self-referential data types.
+We can elect to deal with this either when creating the 
+SOAPType objects in processWSDL() and readSchema() or
+later when we <r:func>resolve</r:func> the sub-elements.
+<solution>
+We defined a new class SelfRef that has the nsuri and name for the type.
+In the generic for <r:func>resolve</r:func>, we apply findSelfRefs
+to replace any immediate children with a SelfRef if they refer to the same
+type as the parent.
+In the mapSOAPTypeToS function, we return the name of the 
+<br/>
+We should make this more general and allow the name to be computed with a method.
+This would handle conflicts with 2 or more definitions with the same name.
+However, the NS URI  should avoid this.
+</solution>
+<br/>
+[FIXED] We need to fill in the ns and nsuri on all the elements we create
+so that we can compare them properly.
+</item>
+
+<item status="done">
+Info is not defined by the time we use it in a ClassUnion. eutils.wsdl.
+<br/>
+In defUnionClass, resolving the second slot leads to a SOAPTypeReference,
+and not the PrimitiveSOAPType we expect.
+<br/>
+Recursively resolve the SOAPTypeReference in the Element, list method for resolve. 
+We may need to include  more types.
+</item>
+
+<item status="done">
+Why isn't the Info element a LocalElement ? It isn't anymore.
+</item>
+
+
+
+<item status="check">
+In eutils.wsdl, get the count on the SimpleSequenceType that comes from a LocalElement.
+See the choice in IdUrlSetType (second slot). Check with
+<r:code>
+w = processWSDL("WSDLs/eutils.wsdl")
+w@types[[5]]$IdUrlSetType@slotTypes[[2]]@slotTypes[[1]]@count
+</r:code>
+<br/>
+[DONE] Also get the name right for the class, not just list but listOf&lt;elType&gt;.
+See mapSOAPTypeToS. 
+</item>
+
+<item status='done'>
+Activate the code in processSchemaType, line 350.
+<br/>
+It appears we are ignoring attributes on complex types, e.g. ItemType in eutils.wsdl.
+Fix processSchemaType. 
+We just call processSequence
+<r:code><![CDATA[
+if (xmlName(type) == "complexType" && ((xmlSize(type) == 1 &&   names(type) == "sequence") || ("sequence" %in% names(type) && 
+    all(names(type) %in% c("attribute", "annotation", "sequence")))))
+]]></r:code>
+</item>
+
+
+<!--  Just to show characters in XML and Emacs Use the Alt/Option-key 
+<item>
+Ω≈ç√∫˜µ¬˚∆˙©ƒ∂ßß∑œ®\¨øππø´®†\©ƒ∂˚¬∆˙˙åß∂
+</item>
+-->
+<item>
+Make EnumValue available.
+</item>
+
+
+<item status="done">
+IdUrlSetType  in eutils.wsdl broken again.
+<r:code>
+st = w@types[[5]]$IdUrlSetType
+
+class(st@slotTypes[[2]]) # UnionDefinition
+st@slotTypes[[2]]@slotTypes[[1]]  # LocalElement. Could turn this into a SimpleSequence at this point
+i.e. when we transform from Element to Type in elementToType. That's where we have the count.
+</r:code>
+</item>
+
+<item>
+Check the types in eutils.wsdl for
+[BROKEN] IdUrlSetType  - problem in second element of class definition. It is a VoidType, not a choice.
+It should be a UnionDefinition of either a list of ObjUrlType objects or a single Info object.
+The count on the ObjUrl is not present. Is this a problem with resolving the element to its type locally
+and omitting the count.
+<br/>
+[Ok] IconUrlType -  should be an extension of string and then with a slot for the LNG attribute.
+  We have the attribute, but we need the extension.
+<br/>
+[OK] SpelledQuery (an Element whose type is a Sequence with 0 or more elements of class UnionDefinition made up of Replaced and Original),
+</item>
+
+<item status="done">
+Entrez (NCBI) WSDL.
+<r:code>
+library(SSOAP)
+w = processWSDL("http://www.ncbi.nlm.nih.gov/entrez/eutils/soap/v2.0/eutils.wsdl")
+iface = genSOAPClientInterface(, w)
+</r:code>
+[Fixed] Now we are having issues with a class definition - IconUrlType -
+trying to define dependent/referenced classes that are enumerations!
+The class has an AttributeDef whose type slot is an EnumValuesDef.
+So we should just be mapping this to the R type 
+corresponding to the name of the Enum type. If there is no name,
+let's make one up from the name of the outer class and the slot name (LNG).
+At present, the name is coming from combining the enum names.
+<br/>
+The class IconUrlType should be an Extension class 
+<br/>
+This IdUrlSetType object also has a slot that is a choice of two elements
+so we need an intermediate ClassUnion for this.
+<br/>
+SpelledQuery is similar.  Also getting the wrong type here.
+It should be a sequence of 0 or more entries of the UnionDefinition, not just a single
+instance.
+(We could use the names of the element for the names of the elements.
+These are also both strings so we could use a character rather than a list here.)
+We also don't need to define a class here but just map the element straight to the
+type - a character.
+<br/>
+[Done] Problem in classes for setClassUnion - string.
+TranslationStackType.
+The element OP needs to be converted to an XSD string. Done
+</item>
+
+
+<item status="done">
+Implemented with computeUniqueTypeNames and passed as a function to fixTypeNames().
+Should also be in processSchemaTypes.
+<br/>
+We can improve fixTypeNames so that we don't 
+a) cause problems with types in the same prefix
+b) process Elements which won't lead to types.
+<br/>
+The following is fixed in fixTypeNames.
+<br/>
+In EPO, application-referenceType is in http://www.epo.org/exchange and http://ops.eop.org
+target namespaces and the latter extends the former.  So we need the names to be different.
+We also need to ensure the base class is defined
+<br/>
+In eutils.wsdl,  classes with the same name
+there are two LinkType complexType nodes and we
+have to be careful to refer to the correct one in all cases
+and not define a single global class with name.
+<br/>
+Write  a function to identify conflicts in a SchemaCollection
+across the SchemaTypes elements.
+</item>
+
+
+<item>
+EPO WSDL.
+<br/>
+The genSOAPClientInterface step fails because of "references-citedType"
+and the second element of the choice in that complexType defn. doesn't have a
+name. It is an anonymous class. So we can inline the defn or define it separately
+and then refer to it.
+</item>
+
+<item status="check" note="check chem spider when we can process it again">
+<note>check chem spider when we can process it again</note>
+Make it easier to call methods without knowing the class of the 
+argument that is expected.
+<br/> Have a ... that allows us to specify the elements individually
+and collect them into the slots of the target class.
+Works if there is a single object expected.
+<br/>
+We can do this in several ways
+<ol>
+ <li>a ... and then collect these into a list. We have to use partial matching of names.
+     We also have to watch if the person gave us a list or an instance of the target class.
+     If we put the regular parameter first and ... second, then we handle both easily.
+   </li>
+ <li>a parameter for each name in the class definition. For this, we'd either need appropriate defaults
+    or we have to add them to the list/S4 object if they are not missing in the call.</li>
+</ol>
+With ... we lose the ability to use this for curl options. But we still have .opts.
+<br/>
+wikipathways is a good example
+<br/>
+Examples
+<r:code>
+w = processWSDL("WSDLs/wikipathways.wsdl")
+wk = genSOAPClientInterface(, w)
+x = wk@functions$getRecentChanges(timestamp = "20110101000000")
+x = wk@functions$getRecentChanges(times = "20110101000000")  # partial name matching of the slots
+x = wk@functions$listPathways(organism = "") 
+wk@functions$findPathwaysByXref(ids = 'P45985', codes="")  
+wk@functions$findPathwaysByXref(ids = 'P45985')
+</r:code>
+
+<r:code>
+x = wk@functions$getRecentChanges(list(timestamp = "20110101000000"))
+x = wk@functions$getRecentChanges(new("getRecentChanges", timestamp = "20110101000000"))
+
+x = wk@functions$listPathways(list(organism = ""))  # should be able to call w/o any value
+wk@functions$findPathwaysByXref(list(ids = 'P45985', codes=""))  # need the codes. Would like to have prototype create that.
+</r:code>
+</item>
+
+<item status="check">
+Get the name of the top-level element in the response,e.g. listOrganismsResponse.
+<br/>
+This is in the operation in the function, but not necessarily correct.
+Now if there is an element in the <xml:tag>part</xml:tag> element
+of the <xml:tag>message</xml:tag>, we use that.
+<br/>
+Currently we throw away the namespace.
+</item>
+
+
+<item status="note">
+See http://www.wikipathways.org/index.php/Help:WikiPathways_Webservice/API#findPathwaysByXref for more information about the parameters.
+<r:code>
+x = wk@functions$findPathwaysByXref(list(ids = '1234', codes = "L")) 
+</r:code>
+<r:code>
+x = wk@functions$getRecentChanges(list(timestamp = "20110101000000"))
+x = wk@functions$listPathways(list(organism = ""))  # should be able to call w/o any value
+</r:code>
+<r:code>
+x = wk@functions$getPathwayHistory(list(pwId = "WP1984"))
+x = wk@functions$getPathwayAs(list(fileType = "svg", pwId = "WP1984"))
+</r:code>
+</item>
+
+<item status="done">
+tests/wikiPathways.R .
+Dealing with empty inputs.
+
+<r:code>
+w = processWSDL("WSDLs/wikipathways.wsdl")
+wk = genSOAPClientInterface(, w)
+wk@functions$listOrganisms()  # Works again.
+wk@functions$listOrganisms(new("listOrganisms"))   # no longer works. Nowit does agai and 
+wk@functions$findPathwaysByText(list(query = "apoptosis")) # okay, but wk@functions$findPathwaysByText(query = "apoptosis") is not.
+
+wk@functions$findPathwaysByXref(list(ids = 'P45985', codes=""))  # need the codes. Would like to have prototype create that.
+wk@functions$findPathwaysByXref(list(ids = 'P45985'))  # Done
+
+wk@functions$findPathwaysByText(list(query = "apoptosis", species = "")) 
+wk@functions$findPathwaysByText(list(query = "apoptosis")) 
+</r:code>
+Problem with listOrganisms input being an empty sequence???
+<br/>
+We probably want to deal with the name "parameters" as being an element
+and strip that away and allow the elements to be specified as separate arguments
+<br/>
+See checkIsEmptyParameter.
+</item>
+
+<item status="done">
+Return from listOrganisms() (above) is coming out as NULL
+as the getReturnNode() yields NULL.
+</item>
+
+<item status="done">
+putFunctions = TRUE puts the functions into where.
+Can specify an environment for putFunctions.
+<br/>
+In wsdlProcess.R in SSOAP code.
+<r:code>
+wk = genSOAPClientInterface(, w, putFunctions = TRUE)
+e = new.env()
+wk = genSOAPClientInterface(, w, putFunctions = e)
+</r:code>
+</item>
+
+<item status="check">
+Handle the case in MassSpec where we have multiple <xml:tag>binding</xml:tag> elements
+that relate to different transport styles, i.e. POST, SOAP 1.1 and SOAP 1.2
+<br/>
+Allow the caller to specify the port by name, e.g.
+<r:code>
+cs = processWSDL("http://www.chemspider.com/MassSpecAPI.asmx?WSDL", port = 3)
+</r:code>
+Currently processing just one binding but keeping it as a list.
+Should go to just one binding or process them all.
+</item>
+
+<item status="done">
+Honor the binding to use POST in the MassSpec.
+Or HTTPGet, etc.
+</item>
+
+<item>
+SDMXQuery - bank:
+<r:code>
+w = processWSDL("http://sdw-ws.ecb.europa.eu/services/SDMXQuery?wsdl")
+sdmx = genSOAPClientInterface(, w)
+</r:code>
+Problem in createArrayClass with 
+<r:code><![CDATA[
+if (el@nsuri %in% getXSDSchemaURIs(all = TRUE)) { : 
+  argument is of length zero
+]]></r:code>
+<br/>
+[FIXED]Error in strsplit in mapSOAPTypeToS and also warnings.
+MessageGroupType. Problem is passing a SOAPType to
+strsplit in mapSOAPTypeToS.  NA in the SOAPType that
+is an XSD type.
+<br/>
+Note that we seem to be processing the class twice. All of them? Check the
+reloading of the schemas.  Potentially cache these.
+<br/>
+The schema type is an extension of MessageType and then adds a sequence of 0 or more elements.
+So we want to be a list and a MessageType.
+FIXED: We lose the types of the elements in the choice in processSequence.
+<br/>
+FIXED: In processExtension, we lose the target namespace uri in the call to lookupType
+but we have it in namespaceDefs.
+<br/>
+[Done] Download the schema locally and add redirect to catalog. Need two entries in the 
+ catalog - one for the WSDL and the other for the schema it imports.
+<programlisting><![CDATA[
+ <rewriteURI uriStartString="http://sdw-ws.ecb.europa.eu:80/services/SDMXQuery" rewritePrefix="/Users/duncan/Projects/org/omegahat/XML/SOAP/WSDLs/SDMXQuery" /> 
+ <rewriteURI uriStartString="http://sdw-ws.ecb.europa.eu/services/SDMXQuery?wsdl" rewritePrefix="/Users/duncan/Projects/org/omegahat/XML/SOAP/WSDLs/SDMXQuery?wsdl" /> 
+]]></programlisting>
+</item>
+
+<item topic="SDMX">
+See if we can call one of the methods in the SDMXQuery server.
+<br/>
+Do we need authorization?
+</item>
+
+<item status="check">
+Generate constructor functions and coercion methods from list for the generated classes,
+e.g. SearchByMass2.
+We can just copy the fields that have matching slot names.
+<r:code>
+cs = processWSDL("http://www.chemspider.com/MassSpecAPI.asmx?WSDL")
+o = genSOAPClientInterface(, cs)
+o@functions$SearchByMass2(list(mass = 89.04767, range = 0.01))
+</r:code>
+rather than
+<r:code>
+o@functions$SearchByMass2(new("SearchByMass2", mass = 89.04767, range = 0.01))
+</r:code>
+</item>
+
+
+<item status="check"> 
+SimpleSequenceType.
+Should the count be on the SimpleSequenceType and not on the elType?
+Why is the return type a SOAPType and not a ref to another.
+<r:code>
+cs = processWSDL("http://www.chemspider.com/MassSpecAPI.asmx?WSDL")
+o = genSOAPClientInterface(, cs)
+o@functions$SearchByMass2(new("SearchByMass2", mass = 89.04767, range = 0.01))
+</r:code>
+Fails in converting the result.
+The return value is a SimpleSequenceType, but we are trying to set slots.
+This is being done in fromSOAPStruct.
+<br/>
+The issue is that we have an empty method for fromXML(type = SimpleSequenceType)
+in array.S in XMLSchema/R. So we need to implement this and all will be well.
+<br/>
+That's fixed, but we get further convert the ArrayOfString.
+</item>
+
+
+<item status="done">
+Explore the return value of o@functions$GetExtendedCompoundInfo:
+<r:code>
+cs = processWSDL("http://www.chemspider.com/MassSpecAPI.asmx?WSDL")
+o = genSOAPClientInterface(, cs)
+o@functions$GetExtendedCompoundInfo(new("GetExtendedCompoundInfo", CSID=23078572L, token = "717cf9b9-9721-4e8b-825a-b6a65e106c1e"))
+o@functions$GetExtendedCompoundInfo(list(CSID=23078572L, token = "717cf9b9-9721-4e8b-825a-b6a65e106c1e")) # works too.
+</r:code>
+See GetExtendedCompoundInfo_result.xml for a sample result.
+<br/>
+We were having trouble with that data type when processing the schema.
+</item>
+
+
+<item status="check">
+Seems to work now.
+<br/>
+Having difficulty calling the WSDL method due to the token not being recognized.
+Is it the namespace is not set on the CSID and token elements?  YES!
+<r:code><![CDATA[
+bb = '<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <ns:GetExtendedCompoundInfo xmlns:ns="http://www.chemspider.com/">
+      <CSID>23078572</CSID>
+      <token>717cf9b9-9721-4e8b-825a-b6a65e106c1e</token>
+      <token>string</token>
+    </ns:GetExtendedCompoundInfo>
+  </soap:Body>
+</soap:Envelope>'
+bb = '<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <GetExtendedCompoundInfo xmlns="http://www.chemspider.com/">
+      <CSID>23078572</CSID>
+      <token>717cf9b9-9721-4e8b-825a-b6a65e106c1e</token>
+      <token>string</token>
+    </GetExtendedCompoundInfo>
+  </soap:Body>
+</soap:Envelope>'
+h = basicTextGatherer()
+curlPerform(url = "http://www.chemspider.com/MassSpecAPI.asmx",  postfields = bb, verbose = TRUE, .opts = list(httpheader = c(SOAPAction = '"http://www.chemspider.com/GetExtendedCompoundInfo"', 'Content-Type' = "text/xml; charset=ascii")), writefunction = h$update)
+]]></r:code>
+</item>
+
+
+
+<item status="done">
+Warnings in 
+<r:code>
+pug = processWSDL("http://pubchem.ncbi.nlm.nih.gov/pug_soap/pug_soap.cgi?wsdl")
+pugi = genSOAPClientInterface(, pug)
+</r:code>
+about defClass() and no code to handle PrimitiveSOAPType...
+<br/>
+All but one of these relates to int or string.
+</item>
+
+<item status="done">
+Use GetListItemsCount instead.
+In pugi_soap_cgi, GetEntrezUrl is an element but not a complex type. So we don't define an R class for it.
+But the corresponding function (GetEntrezUrl) expects
+an object of that class.  So we cannot coerce anything
+to that since there is not such class.
+<xi:include xpointer="xmlns(r=http://www.r-project.org) xpointer(//r:code[@id = 'pugDemo'])"/>   
+<r:code>
+pugi@functions$GetEntrezUrl('')
+</r:code>
+We want to recognize that this is an element and so want
+parameters that correspond to its elements.
+</item>
+
+<item status="done">
+Resolving type
+<r:code>
+pug = processWSDL("http://pubchem.ncbi.nlm.nih.gov/pug_soap/pug_soap.cgi?wsdl")
+pugi = genSOAPClientInterface(, pug)
+</r:code>
+Why do we end up with NULL in defClass for "GetOperationStatus"
+Failed to resolve GetOperationStatus. This is an element in the WSDL
+but not in the pug@types. We get end up using another name
+<xml:code><![CDATA[
+ <s:element name="GetOperationStatus" type="tns:AnyKeyType" />
+]]></xml:code>
+Also lots of warnings in genSOAPClientInterface. 
+<br/>
+We end up with the SOAPTypeReference but the name is the
+name of the type to which we refer, not the name of the element.
+So we need to have either the correct name or two names.
+So now we create an Element and put the SOAPTypeReference as the type slot.
+<br/>
+Put the namespace on  the Element
+</item>
+
+<item status="done">
+This fails in a resolve()
+<r:code>
+w = processWSDL("http://stats.oecd.org/SDMXWS/sdmx.asmx?WSDL")
+</r:code>
+Added method to resolve AnySOAPType.
+</item>
+
+<item status="high" id="checkWSDLs">
+All pass along with genSOAPClientInterface:
+<invisible>
+<r:code style="{visible: false}">
+mb = processWSDL("http://www.massbank.jp/api/services/MassBankAPI?wsdl")
+mt = processWSDL("http://metlin.scripps.edu/soap/metlin.wsdl")
+cs = processWSDL("http://www.chemspider.com/MassSpecAPI.asmx?WSDL")
+wk  = processWSDL("WSDLs/webservice.php?wsdl")
+brenda = processWSDL("http://www.brenda-enzymes.org/soap/brenda.wsdl")
+bri = genSOAPClientInterface(, brenda)
+w = processWSDL("http://sdw-ws.ecb.europa.eu/services/SDMXQuery?wsdl")
+oecd = processWSDL("http://stats.oecd.org/SDMXWS/sdmx.asmx?WSDL")
+oecdi = genSOAPClientInterface(, oecd)
+</r:code>
+<r:code id="testWSDLs">
+library(SSOAP)
+w = c("http://www.massbank.jp/api/services/MassBankAPI?wsdl", 
+      "http://metlin.scripps.edu/soap/metlin.wsdl",
+      "WSDLs/eutils.wsdl",
+      "http://pubchem.ncbi.nlm.nih.gov/pug_soap/pug_soap.cgi?wsdl",
+      "http://www.chemspider.com/MassSpecAPI.asmx?WSDL", 
+      "WSDLs/webservice.php.wsdl",
+      "WSDLs/wsGoBioSpace.asmx.WSDL",
+    #  "http://sdw-ws.ecb.europa.eu/services/SDMXQuery?wsdl",  # takes a long time
+      "http://stats.oecd.org/SDMXWS/sdmx.asmx?WSDL",
+      "http://xml.nig.ac.jp/wsdl/ARSA.wsdl",
+      "http://www.weather.gov/forecasts/xml/SOAP_server/ndfdXMLserver.php?wsdl",
+      "http://soap.genome.jp/KEGG.wsdl",
+      "http://www.brenda-enzymes.org/soap/brenda.wsdl"
+    )
+ans = lapply(w, function(x) {cat(x, "\n"); def = try({genSOAPClientInterface(, processWSDL(x)); cat("done\n") }); def})
+w[sapply(ans, is, "try-error")]
+</r:code>
+</invisible>
+</item>
+
+<item>
+Security with SOAP.
+</item>
+
+
+<item status="done">
+In the MassSpec WSDL, we are getting a recursive problem resolving the return type.
+This refers to a string in the chemspider.com namespace (line 223 of the WSDL).
+It is the return value type in GetRecordMol.
+<r:code>
+cs = processWSDL("http://www.chemspider.com/MassSpecAPI.asmx?WSDL")
+library(XMLSchema)
+resolve(cs@operations[[1]]$GetRecordMol@returnValue, cs@types)
+</r:code>
+Why is cs@types[[1]]$string a SOAPTypeReference with no nsuri.
+Explore processSchemaType and why it does this.
+
+<br/>
+cs@operations[[1]]$GetRecordMol@returnValue
+<r:output>
+An object of class "SOAPType"
+Slot "count":
+numeric(0)
+
+Slot "abstract":
+logical(0)
+
+Slot "name":
+[1] "string"
+
+Slot "ns":
+[1] "tns"
+
+Slot "nsuri":
+[1] "http://www.chemspider.com/"
+
+Slot "documentation":
+character(0)
+</r:output>
+</item>
+
+
+<!--    ********************************************************************************   -->
+
+<item status="done">
+In defUnionClass(), need to ensure that referenced classes are already defined.
+So find those objects in the Schema and define those.
+</item>
+
+<item status="done">
+Not able to resolve references to element definitions
+in <r:func>genSOAPClientInterface</r:func>.
+</item>
+
+<item>
+missing ns in getRClassName (?)
+when looking up name of existing/earlier defined class.
+</item>
+
+<item>
+Process an element which has a ref attribute, not a name.
+See getElementRef().
+See eutils.wsdl.
+</item>
+
+<item status='check'>
+Made the 'Element' class extend SOAPType by
+having both come from GenericSchemaType and
+so we can use an Element where a SOAP type might be.
+This is used in the return type of a WSDL method.
+Check this is okay.
+</item>
+
+<item status="tidy">
+changing of x to from in function for setAs
+happening in defClass and caused by fromConverter
+using x as the variable name.
+</item>
+
+<item>
+Problems with resolving string:
+<r:code>
+w = processWSDL("./WSDLs/Fedora-API-A.wsdl")
+iface = genSOAPClientInterface(,w)
+</r:code>
+Should the 2nd element of the UnionDefinition
+be SOAPType or PrimitiveSOAPType or SOAPStringType.
+This is the FieldSearchQuery union.
+<br/>
+The problem is that we don't have the nsuri slot set in
+the SOAPType.
+
+</item>
+
+<item>
+getRClassName when processing a UnionDefinition.
+Need to handle anonymous definitions and be able
+to lookup classes that have already been defined.
+</item>
+
+<item status="check">
+Process attributes on the schema types.
+</item>
+
+<item status="check">
+Code runs now. Check if the generated code works?
+<br/>
+Infinite recursion when resolving an element
+in msnSearch.wsdl named Search 
+that has a reference to SearchResponse.
+<r:code>
+library(SSOAP)
+w = processWSDL("WSDLs/msnSearch.wsdl")
+iface = genSOAPClientInterface(, w)
+</r:code>
+Differentiate between elements and types (i.e. complexType, etc.).
+Both are called SearchResponse.
+Add them to the types to preserve the uniqueness,
+i.e. don't add by name, but append to the Schema object we
+are building.
+</item>
+
+
+<item status="done">
+Problem in converting result.
+Expect an ArrayOfString, but get a character vector back,
+as we would expect.
+See modis.R
+<r:code>
+library(SSOAP)
+w = processWSDL("http://daac.ornl.gov/cgi-bin/MODIS/GLBVIZ_1_Glb_subset/MODIS_webservice.wsdl")
+def = genSOAPClientInterface(, w)
+d = def@functions$getdates(40,-110, "MOD13Q1")
+d = d[c(length(d)-1, length(d))]
+o = def@functions$getsubset(40, -110, "MOD13Q1", "250m_16_days_NDVI", d[1], d[2], 10,  10)
+</r:code>
+</item>
+
+<item>
+check wsdl:import rather than schema:import works correctly.
+<br/>
+Something implemented but does it just deal with the schemas of the
+imported documents.
+</item>
+
+<item>
+Use the namespace attribute on an xs:import
+</item>
+
+<item>
+Process &lt;group&gt; elements in ops.wsdl
+</item>
+
+<item status="done">
+Retain the name of the node containing the result from
+the name attribute of the response message of the operation,
+e.g.  MODIS_webservice.wsdl
+Currently, if this is not return, we use the first
+child node and things work fine. But we have this information, so 
+should use it for completeness and thoroughness.
+<br/>
+Done via returnNodeName in WSDLMethod and set in
+createOperationDefinition.
+</item>
+
+<item>
+Process attributes of complexType, etc. 
+</item>
+
+<item status="check">
+A complexType refers to a base type with the same
+name but in a different namespace. So we have to be able to resolve
+the type of the latter. This should have happened earlier.
+We need to pass the current set of types through so that 
+we can resolve these.
+<r:code>
+library(SSOAP)
+w = processWSDL("ops.wsdl")
+</r:code>
+<br/>
+Passing the  namespaceDefs down via processSchemaType
+and not getting it confused with substitutionGroups.
+
+</item>
+
+<item status="done?">
+Keep the URIs around when have a reference of the form
+prefix:name. This will allow us to look in the correct schema.
+See tests/CalibayesServices1.wsdl. for example.
+This uses xs rather than xsd.
+<br/>
+See <r:func>processSequence</r:func> and <r:func>lookupNamespace</r:func>
+</item>
+
+
+<item>
+When defining a choice via setClassUnion, resolve the classes
+correctly. 
+<r:code>
+w = processWSDL("WSDLs/Fedora-API-A-LITE.wsdl")
+k = genSOAPClientInterface(, w)
+</r:code>
+Is this that the first type in the choice is an element (named conditions)
+and is it not described properly in our R object?
+</item>
+
+<item>
+Restrictions don't have a setting for nsuri.
+<r:test>
+</r:test>
+Putting xsd for restricted string. Should be another one perhaps.
+</item>
+
+<item>
+When createConverters = TRUE, defer until read all schema and then 
+process.
+</item>
+
+<item>
+When multiple ports in the WSDL, check if the namespaces are different
+and refer to SOAP 1.1 and 1.2.
+</item>
+
+<item status="done">
+Why doesn't the weather example in Examples/Examples.xml parse the result
+rather than hand it back as a string containing XML.
+Are the converters not built or is this something with the weather.gov WSDL?
+<r:code>
+f@functions$NDFDgenByDay(38.9936, -77.0224, Sys.time() + 60*24*60, 5, "12 hourly")
+</r:code>
+<br/>
+The .convert value is a PrimitiveSOAPType of type string.
+Sure enough, the WSDL says the response types are xsd:string.
+</item>
+
+<item status="low">
+The WSDL is no longer available from that URL.
+<br/>
+Amazon
+<r:code>
+w = processWSDL("http://ec2.amazonaws.com/doc/2007-01-19/AmazonEC2.wsdl")
+f = genSOAPClientInterface(,w)
+<r:error>
+Error in mapSOAPTypeToS(type, types, namespaceDefs) : 
+  Can't match SOAP type EmptyElementType
+</r:error>
+</r:code>
+</item>
+
+<item status="low">
+The WSDL is no longer available from that URL.
+<br/>
+MSN search
+<r:code>
+msn = processWSDL("http://soap.search.msn.com/webservices.asmx?wsdl")
+i.msn = genSOAPClientInterface(, msn)
+</r:code>
+</item>
+
+<item status="low">
+The WSDL is no longer available from that URL.
+<br/>
+If the class definition refers to an entry that doesn't
+exist, we get a warning message from setClass().
+<r:code>
+w = processWSDL("http://www.fedora.info/definitions/api/Fedora-API-A-LITE.wsdl")
+f = genSOAPClientInterface(,w)
+</r:code>
+</item>
+
+<item status="low">
+The WSDL is no longer available from that URL.
+<br/>
+The following fails.
+<r:code>
+w = processWSDL("http://www.fedora.info/definitions/api/Fedora-API-A.wsdl")
+f = genSOAPClientInterface(,w)
+</r:code>
+Is the describeRepository object nested one level down.
+<br/>
+
+</item>
+
+<item status="done">
+Converter for Sequence may need to create the class definition
+if it doesn't appear in the schema.
+e.g. in the operation listMethods, the return type is a sequence:
+<r:code>
+trace(SSOAP:::processWSDLOperation, quote(if(xmlGetAttr(node, "name") == "listMethods") browser()))
+w = processWSDL("http://www.fedora.info/definitions/api/Fedora-API-A-LITE.wsdl")
+f = genSOAPClientInterface(,w)
+</r:code>
+The problem seems to be that the listMethodsResponse element is
+complexType/sequence with a type attribute and so we could infer is an R list of ObjectMethodsDef.
+But the listMethodsResponse message element has 
+<programlisting><![CDATA[
+  <message name="listMethodsResponse">
+    <part name="response" type="fedora-types:ArrayOfObjectMethodsDef">
+      <documentation>A set of method definitions that represent 
+				all possible disseminations that can be run on the object.
+			</documentation>
+    </part>
+  </message>
+]]></programlisting>
+Note the fedora-types prefix on the value of the type attribute.
+<programlisting><![CDATA[
+    <operation name="listMethods">
+      <input message="fedora-api:listMethodsRequest"/>
+      <output message="fedora-api:listMethodsResponse"/>
+    </operation>
+]]></programlisting>
+
+In resolve for SOAPType, if we fail to find a definition,
+we can look at the name of the type and see if it starts
+with ArrayOf. If so, we can create an ArrayType
+</item>
+
+
+<item status="use">
+SMS texting service:
+<r:code>
+w = processWSDL("http://www.csoft.co.uk/dtd/www.sendsms5.wsdl")
+z = genSOAPClientInterface(,w)
+<r:output>
+Error in stop("Can't match SOAP type ", type) : 
+  Can't match SOAP type positiveInteger
+</r:output>
+</r:code>
+The problem now is a ? in the parameter names
+in the operation SubmitMessage
+Error in parse(text = txt) : unexpected '?' in "function(?"
+
+</item>
+
+<item status="done">
+Infinite recursion in resolve:
+<r:code>
+w = processWSDL("http://www.ebi.ac.uk/webservices/chebi/2.0/webservice?wsdl")
+iface = genSOAPClientInterface(, w)
+</r:code>
+infinite recursion
+<br/>
+The following is fixed:
+method for resolve() for UnionDefinition.
+<r:code>
+w = processWSDL("http://soap.bind.ca/wsdl/bind.wsdl")
+mol = genSOAPClientInterface(, w)
+<r:output>
+Now get infinite recursion.
+Same with 
+<br/>
+Error in stop("No method for this type ", class(obj)) : 
+  No method for this type UnionDefinition
+In addition: Warning message:
+Ambiguous method selection for "resolve", target "UnionDefinition#SchemaCollection" (the first of the signatures shown will be used)
+    BasicSOAPType#list
+    SOAPType#SchemaCollection
+</r:output>
+</r:code>
+</item>
+
+<item status="done">
+Similarly for Element.
+<r:code>
+w = processWSDL("http://pubmlst.org/api/mlst.wsdl")
+f = genSOAPClientInterface(, w)
+</r:code>
+<br/>
+Need to make the signature more explicit.
+Was dispatching to BasicSOAPType, list
+rather than Element when we just  had
+the signature as "Element" and not "SchemaCollection"
+</item>
+
+<item>
+Warning about extra service/port node.
+
+<r:output><![CDATA[
+w = processWSDL("http://web4.sa-media.com/SASoapAPI/service.asmx?WSDL")
+Warning message:
+In processWSDL("http://web4.sa-media.com/SASoapAPI/service.asmx?WSDL") :
+  Ignoring additional <service><port> ... elements
+]]></r:output>
+Also, two sets of operations returned and they have the same name.
+This looks okay from our end.
+</item>
+
+<item>
+Get server(), returnType(), returnConverter() to work when the functions
+are serialized to a file.
+</item>
+
+
+<item>
+Figure out what .header in writeSOAPBody()
+and .soapHeader in writeSOAPMessage() have in common?
+</item>
+
+<item status="done">
+Allow a date to be given as a string and then just pass it on.
+</item>
+
+<item status="improve">
+help for functions that have their own documentation from the WSDL file.
+<br/>
+Very simple version implemented for now. 
+</item>
+
+<item status="improve">
+Error in weather server when date is in the past.
+
+f@functions$NDFDgenByDay(38.9936, -77.0224, strptime("2008/9/01", "%Y/%m/%d
+fault@detail is an XMLNode so pasting it is a problem.
+"<error><h2>ERROR</h2><pre><problem>No data were returned. start date is in the past. Requested weather forecast information is only available for times in the future.</problem>\n<format>12 hourly</format>\n<startDate>2008-09-01</startDate>\n<numDays>5</numDays>\n<latitudeLongitudes>\n38.9936,-77.0224 </latitudeLongitudes></pre></error>"
+<br/>
+Okay for now but it would be nice to be able to have a better understanding
+of the structure of the error/fault nodes.
+</item>
+
+<item>
+Infinite Recursion problem for eBaySvc.wsdl
+</item>
+
+
+
+<item status="done">
+Keep the documentation for operations from the WSDL.
+ <br/>
+ For eBay, the documentation is in the schema types!
+<br/>
+This is in the .operation object (@documentation)
+of the generated functions.
+</item>
+
+<item>
+for the efetch_pubmed.wsdl, warnings about SimpleSequenceType and
+UnionDefinition.
+Is this the cause of the error in genSOAPClientInterface
+</item>
+
+<item>
+AttributeDef with no children case in processWSDLType().
+Find out about meaning of "fixed" attribute.
+</item>
+
+<item topic="testing">
+Testing the WSDLs from NCBI:
+<r:code>
+doc = htmlTreeParse("http://www.ebi.ac.uk/Tools/webservices/wsdl/list", useInternal = TRUE)
+wsdls = xpathApply(doc, "//a[@href]", xmlGetAttr, "href")
+wsdls = grep("[.?]wsdl$", wsdls, val = T)
+
+zz = mapply(function(i, x) {cat(i, x, "\n") ;  processWSDL(x)}, seq(along = wsdls[-2]), wsdls[-2])
+</r:code>
+(The second one gives a very short XML document which is just the SOAP envelope with a fault.
+So it is an error.)
+</item>
+
+
+<item> 
+createSOAPConverter for DbName in eutils.wsdl.
+The elType ends up as a character (xs:string) and not a SOAPType.
+</item>
+
+<item status="done">
+For arrays where there is an explicit  class, e.g. in KEGG ArrayOfstring,
+       get the namespace right for this.
+</item>
+
+
+<item>
+Check the namespaces on the types in the WSDL. Seem to be
+  www.w3.org/2001/XMLSchema when actually in the WSDL.
+  <br/> eBaySvc.wsdl and OrderType
+<br/>
+Detect which version of the namespaces we need to use for an operation/server
+  e.g. 1.2 or 1.1
+     Get them from the WSDL file.
+</item>
+
+
+
+<item status="done" svnRevision="6861">
+Ambiguous method selection for "toSOAP", target "character#textConnection#ArrayType" (the first of the signatures shown will be used)
+<r:code>
+obj_list = c('eco:b0514', 'eco:b2913')
+fg_list  = c('#ff0000', '#00ff00')
+bg_list  = c('#ffff00', 'yellow')
+kegg.iface@functions$color_pathway_by_objects('path:eco00260',
+                                               obj_list, fg_list, bg_list)      
+</r:code>
+</item>
+
+
+
+<item status="done">
+Generate the XML for the request with internal nodes, not strings.
+</item>
+
+
+<item status="done">
+For arrays of primitive types, map class to extend basic R
+  type, e.g. ArrayOfstring and character.
+<br/> Or make a class union or an alias as we don't necessarily
+      want to create a more specific class.
+      So perhaps just leave as "character" or whatever type it is.
+</item>
+
+<item status="done">
+ When generating class definitions, create setAs(XMLNode,
+     "type") methods that set the slots directly
+      or some similar method e.g. fromSOAPStruct.
+  <br/> Also leave the generic version that uses slot(obj,
+  dynFieldName).
+      <br/>
+       Also, enforce the optional and required fields in these methods.
+</item>
+
+<item>
+Provide a mechanism for the end-user to control the conversion
+      by using a setAsSOAP() or something so that they can register
+  methods
+      as setAsSOAP("SOAPType", function(xml) ..., pre = TRUE/FALSE)
+      where the pre says that we should do the regular processing
+     first
+       to get it into an R object, e.g. a list from the XML,
+      or not and leave it as parsed XML.
+</item>
+
+
+
+<item status="done">
+Switch to internal nodes and XPath for parsing the  WSDL.
+</item>
+
+<item>
+If there is no SOAP action, don't put one.  Or make it '""'.
+  <br/>For eBay,
+</item>
+
+<item>
+mapSOAPTypeToS needs to do serious work on the namespaces,
+       mapping any name space to the URI and then comparing these.
+  <br/> Need to get the defining URI for namespace prefixes when
+       walking the XML document. Redundancy is good here. 
+<br/>
+  getEffectiveNamespaces in the XML package?
+</item>
+
+<item status="done">
+ Generate converter function to be used in auto generated code.
+</item>
+
+<item>
+When generating code, set the schema version.
+</item>
+
+<item status="done">
+In WSDL code generation, need the name of the S class of the
+    return type.
+  <br/> See examples/KEGGArray.R
+</item>
+
+<item status="low">
+ Abstract the transport layer from the .SOAP function to allow
+       for alternative mechanisms to RCurl. 
+  <br/>  Either methods based on the server object or a function object.
+<br/>
+Is some of this done, e.g. with support for sockets?
+</item>
+
+<item>
+ In the WSDL generation code, handle the case where we have a
+       NULL returned for an object.
+  <br/> Either convert the xsi:null=1 to an object of the appropriate
+       type (e.g. character(0), NA, list(0), etc.) or define
+       slot to allow NULLs via setClassUnion().
+</item>
+
+
+
+
+<item>
+WSDL additions
+  <br/>
+     <ul>
+	<li> The 4 different port types - one-way, request-response (done),
+      solicit response and notification.</li>
+
+	<li> Options for Bindings, e.g. style, transport.
+<br/>
+  We have implemented HTTP GET and HTTP POST.
+        </li>
+     </ul>
+</item>
+
+<item>
+Validate/match namespaces.
+</item>
+
+<item status="low">
+UDDI support.
+</item>
+
+<item>
+Fault handling.
+</item>
+
+<item status="done">
+  Resolving URIs in  import calls.
+  <br/> Use code in XML package?
+<br/>
+getRelativeURL()
+</item>
+
+<item>
+Profile the conversion code and make it more efficient.
+  <br/> See how much of the time is spent in the HTTP request and how
+      much is in the method dispatch and how much is inidividual
+      conversion method.
+</item>
+
+<item>
+Create default CURL options that are used.
+</item>
+
+<item>
+Try to rationalize further the fromSOAP() and fromSOAP(, type =
+      ) when we know the expected type from the WSDL.
+      Specifically, we'd like to deal with xsi:null values properly
+      and this is different in the two cases.
+</item>
+
+<item>
+Multi-dimensional arrays. We now parse the declaration, but
+      don't make extensive use of them. Looking for examples.
+</item>
+
+<item>
+      Schema and types. 
+  <br/> Arrays with fixed bounds via validity methods, etc.  
+</item>
+
+<item>
+Clean up the parsing of the SOAP text, finding the return node,
+       etc. so that these are just in
+       convertFromSOAP, if possible.
+</item>
+
+<item>
+Different ways of generating code, e.g. to file/connection,
+        as S objects
+</item>
+
+<item>
+ Coercion to the target types in a .SOAP call.
+  <br/> e.g. x = as.integer(x), scalars versus arrays.
+</item>
+
+
+<item>
+Do we need to strip the leading / in the URL of the SOAPServer
+  <br/>
+      From KEGG.wsdl
+        SOAPServer("http://soap.genome.ad.jp/keggapi/request.cgi")@url
+      gives
+        "/keggapi/request.cgi"
+</item>
+
+<item status="done">
+Write an XML Schema parser in R and use that here.
+  <br/>  i.e. separate the schema parsing and the WSDL parsing.
+       <br/>
+        Done some work on using libxml for this. Will
+      proceed  via the RSWIG bindings.
+<br/>
+See <omg:pkg>XMLSchema</omg:pkg> package.
+</item>
+
+<item>
+Check the server$method operations.
+  <br/>  Need to generate the functions accordingly.
+    Also want to allow for having a "live"
+      server connection object which contains the CURL
+      handle. 
+</item>
+
+<item>
+Check:  Code contains support for
+      <ul>
+	<li> arrays with offset and position attributes</li>
+	<li> id and href attributes to reference elements elsewhere in
+	    the data body.</li>
+      </ul>
+       Make certain these work.
+</item>
+</items>
+</topic>
+</topics>

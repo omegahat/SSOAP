@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/1999/XMLSchema" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance">
+  <soapenv:Body>
+   <ns1:getAllExperimentsResponse encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1=ClientConnector>
+    <ns1:getAllExperimentsReturn href="#id0">
+    </ns1:getAllExperimentsReturn>
+   </ns1:getAllExperimentsResponse>
+   <multiRef id="id0" root="0" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" type="ns2:Vector" xmlns:soapenc=http://schemas.xmlsoap.org/soap/encoding/ xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance xmlns:ns2=http://xml.apache.org/xml-soap>
+    <item href="#id1">
+    </item>
+   </multiRef>
+   <multiRef id="id1" root="0" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" type="ns3:ExperimentDTO" xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance xmlns:ns3=urn:ExperimentDTO xmlns:soapenc=http://schemas.xmlsoap.org/soap/encoding/>
+    <addeddate type="ns4:string" null="true" xmlns:ns4=http://www.w3.org/2001/XMLSchema xmlns:xsi=http://www.w3.org/1999/XMLSchema-instance>
+    </addeddate>
+    <description type="ns5:string" null="true" xmlns:ns5=http://www.w3.org/2001/XMLSchema xmlns:xsi=http://www.w3.org/1999/XMLSchema-instance>
+    </description>
+    <experimentannotationDTOs href="#id2">
+    </experimentannotationDTOs>
+    <hybridizationDTOs type="ns6:Vector" null="true" xmlns:ns6=http://xml.apache.org/xml-soap xmlns:xsi=http://www.w3.org/1999/XMLSchema-instance>
+    </hybridizationDTOs>
+    <id type="ns7:long" xmlns:ns7=http://www.w3.org/2001/XMLSchema>
+    361
+    </id>
+    <name type="ns8:string" xmlns:ns8=http://www.w3.org/2001/XMLSchema>
+    test
+    </name>
+    <qcdescription type="ns9:string" null="true" xmlns:ns9=http://www.w3.org/2001/XMLSchema xmlns:xsi=http://www.w3.org/1999/XMLSchema-instance>
+    </qcdescription>
+    <qcdyeswap type="ns10:string" xmlns:ns10=http://www.w3.org/2001/XMLSchema>
+    false
+    </qcdyeswap>
+    <qcreplicatesofslides type="ns11:string" xmlns:ns11=http://www.w3.org/2001/XMLSchema>
+    false
+    </qcreplicatesofslides>
+    <qcreplicatesonarray type="ns12:string" xmlns:ns12=http://www.w3.org/2001/XMLSchema>
+    false
+    </qcreplicatesonarray>
+    <subExperimentsDTOs href="#id3">
+    </subExperimentsDTOs>
+    <submitterDTO href="#id4">
+    </submitterDTO>
+    <userid type="ns13:long" xmlns:ns13=http://www.w3.org/2001/XMLSchema>
+    100
+    </userid>
+   </multiRef>
+   <multiRef id="id4" root="0" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" type="ns14:SubmitterDTO" xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance xmlns:ns14=urn:SubmitterDTO xmlns:soapenc=http://schemas.xmlsoap.org/soap/encoding/>
+    <address type="ns15:string" xmlns:ns15=http://www.w3.org/2001/XMLSchema>
+    maurer
+    </address>
+    <description type="ns16:string" xmlns:ns16=http://www.w3.org/2001/XMLSchema>
+    not available
+    </description>
+    <email type="ns17:string" xmlns:ns17=http://www.w3.org/2001/XMLSchema>
+    michael.maurer@tugraz.at
+    </email>
+    <fax type="ns18:string" xmlns:ns18=http://www.w3.org/2001/XMLSchema>
+    not available
+    </fax>
+    <fullname type="ns19:string" xmlns:ns19=http://www.w3.org/2001/XMLSchema>
+    Michael Maurer
+    </fullname>
+    <phone type="ns20:string" xmlns:ns20=http://www.w3.org/2001/XMLSchema>
+    not available
+    </phone>
+    <username type="ns21:string" xmlns:ns21=http://www.w3.org/2001/XMLSchema>
+    maurer
+    </username>
+   </multiRef>
+   <multiRef id="id3" root="0" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" type="ns22:Vector" xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance xmlns:ns22=http://xml.apache.org/xml-soap xmlns:soapenc=http://schemas.xmlsoap.org/soap/encoding/>
+   </multiRef>
+   <multiRef id="id2" root="0" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" type="ns23:Vector" xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance xmlns:ns23=http://xml.apache.org/xml-soap xmlns:soapenc=http://schemas.xmlsoap.org/soap/encoding/>
+    <item href="#id5">
+    </item>
+   </multiRef>
+   <multiRef id="id5" root="0" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" type="ns24:ExperimentannotationDTO" xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance xmlns:ns24=urn:ExperimentannotationDTO xmlns:soapenc=http://schemas.xmlsoap.org/soap/encoding/>
+    <annotation type="ns25:string" xmlns:ns25=http://www.w3.org/2001/XMLSchema>
+    genetic_modification_design
+    </annotation>
+    <annotationClass type="ns26:string" xmlns:ns26=http://www.w3.org/2001/XMLSchema>
+    PerturbationalDesign
+    </annotationClass>
+    <id type="ns27:long" xmlns:ns27=http://www.w3.org/2001/XMLSchema>
+    505
+    </id>
+   </multiRef>
+  </soapenv:Body>
+ </soapenv:Envelope>
+
+
+

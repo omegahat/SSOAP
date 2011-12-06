@@ -1,0 +1,48 @@
+* Get KEGG processing working again
+error
+1: genSOAPClientInterface(def = kegg)
+2: createTypeClass(i, def@types, where = where)
+3: createClassRepresentation(type$definition, types)
+4: mapSOAPTypeToS(type@slotTypes[[i]], types)
+5: sapply(SOAPTypes, function(x) x["type"] == type@name)
+6: lapply(as.list(X), FUN, ...)
+7: FUN(X[[1]], ...)
+
+
+Created a PrimitiveSOAPType object when we are dealing with 
+  an XML element with an "all" in processWSDLType.
+ XXX Done in getSOAPType().   Needs to be generalized.
+
+
+  Need an object returned in the element-wise processing of 
+         processSchemaTypes
+
+    processWSDLType
+
+
+
+* Class definitions   from the Axis generated WSDL
+
+  processSchemaTypes
+  processWSDLTypes
+
+ Is it working now?  Handling complexType.
+
+
+* Use the encoding/namespaces defined from the WSDL in the generated code.
+  e.g. the schema
+  e.g. the output from SOAPNameSpaces()
+
+* Deal with import of schemas. See KEGG.wsdl
+
+
+* Ability to specify a C routine to do the conversion
+  especially of the return value.
+
+   Two methods:  base 64 encoding in the body
+                 or as an emal attachment.
+
+
+
+* Get the port number version
+   Use parseURI from XML package. Added for this.

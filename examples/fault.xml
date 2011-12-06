@@ -1,0 +1,6 @@
+<soap:Body>
+ <soap:Fault>
+   <faultcode>soap:Server</faultcode>
+   <faultstring>Server Error</faultstring>
+ </soap:Fault>
+</soap:Body>

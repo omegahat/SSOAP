@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<s:schema targetNamespace="http://www.ncbi.nlm.nih.gov/soap/eutils/esummary" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.ncbi.nlm.nih.gov/soap/eutils/esummary" elementFormDefault="qualified">
+
+	<!--   version="1.5"  -->
+	<!--   http://www.ncbi.nlm.nih.gov/entrez/query/DTD/eSummary_041029.dtd  -->
+
+	<s:complexType name="DocSumType">
+		<s:sequence>
+			<s:element ref="tns:Id"/>
+			<s:element name="Item" type="tns:ItemType" maxOccurs="unbounded"/>
+		</s:sequence>
+	</s:complexType>
+	<s:element name="ERROR" type="s:string"/>
+	<s:element name="Id" type="s:string"/>
+	<s:complexType name="ItemType" mixed="true">
+		<s:choice minOccurs="0" maxOccurs="unbounded">
+			<s:element name="Item" type="tns:ItemType"/>
+		</s:choice>
+		<s:attribute name="Name" type="s:string" use="required"/>
+		<s:attribute name="Type" use="required">
+			<s:simpleType>
+				<s:restriction base="s:NMTOKEN">
+					<s:enumeration value="Integer"/>
+					<s:enumeration value="Date"/>
+					<s:enumeration value="String"/>
+					<s:enumeration value="Structure"/>
+					<s:enumeration value="List"/>
+					<s:enumeration value="Flags"/>
+					<s:enumeration value="Qualifier"/>
+					<s:enumeration value="Enumerator"/>
+					<s:enumeration value="Unknown"/>
+				</s:restriction>
+			</s:simpleType>
+		</s:attribute>
+	</s:complexType>
+	<s:element name="eSummaryResult">
+		<s:complexType>
+			<s:sequence>
+				<s:element ref="tns:ERROR" minOccurs="0"/>
+				<s:element name="DocSum" type="tns:DocSumType" minOccurs="0" maxOccurs="unbounded"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:element name="eSummaryRequest">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="db" type="s:string" minOccurs="0"/>
+				<s:element name="id" type="s:string" minOccurs="0"/>
+				<s:element name="WebEnv" type="s:string" minOccurs="0"/>
+				<s:element name="query_key" type="s:string" minOccurs="0"/>
+				<s:element name="retstart" type="s:string" minOccurs="0"/>
+				<s:element name="retmax" type="s:string" minOccurs="0"/>
+				<s:element name="tool" type="s:string" minOccurs="0"/>
+				<s:element name="email" type="s:string" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:element name="eSummaryRequestMS">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="db" type="s:string" minOccurs="0"/>
+				<s:element name="id" type="s:string" minOccurs="0"/>
+				<s:element name="WebEnv" type="s:string" minOccurs="0"/>
+				<s:element name="query_key" type="s:string" minOccurs="0"/>
+				<s:element name="retstart" type="s:string" minOccurs="0"/>
+				<s:element name="retmax" type="s:string" minOccurs="0"/>
+				<s:element name="tool" type="s:string" minOccurs="0"/>
+				<s:element name="email" type="s:string" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:complexType name="eSummaryResultType">
+		<s:sequence>
+			<s:element ref="tns:ERROR" minOccurs="0"/>
+			<s:element name="DocSum" type="tns:DocSumType" minOccurs="0" maxOccurs="unbounded"/>
+		</s:sequence>
+	</s:complexType>
+	<s:element name="eSummaryResultMS">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="eSummaryResult" type="tns:eSummaryResultType" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+</s:schema>

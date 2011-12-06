@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+
+<article xmlns:s="http://cm.bell-labs.com/stat/S4">
+
+<para>
+<s:func>processWSDL</s:func> is the primary entry point.  It makes
+sense of the (first) service provider in the service node and then
+gets the operations for that service.
+It looks in the portType node for these.
+It makes sense of the data types in the 
+types node which contains one or more schema.
+For the most part, we
+are doing simple book-keeping.
+We find the operations of interest
+and for each operation, we look up the  input and output messages.
+These identify the parameters and return value
+for the operation.
+Within a message, it is the part nodes we are interested.
+These identify the name of the parameter or return value
+and within these nodes, we identify the type of the object.
+</para>
+<para>
+
+The processing of the types in the schema is perhaps the most complex
+part of dealing with the WSDL.  The schema specification is quite
+general and there are entire books on this one topic.  So the number
+of different cases we have to deal with is quite large.
+</para>
+
+<ignore>
+<s:code>
+kegg = processWSDL("examples/KEGG.wsdl")
+</s:code>
+
+For KEGG, we have 50 operations
+
+
+When we have a return type, we look it up
+in the collection of types for the WSDL
+to see if it is handled there.
+For example for 
+get_all_neighbors_by_gene
+(ops[[1]])
+we have 
+ops[[1]]@returnValue
+
+An object of class "SOAPTypeReference"
+Slot "name":
+[1] "SSDBResultArray"
+
+Slot "ns":
+[1] "typens"
+
+Slot "nsuri":
+[1] ""
+
+Call this rv.
+
+We find this in kegg@types[[rv@name]]
+</ignore>
+
+</article>
+

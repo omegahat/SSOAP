@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.4-hudson-208-. --><xs:schema xmlns:tns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/metadatareport" xmlns:ns1="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/metadatareport">
+
+<xs:import namespace="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" schemaLocation="http://sdw-ws.ecb.europa.eu:80/services/SDMXQuery?xsd=3" />
+
+<xs:element name="MetadataSet" nillable="true" type="tns:MetadataSetType" />
+
+<xs:complexType name="MetadataSetType">
+<xs:sequence>
+<xs:element name="MetadataStructureRef" type="xs:string" form="qualified" />
+<xs:element name="MetadataStructureAgencyRef" type="xs:string" form="qualified" />
+<xs:element name="Version" type="xs:string" form="qualified" minOccurs="0" />
+</xs:sequence>
+<xs:attribute name="MetadataStructureURI" type="xs:anyURI" />
+<xs:attribute name="datasetID" type="xs:string" />
+<xs:attribute name="dataProviderSchemeAgencyId" type="xs:string" />
+<xs:attribute name="dataProviderSchemeId" type="xs:string" />
+<xs:attribute name="dataProviderID" type="xs:string" />
+<xs:attribute name="dataflowAgencyID" type="xs:string" />
+<xs:attribute name="dataflowID" type="xs:string" />
+<xs:attribute name="action" type="ns1:ActionType" />
+<xs:attribute name="reportingBeginDate" type="xs:string" />
+<xs:attribute name="reportingEndDate" type="xs:string" />
+<xs:attribute name="validFromDate" type="xs:string" />
+<xs:attribute name="validToDate" type="xs:string" />
+<xs:attribute name="publicationYear" type="xs:gYear" />
+<xs:attribute name="publicationPeriod" type="xs:string" />
+</xs:complexType>
+</xs:schema>

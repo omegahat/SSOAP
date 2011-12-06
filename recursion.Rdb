@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<article xmlns:r="http://www.r-project.org"
+         xmlns:xi="http://www.w3.org/2003/XInclude">
+
+<articleinfo>
+
+<title>Circularities in Class Definitions</title>
+
+<author><firstname>Duncan</firstname><surname>Temple Lang</surname>
+  <affiliation><orgname>University of California at Davis</orgname>
+               <orgdiv>Department of Statistics</orgdiv>
+  </affiliation>
+</author>
+</articleinfo>
+
+<section>
+<title></title>
+
+<para>
+This discusses an issue with recursion for class definitions in 
+XML schema. In the European Open Patent schema (ops.wsdl/ops.xsd),
+there is a type named iType. This consists of 0 or more 
+elements named <xml:tag>b</xml:tag>, <xml:tag>u</xml:tag> or <xml:tag>smallcaps</xml:tag>
+and similarly named types.
+Now bType is defined as a complexType which consists of 0 or more
+<xml:tag>i</xml:tag>, <xml:tag>u</xml:tag> and <xml:tag>smallcaps</xml:tag>
+elements and, of course, <xml:tag>i</xml:tag> is defined to be of type iType.
+Similarly, uType and smallcapsType are defined as containing an iType. 
+So an iType depends on bType, uType and smallcapsType which are all defined in terms of iType.
+</para>
+<para>
+When we define a class in R, we specify the types for its slots.
+These slot classes do not have to be defined at the time the class
+is being defined. 
+So 
+<r:code>
+setClass("Foo", representation(a = "Foo"))
+</r:code>
+works reasonably well, in spite of the warning:
+<r:code>
+bob = new("Foo")
+bob@a # NULL
+bob@a = new("Foo")
+</r:code>
+Note that the default value for the slot <r:slot>a</r:slot> is <r:null/> and not an instance of <r:class>Foo</r:class>.
+Unfortunately we cannot easily set a prototype, although we can by finding the location of the class
+definition and setting the prototype slot and reassigning the definition to that location.
+<r:code eval="false">					       <!-- Doesn't work. -->
+setClass("Bar", representation(a = "Bar"))
+d = getClass("Bar")
+d@prototype = prototype(a = new("Bar"))
+assignClassDef("Bar", d, findClass("Bar")[[1]])
+</r:code>
+</para>
+
+<para>
+Our problem is that we are defining a ClassUnion corresponding to iType
+which would be a ClassUnion of the three classes bType, uType and smallcapsType.
+When defining a ClassUnion, the individual classes must already be defined.
+If we try to do this, we end up trying to define bType which brings us back to defining iType.
+In our code, to define that bType, we will try to define another ClassUnion and that will try
+to define iType. In this way, we descend into a recursive hole.
+</para>
+
+<para>
+The basic idea of each of these types is to allow text and/or formatted text.
+(The mixed="true" in the XML definition allows for the strings/text.)
+So we would allow
+<programlisting><![CDATA[
+<i>This is italicised <b>text with bold</b> and <smallcaps>text with 
+both <i>italic</i> and <i><b>bold-italics</b></i></smallcaps></i>
+]]></programlisting>
+
+</para>
+
+<para>
+One approach is to define an abstract class that represents all of these different types.
+These are formatting types so let's call this FormattingType.
+If we arrange for iType, bType, uType and smallcapsType to be derived from this type
+then we don't need to deal with a ClassUnion.
+</para>
+<para>
+In this case, we can go further and define FormattingType as the generic
+version of each of iType, bType, uType and smallcapsType that is a list.
+We can make it extend list and so contain an arbitrary number of any of these elements.
+<r:code>
+setClassUnion("FormattingTypeOrString", c("character", "list"))
+setClass("FormattingType", contains = "list")
+setValidity("FormattingType", function(object) {
+               w = sapply(object, function(x) is(x, "character") || is(x, "iType") || is(x, "bType") || is(x, "uType") || is(x, "smallcapsType"))
+               if(!all(w)) 
+                 paste(sum(w), "elements are not of the correct types:", 
+                       paste(sapply(object[!w], class), collapse = ", "))
+               else
+                  TRUE
+            })
+
+setClass("iType", contains = "FormattingType")
+setClass("bType", contains = "FormattingType")
+setClass("uType", contains = "FormattingType")
+setClass("smallcapsType", contains = "FormattingType")
+</r:code>
+We can then create an instance of any of these classes
+<r:code>
+eg = new("iType", list("This is italicised",
+                       new("bType", "text with bold"),
+                       "and", 
+                       new("smallcapsType", list("text with both", 
+                                                 new("iType", "italic"), 
+                                                 "and", 
+                                                 new("iType", new("bType", "bold-italics"))))))
+</r:code>
+<r:code>
+eg = new("bType", list("This is italicised",
+                       new("iType", "text with bold"),
+                       "and", 
+                       new("smallcapsType", list("text with both", 
+                                                 new("iType", "italic"), 
+                                                 "and", 
+                                                 new("iType", new("bType", "bold-italics"))))))
+</r:code>
+</para>
+<para>
+If we didn't use S4 classes but simple lists, all would be fine.
+</para>
+<para>
+
+</para>
+
+</section>
+
+<section>
+<title>The General Approach</title>
+
+<para>
+When we read the types in a schema, we check for (direct) circular
+dependencies.  We store these in the <r:slot>circularDefs</r:slot>.
+We should then find references to these classes and replace them with
+an instance of <r:class>CrossRefType</r:class> to identify this as
+special. This CrossRefType object will have the name of a new
+intermediate base class that will be used as the base for both.  We
+can insert the CrossRefType after we have identified the
+classes. Alternatively, we can insert them during calls to
+<r:func>resolve</r:func>.  (It is slightly easier to do this.)
+</para>
+
+<para>
+Let's not insert the CrossRefType directly, but  leave it to <r:func>resolve</r:func>.
+We'll arrange for the resolve method for SOAPTypeReference, SchemaCollection
+to  catch ns:name that correspond to one of our circular references.
+We can then return a CrossRefType.
+</para>
+<para>
+There are two different occasions when we have to resolve one of these
+cross-reference types.  The first is when we are explicitly defining
+the type. In that case, we have to define the virtual class and then
+the actual type.  For this case, we need to resolve the actual type.
+The second case is where we need to refer to that type when defining
+another class, e.g. as the base class or as a slot.  For the base
+class, we can use the class directly by name.  For defining a slot, we
+have to determine if this is a direct cross-reference, e.g. if we are
+defining description and have a slot of type bibliography.  If it is,
+we use our virtual base class from which they both in our earlier
+example.
+
+</para>
+<para>
+Of course, the way we define these classes allows, for example, a
+description to be a slot in a description object rather than insisting
+it be a bibliography object.  To deal with this, we can establish a
+validity method to verify the contents of the object.
+
+
+</para>
+
+
+<para>
+For the EPO exchange types, we have uType, bType,iType and smallcapsType 
+in a series of cross-referenced types. 
+In each of these, we have a sequence of contained elements of
+any of the other types.  So again, we can actually just
+use a validity method to ensure that the elements are correct.
+</para>
+
+</section>
+
+</article>

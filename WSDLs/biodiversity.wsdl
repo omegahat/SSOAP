@@ -1,0 +1,1478 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://biodiversitylibrary.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://biodiversitylibrary.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://biodiversitylibrary.org/">
+      <s:element name="NameCount">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NameCountResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NameCountResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NameCountBetweenDates">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="startDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="endDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NameCountBetweenDatesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NameCountBetweenDatesResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NameGetDetailForNameBankID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="nameBankID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NameGetDetailForNameBankIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="NameGetDetailForNameBankIDResult" type="tns:Name" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Name">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DataObjectBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="NameBankID" nillable="true" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="NameFound" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="NameConfirmed" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Titles" type="tns:ArrayOfTitle" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="DataObjectBase" />
+      <s:complexType name="PageNumber">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DataObjectBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Prefix" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Number" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="PageType">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DataObjectBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="PageTypeName" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Page">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DataObjectBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="PageID" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="ItemID" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Volume" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Issue" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Year" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PageUrl" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="ThumbnailUrl" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="FullSizeImageUrl" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="OcrUrl" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="OcrText" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PageTypes" type="tns:ArrayOfPageType" />
+              <s:element minOccurs="0" maxOccurs="1" name="PageNumbers" type="tns:ArrayOfPageNumber" />
+              <s:element minOccurs="0" maxOccurs="1" name="Names" type="tns:ArrayOfName" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfPageType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PageType" nillable="true" type="tns:PageType" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPageNumber">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PageNumber" nillable="true" type="tns:PageNumber" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfName">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Name" nillable="true" type="tns:Name" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Item">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DataObjectBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="ItemID" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="PrimaryTitleID" nillable="true" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="ThumbnailPageID" nillable="true" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Source" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="SourceIdentifier" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Volume" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Year" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Contributor" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Sponsor" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Language" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="LicenseUrl" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Rights" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DueDiligence" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="CopyrightStatus" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="CopyrightRegion" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="ItemUrl" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="TitleUrl" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="ItemThumbUrl" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Pages" type="tns:ArrayOfPage" />
+              <s:element minOccurs="0" maxOccurs="1" name="Collections" type="tns:ArrayOfCollection" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfPage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Page" nillable="true" type="tns:Page" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCollection">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Collection" nillable="true" type="tns:Collection" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Collection">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DataObjectBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="CollectionID" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="CollectionName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="CollectionDescription" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="CanContainTitles" nillable="true" type="s:short" />
+              <s:element minOccurs="1" maxOccurs="1" name="CanContainItems" nillable="true" type="s:short" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="TitleVariant">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DataObjectBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="TitleVariantTypeName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="TitleIdentifier">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DataObjectBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="IdentifierName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="IdentifierValue" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Subject">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DataObjectBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="SubjectText" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Creator">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DataObjectBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="CreatorID" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Role" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Numeration" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Unit" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Location" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="FullerForm" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Dates" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="CreatorUrl" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Title">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DataObjectBase">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="TitleID" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="BibliographicLevel" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="FullTitle" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="ShortTitle" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="SortTitle" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PartNumber" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PartName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="CallNumber" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Edition" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PublisherPlace" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PublisherName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PublicationDate" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PublicationFrequency" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="TitleUrl" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Authors" type="tns:ArrayOfCreator" />
+              <s:element minOccurs="0" maxOccurs="1" name="Subjects" type="tns:ArrayOfSubject" />
+              <s:element minOccurs="0" maxOccurs="1" name="Identifiers" type="tns:ArrayOfTitleIdentifier" />
+              <s:element minOccurs="0" maxOccurs="1" name="Collections" type="tns:ArrayOfCollection" />
+              <s:element minOccurs="0" maxOccurs="1" name="Variants" type="tns:ArrayOfTitleVariant" />
+              <s:element minOccurs="0" maxOccurs="1" name="Items" type="tns:ArrayOfItem" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfCreator">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Creator" nillable="true" type="tns:Creator" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfSubject">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Subject" nillable="true" type="tns:Subject" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfTitleIdentifier">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="TitleIdentifier" nillable="true" type="tns:TitleIdentifier" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfTitleVariant">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="TitleVariant" nillable="true" type="tns:TitleVariant" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Item" nillable="true" type="tns:Item" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfTitle">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Title" nillable="true" type="tns:Title" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="NameGetDetailForName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="nameConfirmed" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NameGetDetailForNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="NameGetDetailForNameResult" type="tns:Name" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NameList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="startRow" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="batchSize" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NameListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="NameListResult" type="tns:ArrayOfName" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NameListBetweenDates">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="startRow" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="batchSize" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="startDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="endDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NameListBetweenDatesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="NameListBetweenDatesResult" type="tns:ArrayOfName" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NameSearch">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NameSearchResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="NameSearchResult" type="tns:ArrayOfName" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPageMetadata">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pageID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="includeOcr" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="includeNames" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPageMetadataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPageMetadataResult" type="tns:Page" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPageOcrText">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pageID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPageOcrTextResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPageOcrTextResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPageNames">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pageID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPageNamesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPageNamesResult" type="tns:ArrayOfName" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetItemMetadata">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="itemID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="includePages" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetItemMetadataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetItemMetadataResult" type="tns:Item" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetItemByIdentifier">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="identifierType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="identifierValue" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetItemByIdentifierResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetItemByIdentifierResult" type="tns:ArrayOfItem" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetItemPages">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="itemID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetItemPagesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetItemPagesResult" type="tns:ArrayOfPage" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUnpublishedItems">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUnpublishedItemsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUnpublishedItemsResult" type="tns:ArrayOfItem" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTitleMetadata">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="titleID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="includeItems" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTitleMetadataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTitleMetadataResult" type="tns:Title" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTitleItems">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="titleID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTitleItemsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTitleItemsResult" type="tns:ArrayOfItem" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTitleByIdentifier">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="identifierType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="identifierValue" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTitleByIdentifierResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTitleByIdentifierResult" type="tns:ArrayOfTitle" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TitleSearchSimple">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="title" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TitleSearchSimpleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TitleSearchSimpleResult" type="tns:ArrayOfTitle" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTitleBibTex">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="titleID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTitleBibTexResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTitleBibTexResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTitleEndNote">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="titleID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTitleEndNoteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTitleEndNoteResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUnpublishedTitles">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUnpublishedTitlesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUnpublishedTitlesResult" type="tns:ArrayOfTitle" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubjectSearch">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="subject" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubjectSearchResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SubjectSearchResult" type="tns:ArrayOfSubject" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSubjectTitles">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="subject" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSubjectTitlesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSubjectTitlesResult" type="tns:ArrayOfTitle" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AuthorSearch">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AuthorSearchResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AuthorSearchResult" type="tns:ArrayOfCreator" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAuthorTitles">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="creatorID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAuthorTitlesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAuthorTitlesResult" type="tns:ArrayOfTitle" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLanguages">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLanguagesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLanguagesResult" type="tns:ArrayOfLanguage" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfLanguage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Language" nillable="true" type="tns:Language" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Language">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:DataObjectBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="LanguageCode" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="LanguageName" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="GetCollections">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCollectionsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCollectionsResult" type="tns:ArrayOfCollection" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BookSearch">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="title" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authorLastName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="volume" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="edition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="year" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="languageCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="collectionID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="apiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BookSearchResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BookSearchResult" type="tns:ArrayOfTitle" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="NameCountSoapIn">
+    <wsdl:part name="parameters" element="tns:NameCount" />
+  </wsdl:message>
+  <wsdl:message name="NameCountSoapOut">
+    <wsdl:part name="parameters" element="tns:NameCountResponse" />
+  </wsdl:message>
+  <wsdl:message name="NameCountBetweenDatesSoapIn">
+    <wsdl:part name="parameters" element="tns:NameCountBetweenDates" />
+  </wsdl:message>
+  <wsdl:message name="NameCountBetweenDatesSoapOut">
+    <wsdl:part name="parameters" element="tns:NameCountBetweenDatesResponse" />
+  </wsdl:message>
+  <wsdl:message name="NameGetDetailForNameBankIDSoapIn">
+    <wsdl:part name="parameters" element="tns:NameGetDetailForNameBankID" />
+  </wsdl:message>
+  <wsdl:message name="NameGetDetailForNameBankIDSoapOut">
+    <wsdl:part name="parameters" element="tns:NameGetDetailForNameBankIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="NameGetDetailForNameSoapIn">
+    <wsdl:part name="parameters" element="tns:NameGetDetailForName" />
+  </wsdl:message>
+  <wsdl:message name="NameGetDetailForNameSoapOut">
+    <wsdl:part name="parameters" element="tns:NameGetDetailForNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="NameListSoapIn">
+    <wsdl:part name="parameters" element="tns:NameList" />
+  </wsdl:message>
+  <wsdl:message name="NameListSoapOut">
+    <wsdl:part name="parameters" element="tns:NameListResponse" />
+  </wsdl:message>
+  <wsdl:message name="NameListBetweenDatesSoapIn">
+    <wsdl:part name="parameters" element="tns:NameListBetweenDates" />
+  </wsdl:message>
+  <wsdl:message name="NameListBetweenDatesSoapOut">
+    <wsdl:part name="parameters" element="tns:NameListBetweenDatesResponse" />
+  </wsdl:message>
+  <wsdl:message name="NameSearchSoapIn">
+    <wsdl:part name="parameters" element="tns:NameSearch" />
+  </wsdl:message>
+  <wsdl:message name="NameSearchSoapOut">
+    <wsdl:part name="parameters" element="tns:NameSearchResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPageMetadataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPageMetadata" />
+  </wsdl:message>
+  <wsdl:message name="GetPageMetadataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPageMetadataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPageOcrTextSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPageOcrText" />
+  </wsdl:message>
+  <wsdl:message name="GetPageOcrTextSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPageOcrTextResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPageNamesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPageNames" />
+  </wsdl:message>
+  <wsdl:message name="GetPageNamesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPageNamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetItemMetadataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetItemMetadata" />
+  </wsdl:message>
+  <wsdl:message name="GetItemMetadataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetItemMetadataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetItemByIdentifierSoapIn">
+    <wsdl:part name="parameters" element="tns:GetItemByIdentifier" />
+  </wsdl:message>
+  <wsdl:message name="GetItemByIdentifierSoapOut">
+    <wsdl:part name="parameters" element="tns:GetItemByIdentifierResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetItemPagesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetItemPages" />
+  </wsdl:message>
+  <wsdl:message name="GetItemPagesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetItemPagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUnpublishedItemsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUnpublishedItems" />
+  </wsdl:message>
+  <wsdl:message name="GetUnpublishedItemsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUnpublishedItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTitleMetadataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTitleMetadata" />
+  </wsdl:message>
+  <wsdl:message name="GetTitleMetadataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTitleMetadataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTitleItemsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTitleItems" />
+  </wsdl:message>
+  <wsdl:message name="GetTitleItemsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTitleItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTitleByIdentifierSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTitleByIdentifier" />
+  </wsdl:message>
+  <wsdl:message name="GetTitleByIdentifierSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTitleByIdentifierResponse" />
+  </wsdl:message>
+  <wsdl:message name="TitleSearchSimpleSoapIn">
+    <wsdl:part name="parameters" element="tns:TitleSearchSimple" />
+  </wsdl:message>
+  <wsdl:message name="TitleSearchSimpleSoapOut">
+    <wsdl:part name="parameters" element="tns:TitleSearchSimpleResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTitleBibTexSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTitleBibTex" />
+  </wsdl:message>
+  <wsdl:message name="GetTitleBibTexSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTitleBibTexResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTitleEndNoteSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTitleEndNote" />
+  </wsdl:message>
+  <wsdl:message name="GetTitleEndNoteSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTitleEndNoteResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUnpublishedTitlesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUnpublishedTitles" />
+  </wsdl:message>
+  <wsdl:message name="GetUnpublishedTitlesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUnpublishedTitlesResponse" />
+  </wsdl:message>
+  <wsdl:message name="SubjectSearchSoapIn">
+    <wsdl:part name="parameters" element="tns:SubjectSearch" />
+  </wsdl:message>
+  <wsdl:message name="SubjectSearchSoapOut">
+    <wsdl:part name="parameters" element="tns:SubjectSearchResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSubjectTitlesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSubjectTitles" />
+  </wsdl:message>
+  <wsdl:message name="GetSubjectTitlesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSubjectTitlesResponse" />
+  </wsdl:message>
+  <wsdl:message name="AuthorSearchSoapIn">
+    <wsdl:part name="parameters" element="tns:AuthorSearch" />
+  </wsdl:message>
+  <wsdl:message name="AuthorSearchSoapOut">
+    <wsdl:part name="parameters" element="tns:AuthorSearchResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAuthorTitlesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAuthorTitles" />
+  </wsdl:message>
+  <wsdl:message name="GetAuthorTitlesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAuthorTitlesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetLanguagesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLanguages" />
+  </wsdl:message>
+  <wsdl:message name="GetLanguagesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLanguagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCollectionsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCollections" />
+  </wsdl:message>
+  <wsdl:message name="GetCollectionsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCollectionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="BookSearchSoapIn">
+    <wsdl:part name="parameters" element="tns:BookSearch" />
+  </wsdl:message>
+  <wsdl:message name="BookSearchSoapOut">
+    <wsdl:part name="parameters" element="tns:BookSearchResponse" />
+  </wsdl:message>
+  <wsdl:portType name="soapSoap">
+    <wsdl:operation name="NameCount">
+      <wsdl:input message="tns:NameCountSoapIn" />
+      <wsdl:output message="tns:NameCountSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NameCountBetweenDates">
+      <wsdl:input message="tns:NameCountBetweenDatesSoapIn" />
+      <wsdl:output message="tns:NameCountBetweenDatesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NameGetDetailForNameBankID">
+      <wsdl:input message="tns:NameGetDetailForNameBankIDSoapIn" />
+      <wsdl:output message="tns:NameGetDetailForNameBankIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NameGetDetailForName">
+      <wsdl:input message="tns:NameGetDetailForNameSoapIn" />
+      <wsdl:output message="tns:NameGetDetailForNameSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NameList">
+      <wsdl:input message="tns:NameListSoapIn" />
+      <wsdl:output message="tns:NameListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NameListBetweenDates">
+      <wsdl:input message="tns:NameListBetweenDatesSoapIn" />
+      <wsdl:output message="tns:NameListBetweenDatesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NameSearch">
+      <wsdl:input message="tns:NameSearchSoapIn" />
+      <wsdl:output message="tns:NameSearchSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPageMetadata">
+      <wsdl:input message="tns:GetPageMetadataSoapIn" />
+      <wsdl:output message="tns:GetPageMetadataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPageOcrText">
+      <wsdl:input message="tns:GetPageOcrTextSoapIn" />
+      <wsdl:output message="tns:GetPageOcrTextSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPageNames">
+      <wsdl:input message="tns:GetPageNamesSoapIn" />
+      <wsdl:output message="tns:GetPageNamesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetItemMetadata">
+      <wsdl:input message="tns:GetItemMetadataSoapIn" />
+      <wsdl:output message="tns:GetItemMetadataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetItemByIdentifier">
+      <wsdl:input message="tns:GetItemByIdentifierSoapIn" />
+      <wsdl:output message="tns:GetItemByIdentifierSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetItemPages">
+      <wsdl:input message="tns:GetItemPagesSoapIn" />
+      <wsdl:output message="tns:GetItemPagesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUnpublishedItems">
+      <wsdl:input message="tns:GetUnpublishedItemsSoapIn" />
+      <wsdl:output message="tns:GetUnpublishedItemsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleMetadata">
+      <wsdl:input message="tns:GetTitleMetadataSoapIn" />
+      <wsdl:output message="tns:GetTitleMetadataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleItems">
+      <wsdl:input message="tns:GetTitleItemsSoapIn" />
+      <wsdl:output message="tns:GetTitleItemsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleByIdentifier">
+      <wsdl:input message="tns:GetTitleByIdentifierSoapIn" />
+      <wsdl:output message="tns:GetTitleByIdentifierSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TitleSearchSimple">
+      <wsdl:input message="tns:TitleSearchSimpleSoapIn" />
+      <wsdl:output message="tns:TitleSearchSimpleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleBibTex">
+      <wsdl:input message="tns:GetTitleBibTexSoapIn" />
+      <wsdl:output message="tns:GetTitleBibTexSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleEndNote">
+      <wsdl:input message="tns:GetTitleEndNoteSoapIn" />
+      <wsdl:output message="tns:GetTitleEndNoteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUnpublishedTitles">
+      <wsdl:input message="tns:GetUnpublishedTitlesSoapIn" />
+      <wsdl:output message="tns:GetUnpublishedTitlesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SubjectSearch">
+      <wsdl:input message="tns:SubjectSearchSoapIn" />
+      <wsdl:output message="tns:SubjectSearchSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSubjectTitles">
+      <wsdl:input message="tns:GetSubjectTitlesSoapIn" />
+      <wsdl:output message="tns:GetSubjectTitlesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AuthorSearch">
+      <wsdl:input message="tns:AuthorSearchSoapIn" />
+      <wsdl:output message="tns:AuthorSearchSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAuthorTitles">
+      <wsdl:input message="tns:GetAuthorTitlesSoapIn" />
+      <wsdl:output message="tns:GetAuthorTitlesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLanguages">
+      <wsdl:input message="tns:GetLanguagesSoapIn" />
+      <wsdl:output message="tns:GetLanguagesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCollections">
+      <wsdl:input message="tns:GetCollectionsSoapIn" />
+      <wsdl:output message="tns:GetCollectionsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BookSearch">
+      <wsdl:input message="tns:BookSearchSoapIn" />
+      <wsdl:output message="tns:BookSearchSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="soapSoap" type="tns:soapSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="NameCount">
+      <soap:operation soapAction="http://biodiversitylibrary.org/NameCount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NameCountBetweenDates">
+      <soap:operation soapAction="http://biodiversitylibrary.org/NameCountBetweenDates" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NameGetDetailForNameBankID">
+      <soap:operation soapAction="http://biodiversitylibrary.org/NameGetDetailForNameBankID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NameGetDetailForName">
+      <soap:operation soapAction="http://biodiversitylibrary.org/NameGetDetailForName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NameList">
+      <soap:operation soapAction="http://biodiversitylibrary.org/NameList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NameListBetweenDates">
+      <soap:operation soapAction="http://biodiversitylibrary.org/NameListBetweenDates" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NameSearch">
+      <soap:operation soapAction="http://biodiversitylibrary.org/NameSearch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPageMetadata">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetPageMetadata" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPageOcrText">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetPageOcrText" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPageNames">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetPageNames" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetItemMetadata">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetItemMetadata" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetItemByIdentifier">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetItemByIdentifier" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetItemPages">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetItemPages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUnpublishedItems">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetUnpublishedItems" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleMetadata">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetTitleMetadata" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleItems">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetTitleItems" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleByIdentifier">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetTitleByIdentifier" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TitleSearchSimple">
+      <soap:operation soapAction="http://biodiversitylibrary.org/TitleSearchSimple" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleBibTex">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetTitleBibTex" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleEndNote">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetTitleEndNote" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUnpublishedTitles">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetUnpublishedTitles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubjectSearch">
+      <soap:operation soapAction="http://biodiversitylibrary.org/SubjectSearch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSubjectTitles">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetSubjectTitles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthorSearch">
+      <soap:operation soapAction="http://biodiversitylibrary.org/AuthorSearch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAuthorTitles">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetAuthorTitles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLanguages">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetLanguages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCollections">
+      <soap:operation soapAction="http://biodiversitylibrary.org/GetCollections" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BookSearch">
+      <soap:operation soapAction="http://biodiversitylibrary.org/BookSearch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="soapSoap12" type="tns:soapSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="NameCount">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/NameCount" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NameCountBetweenDates">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/NameCountBetweenDates" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NameGetDetailForNameBankID">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/NameGetDetailForNameBankID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NameGetDetailForName">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/NameGetDetailForName" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NameList">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/NameList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NameListBetweenDates">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/NameListBetweenDates" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NameSearch">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/NameSearch" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPageMetadata">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetPageMetadata" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPageOcrText">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetPageOcrText" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPageNames">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetPageNames" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetItemMetadata">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetItemMetadata" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetItemByIdentifier">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetItemByIdentifier" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetItemPages">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetItemPages" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUnpublishedItems">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetUnpublishedItems" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleMetadata">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetTitleMetadata" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleItems">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetTitleItems" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleByIdentifier">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetTitleByIdentifier" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TitleSearchSimple">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/TitleSearchSimple" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleBibTex">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetTitleBibTex" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTitleEndNote">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetTitleEndNote" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUnpublishedTitles">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetUnpublishedTitles" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubjectSearch">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/SubjectSearch" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSubjectTitles">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetSubjectTitles" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthorSearch">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/AuthorSearch" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAuthorTitles">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetAuthorTitles" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLanguages">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetLanguages" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCollections">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/GetCollections" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BookSearch">
+      <soap12:operation soapAction="http://biodiversitylibrary.org/BookSearch" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="soap">
+    <wsdl:port name="soapSoap" binding="tns:soapSoap">
+      <soap:address location="http://www.biodiversitylibrary.org/api2/soap.asmx" />
+    </wsdl:port>
+    <wsdl:port name="soapSoap12" binding="tns:soapSoap12">
+      <soap12:address location="http://www.biodiversitylibrary.org/api2/soap.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

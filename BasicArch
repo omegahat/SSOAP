@@ -1,0 +1,46 @@
+There are 2 basic steps
+  read the WSDL into a preliminary structure
+  create R functions corresponding to the operations
+
+
+We read a WSDL file and create a SOAPServerDescription.
+This has the name, the server, the operations, data types and
+name space identifier (the version of SOAP namespaces).
+The operations is a list with each element being a group of operations.
+Typically, there is a single set of operations so the list is of length 1
+and it contains multiple WSDLMethod objects.
+
+A WSDLMethod has a basic description of the method, i.e. its name,
+details about the format for invoking it (e.g. the action, the input
+and output formats being literal or ?, binding style), optional
+documentation.  Importantly, this has information about the types
+of the inputs and the output of the method.
+
+These types are described by R objects that contain the schema definitions.
+ptions references to (names of) data types defined in the schema part of the WSDL.
+These are of various different sub-classes of SOAPType.
+
+When we generate the interface via genSOAPClientInterface(), we also
+define classes corresponding to the different types in the
+schema. (See defineClasses and defClass)
+
+When we convert a WSDLMethod to an R function (via
+createOperationDefinition), we resolve() the types of the parameters
+and the return value. Here we convert the basic SOAPType descriptions
+into more complete descriptions, e.g.  resolving references to other
+types in composites.
+
+By default, the functions we generate via genSOAPClientInterface() and
+createOperationDefinition() (of class WSDLGeneratedSOAPFunction) have
+an environment which contains information about the parameter and
+return types, the server, etc.
+
+
+
+
+What about all of the schema processing of classes - processSchemaType?
+
+
+##################
+
+We need to resolve the sub-elements/fields of parameters in a type.

@@ -1,0 +1,3114 @@
+
+R Under development (unstable) (2011-11-27 r57757)
+Copyright (C) 2011 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-apple-darwin11.0.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "SSOAP"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> library('SSOAP')
+> 
+> assign(".oldSearch", search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("SOAP")
+> ### * SOAP
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: .SOAP
+> ### Title: Invoke a SOAP method
+> ### Aliases: .SOAP
+> ### Keywords: interface connection
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D .SOAP(SOAPServer("services.xmethods.net", "soap"),
+> ##D        "getRate", country1="England", country2 = "Japan",
+> ##D        action="urn:xmethods-CurrencyExchange")
+> ##D 
+> ##D .SOAP(SOAPServer("services.xmethods.net", "soap/servlet/rpcrouter"),
+> ##D       "getPrice", "0596000278",
+> ##D       action="urn:xmethods-BNPriceCheck")
+> ##D 
+> ##D s <- SOAPServer("http://services.xmethods.net/soap")
+> ##D .SOAP(s,
+> ##D       "getQuote", "AMZN",
+> ##D       action="urn:xmethods-delayed-quotes#getQuote")
+> ##D 
+> ##D 
+> ##D .SOAP(SOAPServer("services.soaplite.com", "temper.cgi"),
+> ##D        "c2f", 37.5,
+> ##D       action="http://www.soaplite.com/Temperatures")
+> ##D 
+> ##D 
+> ##D  # Different action and namespace.
+> ##D  # Specify handlers=NULL to avoid the additional processing of the
+> ##D  # SOAPAction string, i.e. the appending of the method name.
+> ##D  # This kills off all the handlers. If we want to remove only the
+> ##D  # "action" element, we have to be more explicit.
+> ##D 
+> ##D s1 <- SOAPServer("services.soaplite.com", "interop.cgi")
+> ##D .SOAP(s1,
+> ##D       "echoString", "From R",
+> ##D       action="urn:soapinterop",
+> ##D       xmlns=c(namesp1="http://soapinterop.org/"),
+> ##D       handlers =NULL)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("SOAPHandlers")
+> ### * SOAPHandlers
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: SOAPHandlers
+> ### Title: Get SOAP function handlers
+> ### Aliases: SOAPHandlers
+> ### Keywords: interface connection
+> 
+> ### ** Examples
+> 
+>  SOAPHandlers()
+$action
+function (action, method, server, xmlns, sep = "#") 
+{
+    if (missing(sep)) {
+        if (substring(action, nchar(action)) == "#" || substring(method, 
+            1, 1) == "#") 
+            sep = ""
+    }
+    if (action == "") 
+        action = xmlns
+    paste(action, sep, method, sep = "")
+}
+<environment: namespace:SSOAP>
+
+$result
+function (xmlSource, header, method, server) 
+{
+    response <- parseSOAP(xmlSource, asText = TRUE)
+    fromXML(response[[1]])
+}
+<environment: namespace:SSOAP>
+
+>  SOAPHandlers(action = function(action, method, server, xmlns) action)
+$action
+function (action, method, server, xmlns, sep = "#") 
+{
+    if (missing(sep)) {
+        if (substring(action, nchar(action)) == "#" || substring(method, 
+            1, 1) == "#") 
+            sep = ""
+    }
+    if (action == "") 
+        action = xmlns
+    paste(action, sep, method, sep = "")
+}
+<environment: namespace:SSOAP>
+
+> 
+>  SOAPHandlers(exclude="action")
+$result
+function (xmlSource, header, method, server) 
+{
+    response <- parseSOAP(xmlSource, asText = TRUE)
+    fromXML(response[[1]])
+}
+<environment: namespace:SSOAP>
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("SOAPHttpGet")
+> ### * SOAPHttpGet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: .SOAPHttpGet
+> ### Title: Functions for making SOAP calls via HTTP GET or POST requests
+> ### Aliases: .SOAPHttpGet .SOAPHttpPost
+> ### Keywords: programming interface
+> 
+> ### ** Examples
+> 
+> 
+>  .SOAPHttpGet("http://www.chemspider.com/MassSpecAPI.asmx/SearchByMass2", mass = 89.0476, range = 0.01)
+$string
+[1] "234"
+
+$string
+[1] "387"
+
+$string
+[1] "582"
+
+$string
+[1] "1057"
+
+$string
+[1] "5439"
+
+$string
+[1] "5735"
+
+$string
+[1] "7615"
+
+$string
+[1] "10466"
+
+$string
+[1] "10514"
+
+$string
+[1] "23954"
+
+$string
+[1] "40890"
+
+$string
+[1] "62434"
+
+$string
+[1] "62574"
+
+$string
+[1] "62858"
+
+$string
+[1] "64234"
+
+$string
+[1] "68260"
+
+$string
+[1] "73217"
+
+$string
+[1] "74688"
+
+$string
+[1] "85030"
+
+$string
+[1] "96944"
+
+$string
+[1] "96991"
+
+$string
+[1] "122209"
+
+$string
+[1] "123515"
+
+$string
+[1] "167976"
+
+$string
+[1] "194205"
+
+$string
+[1] "396919"
+
+$string
+[1] "396926"
+
+$string
+[1] "551160"
+
+$string
+[1] "1255137"
+
+$string
+[1] "1255138"
+
+$string
+[1] "2044583"
+
+$string
+[1] "2293420"
+
+$string
+[1] "2825063"
+
+$string
+[1] "3357540"
+
+$string
+[1] "4321658"
+
+$string
+[1] "4895881"
+
+$string
+[1] "4910317"
+
+$string
+[1] "4910740"
+
+$string
+[1] "4956754"
+
+$string
+[1] "7875468"
+
+$string
+[1] "7988504"
+
+$string
+[1] "8488533"
+
+$string
+[1] "8504710"
+
+$string
+[1] "8549854"
+
+$string
+[1] "8678189"
+
+$string
+[1] "8924464"
+
+$string
+[1] "9041543"
+
+$string
+[1] "9084745"
+
+$string
+[1] "9128109"
+
+$string
+[1] "9172151"
+
+$string
+[1] "9322556"
+
+$string
+[1] "9963803"
+
+$string
+[1] "10157727"
+
+$string
+[1] "10157761"
+
+$string
+[1] "10197637"
+
+$string
+[1] "10302119"
+
+$string
+[1] "10307929"
+
+$string
+[1] "10452122"
+
+$string
+[1] "10452127"
+
+$string
+[1] "10652362"
+
+$string
+[1] "10733600"
+
+$string
+[1] "11226668"
+
+$string
+[1] "11626909"
+
+$string
+[1] "11627061"
+
+$string
+[1] "11658964"
+
+$string
+[1] "13104301"
+
+$string
+[1] "13200031"
+
+$string
+[1] "13214091"
+
+$string
+[1] "13295673"
+
+$string
+[1] "13318659"
+
+$string
+[1] "13354736"
+
+$string
+[1] "13568065"
+
+$string
+[1] "13714603"
+
+$string
+[1] "13957703"
+
+$string
+[1] "13963353"
+
+$string
+[1] "14770907"
+
+$string
+[1] "15182955"
+
+$string
+[1] "15320368"
+
+$string
+[1] "15920591"
+
+$string
+[1] "16299694"
+
+$string
+[1] "16465982"
+
+$string
+[1] "16739107"
+
+$string
+[1] "17262253"
+
+$string
+[1] "17341292"
+
+$string
+[1] "17619710"
+
+$string
+[1] "18998262"
+
+$string
+[1] "19285322"
+
+$string
+[1] "19494789"
+
+$string
+[1] "19535670"
+
+$string
+[1] "19741920"
+
+$string
+[1] "19834062"
+
+$string
+[1] "19853051"
+
+$string
+[1] "20160182"
+
+$string
+[1] "21378017"
+
+$string
+[1] "21378094"
+
+$string
+[1] "21431203"
+
+$string
+[1] "23941966"
+
+$string
+[1] "25934639"
+
+$string
+[1] "26267270"
+
+attr(,"class")
+[1] "ArrayOfString"
+> 
+> ## Not run: 
+> ##D     # need token
+> ##D   .SOAPHttpGet("http://www.chemspider.com/MassSpecAPI.asmx/GetExtendedCompoundInfoArray", CSIDs = c("23500", "23543"), token = token)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("SOAPNameSpaces")
+> ### * SOAPNameSpaces
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: SOAPNameSpaces
+> ### Title: Get SOAP namespace definitions
+> ### Aliases: SOAPNameSpaces
+> ### Keywords: interface connection
+> 
+> ### ** Examples
+> 
+>  SOAPNameSpaces()
+                                   SOAP-ENC 
+"http://schemas.xmlsoap.org/soap/encoding/" 
+                                   SOAP-ENV 
+"http://schemas.xmlsoap.org/soap/envelope/" 
+                                        xsi 
+"http://www.w3.org/2001/XMLSchema-instance" 
+                                        xsd 
+         "http://www.w3.org/2001/XMLSchema" 
+>  SOAPNameSpaces(omegahat="http://www.omegahat.org",
++                  r = "http://www.r-project.org")
+                  omegahat                          r 
+ "http://www.omegahat.org" "http://www.r-project.org" 
+> 
+>  SOAPNameSpaces(omegahat="http://www.omegahat.org",
++                  r = "http://www.r-project.org", include="SOAP-ENV")
+<NA> 
+  NA 
+> 
+>  SOAPNameSpaces(omegahat="http://www.omegahat.org",
++                  r = "http://www.r-project.org", exclude="xsd")
+                  omegahat                          r 
+ "http://www.omegahat.org" "http://www.r-project.org" 
+> 
+>  SOAPNameSpaces(omegahat="http://www.omegahat.org",
++                  r = "http://www.r-project.org",
++                  xsd = "my own XSD URI")
+                          omegahat                                  r 
+         "http://www.omegahat.org"         "http://www.r-project.org" 
+                               xsd 
+"http://www.w3.org/2001/XMLSchema" 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("SOAPServer")
+> ### * SOAPServer
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: SOAPServer
+> ### Title: Create a SOAP server object
+> ### Aliases: SOAPServer dynamicSOAPServer
+> ### Keywords: interface connection
+> 
+> ### ** Examples
+> 
+> server = SOAPServer("www.nanonull.com", "TimeService/TimeService.asmx")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("SOAPServerDescription-class")
+> ### * SOAPServerDescription-class
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: SOAPServerDescription-class
+> ### Title: Description of a SOAP Server's methods and data types
+> ### Aliases: SOAPServerDescription-class
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+>   serverDesc = processWSDL(system.file("examples", "KEGG.wsdl", package = "SSOAP"))
+> 
+> 
+> 
+> cleanEx()
+> nameEx("genSOAPClientInterface")
+> ### * genSOAPClientInterface
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: genSOAPClientInterface
+> ### Title: Create R functions to access SOAP server methods
+> ### Aliases: genSOAPClientInterface
+> ### Keywords: interface programming
+> 
+> ### ** Examples
+> 
+>  kegg = processWSDL("http://soap.genome.jp/KEGG.wsdl")
+>    # note that we force the use of the 1.1 name spaces to get arrays
+>    # handled correctly on the server side.
+>  iface = genSOAPClientInterface(def = kegg, nameSpaces = "1.1")
+Note: Method with signature "PrimitiveSOAPType#list" chosen for function "resolve",
+ target signature "PrimitiveSOAPType#SchemaCollection".
+ "SOAPType#SchemaCollection" would also be valid
+Note: Method with signature "ArrayType#list" chosen for function "resolve",
+ target signature "ArrayType#SchemaCollection".
+ "SimpleSequenceType#SchemaCollection" would also be valid
+> 
+> ## Not run: 
+> ##D     # This KEGG.wsdl is out of date
+> ##D  tmp = processWSDL(system.file("examples", "KEGG.wsdl", package = "SSOAP"))
+> ##D  iface = genSOAPClientInterface(tmp@operations[[1]], def = tmp, tmp@name, verbose=FALSE)
+> ## End(Not run)
+> 
+>  setAs("Definition", "character",
++          function(from) 
++              structure(from@entry_id, names = from@definition))
+> 
+>  setAs("ArrayOfPathwayElement", "character", 
++           function(from) sapply(from, as, "character"))
+> 
+>  o = iface@functions$list_organisms()
+> 
+>  as(o, "character")
+   [1] "<S4 object of class \"Definition\">"
+   [2] "<S4 object of class \"Definition\">"
+   [3] "<S4 object of class \"Definition\">"
+   [4] "<S4 object of class \"Definition\">"
+   [5] "<S4 object of class \"Definition\">"
+   [6] "<S4 object of class \"Definition\">"
+   [7] "<S4 object of class \"Definition\">"
+   [8] "<S4 object of class \"Definition\">"
+   [9] "<S4 object of class \"Definition\">"
+  [10] "<S4 object of class \"Definition\">"
+  [11] "<S4 object of class \"Definition\">"
+  [12] "<S4 object of class \"Definition\">"
+  [13] "<S4 object of class \"Definition\">"
+  [14] "<S4 object of class \"Definition\">"
+  [15] "<S4 object of class \"Definition\">"
+  [16] "<S4 object of class \"Definition\">"
+  [17] "<S4 object of class \"Definition\">"
+  [18] "<S4 object of class \"Definition\">"
+  [19] "<S4 object of class \"Definition\">"
+  [20] "<S4 object of class \"Definition\">"
+  [21] "<S4 object of class \"Definition\">"
+  [22] "<S4 object of class \"Definition\">"
+  [23] "<S4 object of class \"Definition\">"
+  [24] "<S4 object of class \"Definition\">"
+  [25] "<S4 object of class \"Definition\">"
+  [26] "<S4 object of class \"Definition\">"
+  [27] "<S4 object of class \"Definition\">"
+  [28] "<S4 object of class \"Definition\">"
+  [29] "<S4 object of class \"Definition\">"
+  [30] "<S4 object of class \"Definition\">"
+  [31] "<S4 object of class \"Definition\">"
+  [32] "<S4 object of class \"Definition\">"
+  [33] "<S4 object of class \"Definition\">"
+  [34] "<S4 object of class \"Definition\">"
+  [35] "<S4 object of class \"Definition\">"
+  [36] "<S4 object of class \"Definition\">"
+  [37] "<S4 object of class \"Definition\">"
+  [38] "<S4 object of class \"Definition\">"
+  [39] "<S4 object of class \"Definition\">"
+  [40] "<S4 object of class \"Definition\">"
+  [41] "<S4 object of class \"Definition\">"
+  [42] "<S4 object of class \"Definition\">"
+  [43] "<S4 object of class \"Definition\">"
+  [44] "<S4 object of class \"Definition\">"
+  [45] "<S4 object of class \"Definition\">"
+  [46] "<S4 object of class \"Definition\">"
+  [47] "<S4 object of class \"Definition\">"
+  [48] "<S4 object of class \"Definition\">"
+  [49] "<S4 object of class \"Definition\">"
+  [50] "<S4 object of class \"Definition\">"
+  [51] "<S4 object of class \"Definition\">"
+  [52] "<S4 object of class \"Definition\">"
+  [53] "<S4 object of class \"Definition\">"
+  [54] "<S4 object of class \"Definition\">"
+  [55] "<S4 object of class \"Definition\">"
+  [56] "<S4 object of class \"Definition\">"
+  [57] "<S4 object of class \"Definition\">"
+  [58] "<S4 object of class \"Definition\">"
+  [59] "<S4 object of class \"Definition\">"
+  [60] "<S4 object of class \"Definition\">"
+  [61] "<S4 object of class \"Definition\">"
+  [62] "<S4 object of class \"Definition\">"
+  [63] "<S4 object of class \"Definition\">"
+  [64] "<S4 object of class \"Definition\">"
+  [65] "<S4 object of class \"Definition\">"
+  [66] "<S4 object of class \"Definition\">"
+  [67] "<S4 object of class \"Definition\">"
+  [68] "<S4 object of class \"Definition\">"
+  [69] "<S4 object of class \"Definition\">"
+  [70] "<S4 object of class \"Definition\">"
+  [71] "<S4 object of class \"Definition\">"
+  [72] "<S4 object of class \"Definition\">"
+  [73] "<S4 object of class \"Definition\">"
+  [74] "<S4 object of class \"Definition\">"
+  [75] "<S4 object of class \"Definition\">"
+  [76] "<S4 object of class \"Definition\">"
+  [77] "<S4 object of class \"Definition\">"
+  [78] "<S4 object of class \"Definition\">"
+  [79] "<S4 object of class \"Definition\">"
+  [80] "<S4 object of class \"Definition\">"
+  [81] "<S4 object of class \"Definition\">"
+  [82] "<S4 object of class \"Definition\">"
+  [83] "<S4 object of class \"Definition\">"
+  [84] "<S4 object of class \"Definition\">"
+  [85] "<S4 object of class \"Definition\">"
+  [86] "<S4 object of class \"Definition\">"
+  [87] "<S4 object of class \"Definition\">"
+  [88] "<S4 object of class \"Definition\">"
+  [89] "<S4 object of class \"Definition\">"
+  [90] "<S4 object of class \"Definition\">"
+  [91] "<S4 object of class \"Definition\">"
+  [92] "<S4 object of class \"Definition\">"
+  [93] "<S4 object of class \"Definition\">"
+  [94] "<S4 object of class \"Definition\">"
+  [95] "<S4 object of class \"Definition\">"
+  [96] "<S4 object of class \"Definition\">"
+  [97] "<S4 object of class \"Definition\">"
+  [98] "<S4 object of class \"Definition\">"
+  [99] "<S4 object of class \"Definition\">"
+ [100] "<S4 object of class \"Definition\">"
+ [101] "<S4 object of class \"Definition\">"
+ [102] "<S4 object of class \"Definition\">"
+ [103] "<S4 object of class \"Definition\">"
+ [104] "<S4 object of class \"Definition\">"
+ [105] "<S4 object of class \"Definition\">"
+ [106] "<S4 object of class \"Definition\">"
+ [107] "<S4 object of class \"Definition\">"
+ [108] "<S4 object of class \"Definition\">"
+ [109] "<S4 object of class \"Definition\">"
+ [110] "<S4 object of class \"Definition\">"
+ [111] "<S4 object of class \"Definition\">"
+ [112] "<S4 object of class \"Definition\">"
+ [113] "<S4 object of class \"Definition\">"
+ [114] "<S4 object of class \"Definition\">"
+ [115] "<S4 object of class \"Definition\">"
+ [116] "<S4 object of class \"Definition\">"
+ [117] "<S4 object of class \"Definition\">"
+ [118] "<S4 object of class \"Definition\">"
+ [119] "<S4 object of class \"Definition\">"
+ [120] "<S4 object of class \"Definition\">"
+ [121] "<S4 object of class \"Definition\">"
+ [122] "<S4 object of class \"Definition\">"
+ [123] "<S4 object of class \"Definition\">"
+ [124] "<S4 object of class \"Definition\">"
+ [125] "<S4 object of class \"Definition\">"
+ [126] "<S4 object of class \"Definition\">"
+ [127] "<S4 object of class \"Definition\">"
+ [128] "<S4 object of class \"Definition\">"
+ [129] "<S4 object of class \"Definition\">"
+ [130] "<S4 object of class \"Definition\">"
+ [131] "<S4 object of class \"Definition\">"
+ [132] "<S4 object of class \"Definition\">"
+ [133] "<S4 object of class \"Definition\">"
+ [134] "<S4 object of class \"Definition\">"
+ [135] "<S4 object of class \"Definition\">"
+ [136] "<S4 object of class \"Definition\">"
+ [137] "<S4 object of class \"Definition\">"
+ [138] "<S4 object of class \"Definition\">"
+ [139] "<S4 object of class \"Definition\">"
+ [140] "<S4 object of class \"Definition\">"
+ [141] "<S4 object of class \"Definition\">"
+ [142] "<S4 object of class \"Definition\">"
+ [143] "<S4 object of class \"Definition\">"
+ [144] "<S4 object of class \"Definition\">"
+ [145] "<S4 object of class \"Definition\">"
+ [146] "<S4 object of class \"Definition\">"
+ [147] "<S4 object of class \"Definition\">"
+ [148] "<S4 object of class \"Definition\">"
+ [149] "<S4 object of class \"Definition\">"
+ [150] "<S4 object of class \"Definition\">"
+ [151] "<S4 object of class \"Definition\">"
+ [152] "<S4 object of class \"Definition\">"
+ [153] "<S4 object of class \"Definition\">"
+ [154] "<S4 object of class \"Definition\">"
+ [155] "<S4 object of class \"Definition\">"
+ [156] "<S4 object of class \"Definition\">"
+ [157] "<S4 object of class \"Definition\">"
+ [158] "<S4 object of class \"Definition\">"
+ [159] "<S4 object of class \"Definition\">"
+ [160] "<S4 object of class \"Definition\">"
+ [161] "<S4 object of class \"Definition\">"
+ [162] "<S4 object of class \"Definition\">"
+ [163] "<S4 object of class \"Definition\">"
+ [164] "<S4 object of class \"Definition\">"
+ [165] "<S4 object of class \"Definition\">"
+ [166] "<S4 object of class \"Definition\">"
+ [167] "<S4 object of class \"Definition\">"
+ [168] "<S4 object of class \"Definition\">"
+ [169] "<S4 object of class \"Definition\">"
+ [170] "<S4 object of class \"Definition\">"
+ [171] "<S4 object of class \"Definition\">"
+ [172] "<S4 object of class \"Definition\">"
+ [173] "<S4 object of class \"Definition\">"
+ [174] "<S4 object of class \"Definition\">"
+ [175] "<S4 object of class \"Definition\">"
+ [176] "<S4 object of class \"Definition\">"
+ [177] "<S4 object of class \"Definition\">"
+ [178] "<S4 object of class \"Definition\">"
+ [179] "<S4 object of class \"Definition\">"
+ [180] "<S4 object of class \"Definition\">"
+ [181] "<S4 object of class \"Definition\">"
+ [182] "<S4 object of class \"Definition\">"
+ [183] "<S4 object of class \"Definition\">"
+ [184] "<S4 object of class \"Definition\">"
+ [185] "<S4 object of class \"Definition\">"
+ [186] "<S4 object of class \"Definition\">"
+ [187] "<S4 object of class \"Definition\">"
+ [188] "<S4 object of class \"Definition\">"
+ [189] "<S4 object of class \"Definition\">"
+ [190] "<S4 object of class \"Definition\">"
+ [191] "<S4 object of class \"Definition\">"
+ [192] "<S4 object of class \"Definition\">"
+ [193] "<S4 object of class \"Definition\">"
+ [194] "<S4 object of class \"Definition\">"
+ [195] "<S4 object of class \"Definition\">"
+ [196] "<S4 object of class \"Definition\">"
+ [197] "<S4 object of class \"Definition\">"
+ [198] "<S4 object of class \"Definition\">"
+ [199] "<S4 object of class \"Definition\">"
+ [200] "<S4 object of class \"Definition\">"
+ [201] "<S4 object of class \"Definition\">"
+ [202] "<S4 object of class \"Definition\">"
+ [203] "<S4 object of class \"Definition\">"
+ [204] "<S4 object of class \"Definition\">"
+ [205] "<S4 object of class \"Definition\">"
+ [206] "<S4 object of class \"Definition\">"
+ [207] "<S4 object of class \"Definition\">"
+ [208] "<S4 object of class \"Definition\">"
+ [209] "<S4 object of class \"Definition\">"
+ [210] "<S4 object of class \"Definition\">"
+ [211] "<S4 object of class \"Definition\">"
+ [212] "<S4 object of class \"Definition\">"
+ [213] "<S4 object of class \"Definition\">"
+ [214] "<S4 object of class \"Definition\">"
+ [215] "<S4 object of class \"Definition\">"
+ [216] "<S4 object of class \"Definition\">"
+ [217] "<S4 object of class \"Definition\">"
+ [218] "<S4 object of class \"Definition\">"
+ [219] "<S4 object of class \"Definition\">"
+ [220] "<S4 object of class \"Definition\">"
+ [221] "<S4 object of class \"Definition\">"
+ [222] "<S4 object of class \"Definition\">"
+ [223] "<S4 object of class \"Definition\">"
+ [224] "<S4 object of class \"Definition\">"
+ [225] "<S4 object of class \"Definition\">"
+ [226] "<S4 object of class \"Definition\">"
+ [227] "<S4 object of class \"Definition\">"
+ [228] "<S4 object of class \"Definition\">"
+ [229] "<S4 object of class \"Definition\">"
+ [230] "<S4 object of class \"Definition\">"
+ [231] "<S4 object of class \"Definition\">"
+ [232] "<S4 object of class \"Definition\">"
+ [233] "<S4 object of class \"Definition\">"
+ [234] "<S4 object of class \"Definition\">"
+ [235] "<S4 object of class \"Definition\">"
+ [236] "<S4 object of class \"Definition\">"
+ [237] "<S4 object of class \"Definition\">"
+ [238] "<S4 object of class \"Definition\">"
+ [239] "<S4 object of class \"Definition\">"
+ [240] "<S4 object of class \"Definition\">"
+ [241] "<S4 object of class \"Definition\">"
+ [242] "<S4 object of class \"Definition\">"
+ [243] "<S4 object of class \"Definition\">"
+ [244] "<S4 object of class \"Definition\">"
+ [245] "<S4 object of class \"Definition\">"
+ [246] "<S4 object of class \"Definition\">"
+ [247] "<S4 object of class \"Definition\">"
+ [248] "<S4 object of class \"Definition\">"
+ [249] "<S4 object of class \"Definition\">"
+ [250] "<S4 object of class \"Definition\">"
+ [251] "<S4 object of class \"Definition\">"
+ [252] "<S4 object of class \"Definition\">"
+ [253] "<S4 object of class \"Definition\">"
+ [254] "<S4 object of class \"Definition\">"
+ [255] "<S4 object of class \"Definition\">"
+ [256] "<S4 object of class \"Definition\">"
+ [257] "<S4 object of class \"Definition\">"
+ [258] "<S4 object of class \"Definition\">"
+ [259] "<S4 object of class \"Definition\">"
+ [260] "<S4 object of class \"Definition\">"
+ [261] "<S4 object of class \"Definition\">"
+ [262] "<S4 object of class \"Definition\">"
+ [263] "<S4 object of class \"Definition\">"
+ [264] "<S4 object of class \"Definition\">"
+ [265] "<S4 object of class \"Definition\">"
+ [266] "<S4 object of class \"Definition\">"
+ [267] "<S4 object of class \"Definition\">"
+ [268] "<S4 object of class \"Definition\">"
+ [269] "<S4 object of class \"Definition\">"
+ [270] "<S4 object of class \"Definition\">"
+ [271] "<S4 object of class \"Definition\">"
+ [272] "<S4 object of class \"Definition\">"
+ [273] "<S4 object of class \"Definition\">"
+ [274] "<S4 object of class \"Definition\">"
+ [275] "<S4 object of class \"Definition\">"
+ [276] "<S4 object of class \"Definition\">"
+ [277] "<S4 object of class \"Definition\">"
+ [278] "<S4 object of class \"Definition\">"
+ [279] "<S4 object of class \"Definition\">"
+ [280] "<S4 object of class \"Definition\">"
+ [281] "<S4 object of class \"Definition\">"
+ [282] "<S4 object of class \"Definition\">"
+ [283] "<S4 object of class \"Definition\">"
+ [284] "<S4 object of class \"Definition\">"
+ [285] "<S4 object of class \"Definition\">"
+ [286] "<S4 object of class \"Definition\">"
+ [287] "<S4 object of class \"Definition\">"
+ [288] "<S4 object of class \"Definition\">"
+ [289] "<S4 object of class \"Definition\">"
+ [290] "<S4 object of class \"Definition\">"
+ [291] "<S4 object of class \"Definition\">"
+ [292] "<S4 object of class \"Definition\">"
+ [293] "<S4 object of class \"Definition\">"
+ [294] "<S4 object of class \"Definition\">"
+ [295] "<S4 object of class \"Definition\">"
+ [296] "<S4 object of class \"Definition\">"
+ [297] "<S4 object of class \"Definition\">"
+ [298] "<S4 object of class \"Definition\">"
+ [299] "<S4 object of class \"Definition\">"
+ [300] "<S4 object of class \"Definition\">"
+ [301] "<S4 object of class \"Definition\">"
+ [302] "<S4 object of class \"Definition\">"
+ [303] "<S4 object of class \"Definition\">"
+ [304] "<S4 object of class \"Definition\">"
+ [305] "<S4 object of class \"Definition\">"
+ [306] "<S4 object of class \"Definition\">"
+ [307] "<S4 object of class \"Definition\">"
+ [308] "<S4 object of class \"Definition\">"
+ [309] "<S4 object of class \"Definition\">"
+ [310] "<S4 object of class \"Definition\">"
+ [311] "<S4 object of class \"Definition\">"
+ [312] "<S4 object of class \"Definition\">"
+ [313] "<S4 object of class \"Definition\">"
+ [314] "<S4 object of class \"Definition\">"
+ [315] "<S4 object of class \"Definition\">"
+ [316] "<S4 object of class \"Definition\">"
+ [317] "<S4 object of class \"Definition\">"
+ [318] "<S4 object of class \"Definition\">"
+ [319] "<S4 object of class \"Definition\">"
+ [320] "<S4 object of class \"Definition\">"
+ [321] "<S4 object of class \"Definition\">"
+ [322] "<S4 object of class \"Definition\">"
+ [323] "<S4 object of class \"Definition\">"
+ [324] "<S4 object of class \"Definition\">"
+ [325] "<S4 object of class \"Definition\">"
+ [326] "<S4 object of class \"Definition\">"
+ [327] "<S4 object of class \"Definition\">"
+ [328] "<S4 object of class \"Definition\">"
+ [329] "<S4 object of class \"Definition\">"
+ [330] "<S4 object of class \"Definition\">"
+ [331] "<S4 object of class \"Definition\">"
+ [332] "<S4 object of class \"Definition\">"
+ [333] "<S4 object of class \"Definition\">"
+ [334] "<S4 object of class \"Definition\">"
+ [335] "<S4 object of class \"Definition\">"
+ [336] "<S4 object of class \"Definition\">"
+ [337] "<S4 object of class \"Definition\">"
+ [338] "<S4 object of class \"Definition\">"
+ [339] "<S4 object of class \"Definition\">"
+ [340] "<S4 object of class \"Definition\">"
+ [341] "<S4 object of class \"Definition\">"
+ [342] "<S4 object of class \"Definition\">"
+ [343] "<S4 object of class \"Definition\">"
+ [344] "<S4 object of class \"Definition\">"
+ [345] "<S4 object of class \"Definition\">"
+ [346] "<S4 object of class \"Definition\">"
+ [347] "<S4 object of class \"Definition\">"
+ [348] "<S4 object of class \"Definition\">"
+ [349] "<S4 object of class \"Definition\">"
+ [350] "<S4 object of class \"Definition\">"
+ [351] "<S4 object of class \"Definition\">"
+ [352] "<S4 object of class \"Definition\">"
+ [353] "<S4 object of class \"Definition\">"
+ [354] "<S4 object of class \"Definition\">"
+ [355] "<S4 object of class \"Definition\">"
+ [356] "<S4 object of class \"Definition\">"
+ [357] "<S4 object of class \"Definition\">"
+ [358] "<S4 object of class \"Definition\">"
+ [359] "<S4 object of class \"Definition\">"
+ [360] "<S4 object of class \"Definition\">"
+ [361] "<S4 object of class \"Definition\">"
+ [362] "<S4 object of class \"Definition\">"
+ [363] "<S4 object of class \"Definition\">"
+ [364] "<S4 object of class \"Definition\">"
+ [365] "<S4 object of class \"Definition\">"
+ [366] "<S4 object of class \"Definition\">"
+ [367] "<S4 object of class \"Definition\">"
+ [368] "<S4 object of class \"Definition\">"
+ [369] "<S4 object of class \"Definition\">"
+ [370] "<S4 object of class \"Definition\">"
+ [371] "<S4 object of class \"Definition\">"
+ [372] "<S4 object of class \"Definition\">"
+ [373] "<S4 object of class \"Definition\">"
+ [374] "<S4 object of class \"Definition\">"
+ [375] "<S4 object of class \"Definition\">"
+ [376] "<S4 object of class \"Definition\">"
+ [377] "<S4 object of class \"Definition\">"
+ [378] "<S4 object of class \"Definition\">"
+ [379] "<S4 object of class \"Definition\">"
+ [380] "<S4 object of class \"Definition\">"
+ [381] "<S4 object of class \"Definition\">"
+ [382] "<S4 object of class \"Definition\">"
+ [383] "<S4 object of class \"Definition\">"
+ [384] "<S4 object of class \"Definition\">"
+ [385] "<S4 object of class \"Definition\">"
+ [386] "<S4 object of class \"Definition\">"
+ [387] "<S4 object of class \"Definition\">"
+ [388] "<S4 object of class \"Definition\">"
+ [389] "<S4 object of class \"Definition\">"
+ [390] "<S4 object of class \"Definition\">"
+ [391] "<S4 object of class \"Definition\">"
+ [392] "<S4 object of class \"Definition\">"
+ [393] "<S4 object of class \"Definition\">"
+ [394] "<S4 object of class \"Definition\">"
+ [395] "<S4 object of class \"Definition\">"
+ [396] "<S4 object of class \"Definition\">"
+ [397] "<S4 object of class \"Definition\">"
+ [398] "<S4 object of class \"Definition\">"
+ [399] "<S4 object of class \"Definition\">"
+ [400] "<S4 object of class \"Definition\">"
+ [401] "<S4 object of class \"Definition\">"
+ [402] "<S4 object of class \"Definition\">"
+ [403] "<S4 object of class \"Definition\">"
+ [404] "<S4 object of class \"Definition\">"
+ [405] "<S4 object of class \"Definition\">"
+ [406] "<S4 object of class \"Definition\">"
+ [407] "<S4 object of class \"Definition\">"
+ [408] "<S4 object of class \"Definition\">"
+ [409] "<S4 object of class \"Definition\">"
+ [410] "<S4 object of class \"Definition\">"
+ [411] "<S4 object of class \"Definition\">"
+ [412] "<S4 object of class \"Definition\">"
+ [413] "<S4 object of class \"Definition\">"
+ [414] "<S4 object of class \"Definition\">"
+ [415] "<S4 object of class \"Definition\">"
+ [416] "<S4 object of class \"Definition\">"
+ [417] "<S4 object of class \"Definition\">"
+ [418] "<S4 object of class \"Definition\">"
+ [419] "<S4 object of class \"Definition\">"
+ [420] "<S4 object of class \"Definition\">"
+ [421] "<S4 object of class \"Definition\">"
+ [422] "<S4 object of class \"Definition\">"
+ [423] "<S4 object of class \"Definition\">"
+ [424] "<S4 object of class \"Definition\">"
+ [425] "<S4 object of class \"Definition\">"
+ [426] "<S4 object of class \"Definition\">"
+ [427] "<S4 object of class \"Definition\">"
+ [428] "<S4 object of class \"Definition\">"
+ [429] "<S4 object of class \"Definition\">"
+ [430] "<S4 object of class \"Definition\">"
+ [431] "<S4 object of class \"Definition\">"
+ [432] "<S4 object of class \"Definition\">"
+ [433] "<S4 object of class \"Definition\">"
+ [434] "<S4 object of class \"Definition\">"
+ [435] "<S4 object of class \"Definition\">"
+ [436] "<S4 object of class \"Definition\">"
+ [437] "<S4 object of class \"Definition\">"
+ [438] "<S4 object of class \"Definition\">"
+ [439] "<S4 object of class \"Definition\">"
+ [440] "<S4 object of class \"Definition\">"
+ [441] "<S4 object of class \"Definition\">"
+ [442] "<S4 object of class \"Definition\">"
+ [443] "<S4 object of class \"Definition\">"
+ [444] "<S4 object of class \"Definition\">"
+ [445] "<S4 object of class \"Definition\">"
+ [446] "<S4 object of class \"Definition\">"
+ [447] "<S4 object of class \"Definition\">"
+ [448] "<S4 object of class \"Definition\">"
+ [449] "<S4 object of class \"Definition\">"
+ [450] "<S4 object of class \"Definition\">"
+ [451] "<S4 object of class \"Definition\">"
+ [452] "<S4 object of class \"Definition\">"
+ [453] "<S4 object of class \"Definition\">"
+ [454] "<S4 object of class \"Definition\">"
+ [455] "<S4 object of class \"Definition\">"
+ [456] "<S4 object of class \"Definition\">"
+ [457] "<S4 object of class \"Definition\">"
+ [458] "<S4 object of class \"Definition\">"
+ [459] "<S4 object of class \"Definition\">"
+ [460] "<S4 object of class \"Definition\">"
+ [461] "<S4 object of class \"Definition\">"
+ [462] "<S4 object of class \"Definition\">"
+ [463] "<S4 object of class \"Definition\">"
+ [464] "<S4 object of class \"Definition\">"
+ [465] "<S4 object of class \"Definition\">"
+ [466] "<S4 object of class \"Definition\">"
+ [467] "<S4 object of class \"Definition\">"
+ [468] "<S4 object of class \"Definition\">"
+ [469] "<S4 object of class \"Definition\">"
+ [470] "<S4 object of class \"Definition\">"
+ [471] "<S4 object of class \"Definition\">"
+ [472] "<S4 object of class \"Definition\">"
+ [473] "<S4 object of class \"Definition\">"
+ [474] "<S4 object of class \"Definition\">"
+ [475] "<S4 object of class \"Definition\">"
+ [476] "<S4 object of class \"Definition\">"
+ [477] "<S4 object of class \"Definition\">"
+ [478] "<S4 object of class \"Definition\">"
+ [479] "<S4 object of class \"Definition\">"
+ [480] "<S4 object of class \"Definition\">"
+ [481] "<S4 object of class \"Definition\">"
+ [482] "<S4 object of class \"Definition\">"
+ [483] "<S4 object of class \"Definition\">"
+ [484] "<S4 object of class \"Definition\">"
+ [485] "<S4 object of class \"Definition\">"
+ [486] "<S4 object of class \"Definition\">"
+ [487] "<S4 object of class \"Definition\">"
+ [488] "<S4 object of class \"Definition\">"
+ [489] "<S4 object of class \"Definition\">"
+ [490] "<S4 object of class \"Definition\">"
+ [491] "<S4 object of class \"Definition\">"
+ [492] "<S4 object of class \"Definition\">"
+ [493] "<S4 object of class \"Definition\">"
+ [494] "<S4 object of class \"Definition\">"
+ [495] "<S4 object of class \"Definition\">"
+ [496] "<S4 object of class \"Definition\">"
+ [497] "<S4 object of class \"Definition\">"
+ [498] "<S4 object of class \"Definition\">"
+ [499] "<S4 object of class \"Definition\">"
+ [500] "<S4 object of class \"Definition\">"
+ [501] "<S4 object of class \"Definition\">"
+ [502] "<S4 object of class \"Definition\">"
+ [503] "<S4 object of class \"Definition\">"
+ [504] "<S4 object of class \"Definition\">"
+ [505] "<S4 object of class \"Definition\">"
+ [506] "<S4 object of class \"Definition\">"
+ [507] "<S4 object of class \"Definition\">"
+ [508] "<S4 object of class \"Definition\">"
+ [509] "<S4 object of class \"Definition\">"
+ [510] "<S4 object of class \"Definition\">"
+ [511] "<S4 object of class \"Definition\">"
+ [512] "<S4 object of class \"Definition\">"
+ [513] "<S4 object of class \"Definition\">"
+ [514] "<S4 object of class \"Definition\">"
+ [515] "<S4 object of class \"Definition\">"
+ [516] "<S4 object of class \"Definition\">"
+ [517] "<S4 object of class \"Definition\">"
+ [518] "<S4 object of class \"Definition\">"
+ [519] "<S4 object of class \"Definition\">"
+ [520] "<S4 object of class \"Definition\">"
+ [521] "<S4 object of class \"Definition\">"
+ [522] "<S4 object of class \"Definition\">"
+ [523] "<S4 object of class \"Definition\">"
+ [524] "<S4 object of class \"Definition\">"
+ [525] "<S4 object of class \"Definition\">"
+ [526] "<S4 object of class \"Definition\">"
+ [527] "<S4 object of class \"Definition\">"
+ [528] "<S4 object of class \"Definition\">"
+ [529] "<S4 object of class \"Definition\">"
+ [530] "<S4 object of class \"Definition\">"
+ [531] "<S4 object of class \"Definition\">"
+ [532] "<S4 object of class \"Definition\">"
+ [533] "<S4 object of class \"Definition\">"
+ [534] "<S4 object of class \"Definition\">"
+ [535] "<S4 object of class \"Definition\">"
+ [536] "<S4 object of class \"Definition\">"
+ [537] "<S4 object of class \"Definition\">"
+ [538] "<S4 object of class \"Definition\">"
+ [539] "<S4 object of class \"Definition\">"
+ [540] "<S4 object of class \"Definition\">"
+ [541] "<S4 object of class \"Definition\">"
+ [542] "<S4 object of class \"Definition\">"
+ [543] "<S4 object of class \"Definition\">"
+ [544] "<S4 object of class \"Definition\">"
+ [545] "<S4 object of class \"Definition\">"
+ [546] "<S4 object of class \"Definition\">"
+ [547] "<S4 object of class \"Definition\">"
+ [548] "<S4 object of class \"Definition\">"
+ [549] "<S4 object of class \"Definition\">"
+ [550] "<S4 object of class \"Definition\">"
+ [551] "<S4 object of class \"Definition\">"
+ [552] "<S4 object of class \"Definition\">"
+ [553] "<S4 object of class \"Definition\">"
+ [554] "<S4 object of class \"Definition\">"
+ [555] "<S4 object of class \"Definition\">"
+ [556] "<S4 object of class \"Definition\">"
+ [557] "<S4 object of class \"Definition\">"
+ [558] "<S4 object of class \"Definition\">"
+ [559] "<S4 object of class \"Definition\">"
+ [560] "<S4 object of class \"Definition\">"
+ [561] "<S4 object of class \"Definition\">"
+ [562] "<S4 object of class \"Definition\">"
+ [563] "<S4 object of class \"Definition\">"
+ [564] "<S4 object of class \"Definition\">"
+ [565] "<S4 object of class \"Definition\">"
+ [566] "<S4 object of class \"Definition\">"
+ [567] "<S4 object of class \"Definition\">"
+ [568] "<S4 object of class \"Definition\">"
+ [569] "<S4 object of class \"Definition\">"
+ [570] "<S4 object of class \"Definition\">"
+ [571] "<S4 object of class \"Definition\">"
+ [572] "<S4 object of class \"Definition\">"
+ [573] "<S4 object of class \"Definition\">"
+ [574] "<S4 object of class \"Definition\">"
+ [575] "<S4 object of class \"Definition\">"
+ [576] "<S4 object of class \"Definition\">"
+ [577] "<S4 object of class \"Definition\">"
+ [578] "<S4 object of class \"Definition\">"
+ [579] "<S4 object of class \"Definition\">"
+ [580] "<S4 object of class \"Definition\">"
+ [581] "<S4 object of class \"Definition\">"
+ [582] "<S4 object of class \"Definition\">"
+ [583] "<S4 object of class \"Definition\">"
+ [584] "<S4 object of class \"Definition\">"
+ [585] "<S4 object of class \"Definition\">"
+ [586] "<S4 object of class \"Definition\">"
+ [587] "<S4 object of class \"Definition\">"
+ [588] "<S4 object of class \"Definition\">"
+ [589] "<S4 object of class \"Definition\">"
+ [590] "<S4 object of class \"Definition\">"
+ [591] "<S4 object of class \"Definition\">"
+ [592] "<S4 object of class \"Definition\">"
+ [593] "<S4 object of class \"Definition\">"
+ [594] "<S4 object of class \"Definition\">"
+ [595] "<S4 object of class \"Definition\">"
+ [596] "<S4 object of class \"Definition\">"
+ [597] "<S4 object of class \"Definition\">"
+ [598] "<S4 object of class \"Definition\">"
+ [599] "<S4 object of class \"Definition\">"
+ [600] "<S4 object of class \"Definition\">"
+ [601] "<S4 object of class \"Definition\">"
+ [602] "<S4 object of class \"Definition\">"
+ [603] "<S4 object of class \"Definition\">"
+ [604] "<S4 object of class \"Definition\">"
+ [605] "<S4 object of class \"Definition\">"
+ [606] "<S4 object of class \"Definition\">"
+ [607] "<S4 object of class \"Definition\">"
+ [608] "<S4 object of class \"Definition\">"
+ [609] "<S4 object of class \"Definition\">"
+ [610] "<S4 object of class \"Definition\">"
+ [611] "<S4 object of class \"Definition\">"
+ [612] "<S4 object of class \"Definition\">"
+ [613] "<S4 object of class \"Definition\">"
+ [614] "<S4 object of class \"Definition\">"
+ [615] "<S4 object of class \"Definition\">"
+ [616] "<S4 object of class \"Definition\">"
+ [617] "<S4 object of class \"Definition\">"
+ [618] "<S4 object of class \"Definition\">"
+ [619] "<S4 object of class \"Definition\">"
+ [620] "<S4 object of class \"Definition\">"
+ [621] "<S4 object of class \"Definition\">"
+ [622] "<S4 object of class \"Definition\">"
+ [623] "<S4 object of class \"Definition\">"
+ [624] "<S4 object of class \"Definition\">"
+ [625] "<S4 object of class \"Definition\">"
+ [626] "<S4 object of class \"Definition\">"
+ [627] "<S4 object of class \"Definition\">"
+ [628] "<S4 object of class \"Definition\">"
+ [629] "<S4 object of class \"Definition\">"
+ [630] "<S4 object of class \"Definition\">"
+ [631] "<S4 object of class \"Definition\">"
+ [632] "<S4 object of class \"Definition\">"
+ [633] "<S4 object of class \"Definition\">"
+ [634] "<S4 object of class \"Definition\">"
+ [635] "<S4 object of class \"Definition\">"
+ [636] "<S4 object of class \"Definition\">"
+ [637] "<S4 object of class \"Definition\">"
+ [638] "<S4 object of class \"Definition\">"
+ [639] "<S4 object of class \"Definition\">"
+ [640] "<S4 object of class \"Definition\">"
+ [641] "<S4 object of class \"Definition\">"
+ [642] "<S4 object of class \"Definition\">"
+ [643] "<S4 object of class \"Definition\">"
+ [644] "<S4 object of class \"Definition\">"
+ [645] "<S4 object of class \"Definition\">"
+ [646] "<S4 object of class \"Definition\">"
+ [647] "<S4 object of class \"Definition\">"
+ [648] "<S4 object of class \"Definition\">"
+ [649] "<S4 object of class \"Definition\">"
+ [650] "<S4 object of class \"Definition\">"
+ [651] "<S4 object of class \"Definition\">"
+ [652] "<S4 object of class \"Definition\">"
+ [653] "<S4 object of class \"Definition\">"
+ [654] "<S4 object of class \"Definition\">"
+ [655] "<S4 object of class \"Definition\">"
+ [656] "<S4 object of class \"Definition\">"
+ [657] "<S4 object of class \"Definition\">"
+ [658] "<S4 object of class \"Definition\">"
+ [659] "<S4 object of class \"Definition\">"
+ [660] "<S4 object of class \"Definition\">"
+ [661] "<S4 object of class \"Definition\">"
+ [662] "<S4 object of class \"Definition\">"
+ [663] "<S4 object of class \"Definition\">"
+ [664] "<S4 object of class \"Definition\">"
+ [665] "<S4 object of class \"Definition\">"
+ [666] "<S4 object of class \"Definition\">"
+ [667] "<S4 object of class \"Definition\">"
+ [668] "<S4 object of class \"Definition\">"
+ [669] "<S4 object of class \"Definition\">"
+ [670] "<S4 object of class \"Definition\">"
+ [671] "<S4 object of class \"Definition\">"
+ [672] "<S4 object of class \"Definition\">"
+ [673] "<S4 object of class \"Definition\">"
+ [674] "<S4 object of class \"Definition\">"
+ [675] "<S4 object of class \"Definition\">"
+ [676] "<S4 object of class \"Definition\">"
+ [677] "<S4 object of class \"Definition\">"
+ [678] "<S4 object of class \"Definition\">"
+ [679] "<S4 object of class \"Definition\">"
+ [680] "<S4 object of class \"Definition\">"
+ [681] "<S4 object of class \"Definition\">"
+ [682] "<S4 object of class \"Definition\">"
+ [683] "<S4 object of class \"Definition\">"
+ [684] "<S4 object of class \"Definition\">"
+ [685] "<S4 object of class \"Definition\">"
+ [686] "<S4 object of class \"Definition\">"
+ [687] "<S4 object of class \"Definition\">"
+ [688] "<S4 object of class \"Definition\">"
+ [689] "<S4 object of class \"Definition\">"
+ [690] "<S4 object of class \"Definition\">"
+ [691] "<S4 object of class \"Definition\">"
+ [692] "<S4 object of class \"Definition\">"
+ [693] "<S4 object of class \"Definition\">"
+ [694] "<S4 object of class \"Definition\">"
+ [695] "<S4 object of class \"Definition\">"
+ [696] "<S4 object of class \"Definition\">"
+ [697] "<S4 object of class \"Definition\">"
+ [698] "<S4 object of class \"Definition\">"
+ [699] "<S4 object of class \"Definition\">"
+ [700] "<S4 object of class \"Definition\">"
+ [701] "<S4 object of class \"Definition\">"
+ [702] "<S4 object of class \"Definition\">"
+ [703] "<S4 object of class \"Definition\">"
+ [704] "<S4 object of class \"Definition\">"
+ [705] "<S4 object of class \"Definition\">"
+ [706] "<S4 object of class \"Definition\">"
+ [707] "<S4 object of class \"Definition\">"
+ [708] "<S4 object of class \"Definition\">"
+ [709] "<S4 object of class \"Definition\">"
+ [710] "<S4 object of class \"Definition\">"
+ [711] "<S4 object of class \"Definition\">"
+ [712] "<S4 object of class \"Definition\">"
+ [713] "<S4 object of class \"Definition\">"
+ [714] "<S4 object of class \"Definition\">"
+ [715] "<S4 object of class \"Definition\">"
+ [716] "<S4 object of class \"Definition\">"
+ [717] "<S4 object of class \"Definition\">"
+ [718] "<S4 object of class \"Definition\">"
+ [719] "<S4 object of class \"Definition\">"
+ [720] "<S4 object of class \"Definition\">"
+ [721] "<S4 object of class \"Definition\">"
+ [722] "<S4 object of class \"Definition\">"
+ [723] "<S4 object of class \"Definition\">"
+ [724] "<S4 object of class \"Definition\">"
+ [725] "<S4 object of class \"Definition\">"
+ [726] "<S4 object of class \"Definition\">"
+ [727] "<S4 object of class \"Definition\">"
+ [728] "<S4 object of class \"Definition\">"
+ [729] "<S4 object of class \"Definition\">"
+ [730] "<S4 object of class \"Definition\">"
+ [731] "<S4 object of class \"Definition\">"
+ [732] "<S4 object of class \"Definition\">"
+ [733] "<S4 object of class \"Definition\">"
+ [734] "<S4 object of class \"Definition\">"
+ [735] "<S4 object of class \"Definition\">"
+ [736] "<S4 object of class \"Definition\">"
+ [737] "<S4 object of class \"Definition\">"
+ [738] "<S4 object of class \"Definition\">"
+ [739] "<S4 object of class \"Definition\">"
+ [740] "<S4 object of class \"Definition\">"
+ [741] "<S4 object of class \"Definition\">"
+ [742] "<S4 object of class \"Definition\">"
+ [743] "<S4 object of class \"Definition\">"
+ [744] "<S4 object of class \"Definition\">"
+ [745] "<S4 object of class \"Definition\">"
+ [746] "<S4 object of class \"Definition\">"
+ [747] "<S4 object of class \"Definition\">"
+ [748] "<S4 object of class \"Definition\">"
+ [749] "<S4 object of class \"Definition\">"
+ [750] "<S4 object of class \"Definition\">"
+ [751] "<S4 object of class \"Definition\">"
+ [752] "<S4 object of class \"Definition\">"
+ [753] "<S4 object of class \"Definition\">"
+ [754] "<S4 object of class \"Definition\">"
+ [755] "<S4 object of class \"Definition\">"
+ [756] "<S4 object of class \"Definition\">"
+ [757] "<S4 object of class \"Definition\">"
+ [758] "<S4 object of class \"Definition\">"
+ [759] "<S4 object of class \"Definition\">"
+ [760] "<S4 object of class \"Definition\">"
+ [761] "<S4 object of class \"Definition\">"
+ [762] "<S4 object of class \"Definition\">"
+ [763] "<S4 object of class \"Definition\">"
+ [764] "<S4 object of class \"Definition\">"
+ [765] "<S4 object of class \"Definition\">"
+ [766] "<S4 object of class \"Definition\">"
+ [767] "<S4 object of class \"Definition\">"
+ [768] "<S4 object of class \"Definition\">"
+ [769] "<S4 object of class \"Definition\">"
+ [770] "<S4 object of class \"Definition\">"
+ [771] "<S4 object of class \"Definition\">"
+ [772] "<S4 object of class \"Definition\">"
+ [773] "<S4 object of class \"Definition\">"
+ [774] "<S4 object of class \"Definition\">"
+ [775] "<S4 object of class \"Definition\">"
+ [776] "<S4 object of class \"Definition\">"
+ [777] "<S4 object of class \"Definition\">"
+ [778] "<S4 object of class \"Definition\">"
+ [779] "<S4 object of class \"Definition\">"
+ [780] "<S4 object of class \"Definition\">"
+ [781] "<S4 object of class \"Definition\">"
+ [782] "<S4 object of class \"Definition\">"
+ [783] "<S4 object of class \"Definition\">"
+ [784] "<S4 object of class \"Definition\">"
+ [785] "<S4 object of class \"Definition\">"
+ [786] "<S4 object of class \"Definition\">"
+ [787] "<S4 object of class \"Definition\">"
+ [788] "<S4 object of class \"Definition\">"
+ [789] "<S4 object of class \"Definition\">"
+ [790] "<S4 object of class \"Definition\">"
+ [791] "<S4 object of class \"Definition\">"
+ [792] "<S4 object of class \"Definition\">"
+ [793] "<S4 object of class \"Definition\">"
+ [794] "<S4 object of class \"Definition\">"
+ [795] "<S4 object of class \"Definition\">"
+ [796] "<S4 object of class \"Definition\">"
+ [797] "<S4 object of class \"Definition\">"
+ [798] "<S4 object of class \"Definition\">"
+ [799] "<S4 object of class \"Definition\">"
+ [800] "<S4 object of class \"Definition\">"
+ [801] "<S4 object of class \"Definition\">"
+ [802] "<S4 object of class \"Definition\">"
+ [803] "<S4 object of class \"Definition\">"
+ [804] "<S4 object of class \"Definition\">"
+ [805] "<S4 object of class \"Definition\">"
+ [806] "<S4 object of class \"Definition\">"
+ [807] "<S4 object of class \"Definition\">"
+ [808] "<S4 object of class \"Definition\">"
+ [809] "<S4 object of class \"Definition\">"
+ [810] "<S4 object of class \"Definition\">"
+ [811] "<S4 object of class \"Definition\">"
+ [812] "<S4 object of class \"Definition\">"
+ [813] "<S4 object of class \"Definition\">"
+ [814] "<S4 object of class \"Definition\">"
+ [815] "<S4 object of class \"Definition\">"
+ [816] "<S4 object of class \"Definition\">"
+ [817] "<S4 object of class \"Definition\">"
+ [818] "<S4 object of class \"Definition\">"
+ [819] "<S4 object of class \"Definition\">"
+ [820] "<S4 object of class \"Definition\">"
+ [821] "<S4 object of class \"Definition\">"
+ [822] "<S4 object of class \"Definition\">"
+ [823] "<S4 object of class \"Definition\">"
+ [824] "<S4 object of class \"Definition\">"
+ [825] "<S4 object of class \"Definition\">"
+ [826] "<S4 object of class \"Definition\">"
+ [827] "<S4 object of class \"Definition\">"
+ [828] "<S4 object of class \"Definition\">"
+ [829] "<S4 object of class \"Definition\">"
+ [830] "<S4 object of class \"Definition\">"
+ [831] "<S4 object of class \"Definition\">"
+ [832] "<S4 object of class \"Definition\">"
+ [833] "<S4 object of class \"Definition\">"
+ [834] "<S4 object of class \"Definition\">"
+ [835] "<S4 object of class \"Definition\">"
+ [836] "<S4 object of class \"Definition\">"
+ [837] "<S4 object of class \"Definition\">"
+ [838] "<S4 object of class \"Definition\">"
+ [839] "<S4 object of class \"Definition\">"
+ [840] "<S4 object of class \"Definition\">"
+ [841] "<S4 object of class \"Definition\">"
+ [842] "<S4 object of class \"Definition\">"
+ [843] "<S4 object of class \"Definition\">"
+ [844] "<S4 object of class \"Definition\">"
+ [845] "<S4 object of class \"Definition\">"
+ [846] "<S4 object of class \"Definition\">"
+ [847] "<S4 object of class \"Definition\">"
+ [848] "<S4 object of class \"Definition\">"
+ [849] "<S4 object of class \"Definition\">"
+ [850] "<S4 object of class \"Definition\">"
+ [851] "<S4 object of class \"Definition\">"
+ [852] "<S4 object of class \"Definition\">"
+ [853] "<S4 object of class \"Definition\">"
+ [854] "<S4 object of class \"Definition\">"
+ [855] "<S4 object of class \"Definition\">"
+ [856] "<S4 object of class \"Definition\">"
+ [857] "<S4 object of class \"Definition\">"
+ [858] "<S4 object of class \"Definition\">"
+ [859] "<S4 object of class \"Definition\">"
+ [860] "<S4 object of class \"Definition\">"
+ [861] "<S4 object of class \"Definition\">"
+ [862] "<S4 object of class \"Definition\">"
+ [863] "<S4 object of class \"Definition\">"
+ [864] "<S4 object of class \"Definition\">"
+ [865] "<S4 object of class \"Definition\">"
+ [866] "<S4 object of class \"Definition\">"
+ [867] "<S4 object of class \"Definition\">"
+ [868] "<S4 object of class \"Definition\">"
+ [869] "<S4 object of class \"Definition\">"
+ [870] "<S4 object of class \"Definition\">"
+ [871] "<S4 object of class \"Definition\">"
+ [872] "<S4 object of class \"Definition\">"
+ [873] "<S4 object of class \"Definition\">"
+ [874] "<S4 object of class \"Definition\">"
+ [875] "<S4 object of class \"Definition\">"
+ [876] "<S4 object of class \"Definition\">"
+ [877] "<S4 object of class \"Definition\">"
+ [878] "<S4 object of class \"Definition\">"
+ [879] "<S4 object of class \"Definition\">"
+ [880] "<S4 object of class \"Definition\">"
+ [881] "<S4 object of class \"Definition\">"
+ [882] "<S4 object of class \"Definition\">"
+ [883] "<S4 object of class \"Definition\">"
+ [884] "<S4 object of class \"Definition\">"
+ [885] "<S4 object of class \"Definition\">"
+ [886] "<S4 object of class \"Definition\">"
+ [887] "<S4 object of class \"Definition\">"
+ [888] "<S4 object of class \"Definition\">"
+ [889] "<S4 object of class \"Definition\">"
+ [890] "<S4 object of class \"Definition\">"
+ [891] "<S4 object of class \"Definition\">"
+ [892] "<S4 object of class \"Definition\">"
+ [893] "<S4 object of class \"Definition\">"
+ [894] "<S4 object of class \"Definition\">"
+ [895] "<S4 object of class \"Definition\">"
+ [896] "<S4 object of class \"Definition\">"
+ [897] "<S4 object of class \"Definition\">"
+ [898] "<S4 object of class \"Definition\">"
+ [899] "<S4 object of class \"Definition\">"
+ [900] "<S4 object of class \"Definition\">"
+ [901] "<S4 object of class \"Definition\">"
+ [902] "<S4 object of class \"Definition\">"
+ [903] "<S4 object of class \"Definition\">"
+ [904] "<S4 object of class \"Definition\">"
+ [905] "<S4 object of class \"Definition\">"
+ [906] "<S4 object of class \"Definition\">"
+ [907] "<S4 object of class \"Definition\">"
+ [908] "<S4 object of class \"Definition\">"
+ [909] "<S4 object of class \"Definition\">"
+ [910] "<S4 object of class \"Definition\">"
+ [911] "<S4 object of class \"Definition\">"
+ [912] "<S4 object of class \"Definition\">"
+ [913] "<S4 object of class \"Definition\">"
+ [914] "<S4 object of class \"Definition\">"
+ [915] "<S4 object of class \"Definition\">"
+ [916] "<S4 object of class \"Definition\">"
+ [917] "<S4 object of class \"Definition\">"
+ [918] "<S4 object of class \"Definition\">"
+ [919] "<S4 object of class \"Definition\">"
+ [920] "<S4 object of class \"Definition\">"
+ [921] "<S4 object of class \"Definition\">"
+ [922] "<S4 object of class \"Definition\">"
+ [923] "<S4 object of class \"Definition\">"
+ [924] "<S4 object of class \"Definition\">"
+ [925] "<S4 object of class \"Definition\">"
+ [926] "<S4 object of class \"Definition\">"
+ [927] "<S4 object of class \"Definition\">"
+ [928] "<S4 object of class \"Definition\">"
+ [929] "<S4 object of class \"Definition\">"
+ [930] "<S4 object of class \"Definition\">"
+ [931] "<S4 object of class \"Definition\">"
+ [932] "<S4 object of class \"Definition\">"
+ [933] "<S4 object of class \"Definition\">"
+ [934] "<S4 object of class \"Definition\">"
+ [935] "<S4 object of class \"Definition\">"
+ [936] "<S4 object of class \"Definition\">"
+ [937] "<S4 object of class \"Definition\">"
+ [938] "<S4 object of class \"Definition\">"
+ [939] "<S4 object of class \"Definition\">"
+ [940] "<S4 object of class \"Definition\">"
+ [941] "<S4 object of class \"Definition\">"
+ [942] "<S4 object of class \"Definition\">"
+ [943] "<S4 object of class \"Definition\">"
+ [944] "<S4 object of class \"Definition\">"
+ [945] "<S4 object of class \"Definition\">"
+ [946] "<S4 object of class \"Definition\">"
+ [947] "<S4 object of class \"Definition\">"
+ [948] "<S4 object of class \"Definition\">"
+ [949] "<S4 object of class \"Definition\">"
+ [950] "<S4 object of class \"Definition\">"
+ [951] "<S4 object of class \"Definition\">"
+ [952] "<S4 object of class \"Definition\">"
+ [953] "<S4 object of class \"Definition\">"
+ [954] "<S4 object of class \"Definition\">"
+ [955] "<S4 object of class \"Definition\">"
+ [956] "<S4 object of class \"Definition\">"
+ [957] "<S4 object of class \"Definition\">"
+ [958] "<S4 object of class \"Definition\">"
+ [959] "<S4 object of class \"Definition\">"
+ [960] "<S4 object of class \"Definition\">"
+ [961] "<S4 object of class \"Definition\">"
+ [962] "<S4 object of class \"Definition\">"
+ [963] "<S4 object of class \"Definition\">"
+ [964] "<S4 object of class \"Definition\">"
+ [965] "<S4 object of class \"Definition\">"
+ [966] "<S4 object of class \"Definition\">"
+ [967] "<S4 object of class \"Definition\">"
+ [968] "<S4 object of class \"Definition\">"
+ [969] "<S4 object of class \"Definition\">"
+ [970] "<S4 object of class \"Definition\">"
+ [971] "<S4 object of class \"Definition\">"
+ [972] "<S4 object of class \"Definition\">"
+ [973] "<S4 object of class \"Definition\">"
+ [974] "<S4 object of class \"Definition\">"
+ [975] "<S4 object of class \"Definition\">"
+ [976] "<S4 object of class \"Definition\">"
+ [977] "<S4 object of class \"Definition\">"
+ [978] "<S4 object of class \"Definition\">"
+ [979] "<S4 object of class \"Definition\">"
+ [980] "<S4 object of class \"Definition\">"
+ [981] "<S4 object of class \"Definition\">"
+ [982] "<S4 object of class \"Definition\">"
+ [983] "<S4 object of class \"Definition\">"
+ [984] "<S4 object of class \"Definition\">"
+ [985] "<S4 object of class \"Definition\">"
+ [986] "<S4 object of class \"Definition\">"
+ [987] "<S4 object of class \"Definition\">"
+ [988] "<S4 object of class \"Definition\">"
+ [989] "<S4 object of class \"Definition\">"
+ [990] "<S4 object of class \"Definition\">"
+ [991] "<S4 object of class \"Definition\">"
+ [992] "<S4 object of class \"Definition\">"
+ [993] "<S4 object of class \"Definition\">"
+ [994] "<S4 object of class \"Definition\">"
+ [995] "<S4 object of class \"Definition\">"
+ [996] "<S4 object of class \"Definition\">"
+ [997] "<S4 object of class \"Definition\">"
+ [998] "<S4 object of class \"Definition\">"
+ [999] "<S4 object of class \"Definition\">"
+[1000] "<S4 object of class \"Definition\">"
+[1001] "<S4 object of class \"Definition\">"
+[1002] "<S4 object of class \"Definition\">"
+[1003] "<S4 object of class \"Definition\">"
+[1004] "<S4 object of class \"Definition\">"
+[1005] "<S4 object of class \"Definition\">"
+[1006] "<S4 object of class \"Definition\">"
+[1007] "<S4 object of class \"Definition\">"
+[1008] "<S4 object of class \"Definition\">"
+[1009] "<S4 object of class \"Definition\">"
+[1010] "<S4 object of class \"Definition\">"
+[1011] "<S4 object of class \"Definition\">"
+[1012] "<S4 object of class \"Definition\">"
+[1013] "<S4 object of class \"Definition\">"
+[1014] "<S4 object of class \"Definition\">"
+[1015] "<S4 object of class \"Definition\">"
+[1016] "<S4 object of class \"Definition\">"
+[1017] "<S4 object of class \"Definition\">"
+[1018] "<S4 object of class \"Definition\">"
+[1019] "<S4 object of class \"Definition\">"
+[1020] "<S4 object of class \"Definition\">"
+[1021] "<S4 object of class \"Definition\">"
+[1022] "<S4 object of class \"Definition\">"
+[1023] "<S4 object of class \"Definition\">"
+[1024] "<S4 object of class \"Definition\">"
+[1025] "<S4 object of class \"Definition\">"
+[1026] "<S4 object of class \"Definition\">"
+[1027] "<S4 object of class \"Definition\">"
+[1028] "<S4 object of class \"Definition\">"
+[1029] "<S4 object of class \"Definition\">"
+[1030] "<S4 object of class \"Definition\">"
+[1031] "<S4 object of class \"Definition\">"
+[1032] "<S4 object of class \"Definition\">"
+[1033] "<S4 object of class \"Definition\">"
+[1034] "<S4 object of class \"Definition\">"
+[1035] "<S4 object of class \"Definition\">"
+[1036] "<S4 object of class \"Definition\">"
+[1037] "<S4 object of class \"Definition\">"
+[1038] "<S4 object of class \"Definition\">"
+[1039] "<S4 object of class \"Definition\">"
+[1040] "<S4 object of class \"Definition\">"
+[1041] "<S4 object of class \"Definition\">"
+[1042] "<S4 object of class \"Definition\">"
+[1043] "<S4 object of class \"Definition\">"
+[1044] "<S4 object of class \"Definition\">"
+[1045] "<S4 object of class \"Definition\">"
+[1046] "<S4 object of class \"Definition\">"
+[1047] "<S4 object of class \"Definition\">"
+[1048] "<S4 object of class \"Definition\">"
+[1049] "<S4 object of class \"Definition\">"
+[1050] "<S4 object of class \"Definition\">"
+[1051] "<S4 object of class \"Definition\">"
+[1052] "<S4 object of class \"Definition\">"
+[1053] "<S4 object of class \"Definition\">"
+[1054] "<S4 object of class \"Definition\">"
+[1055] "<S4 object of class \"Definition\">"
+[1056] "<S4 object of class \"Definition\">"
+[1057] "<S4 object of class \"Definition\">"
+[1058] "<S4 object of class \"Definition\">"
+[1059] "<S4 object of class \"Definition\">"
+[1060] "<S4 object of class \"Definition\">"
+[1061] "<S4 object of class \"Definition\">"
+[1062] "<S4 object of class \"Definition\">"
+[1063] "<S4 object of class \"Definition\">"
+[1064] "<S4 object of class \"Definition\">"
+[1065] "<S4 object of class \"Definition\">"
+[1066] "<S4 object of class \"Definition\">"
+[1067] "<S4 object of class \"Definition\">"
+[1068] "<S4 object of class \"Definition\">"
+[1069] "<S4 object of class \"Definition\">"
+[1070] "<S4 object of class \"Definition\">"
+[1071] "<S4 object of class \"Definition\">"
+[1072] "<S4 object of class \"Definition\">"
+[1073] "<S4 object of class \"Definition\">"
+[1074] "<S4 object of class \"Definition\">"
+[1075] "<S4 object of class \"Definition\">"
+[1076] "<S4 object of class \"Definition\">"
+[1077] "<S4 object of class \"Definition\">"
+[1078] "<S4 object of class \"Definition\">"
+[1079] "<S4 object of class \"Definition\">"
+[1080] "<S4 object of class \"Definition\">"
+[1081] "<S4 object of class \"Definition\">"
+[1082] "<S4 object of class \"Definition\">"
+[1083] "<S4 object of class \"Definition\">"
+[1084] "<S4 object of class \"Definition\">"
+[1085] "<S4 object of class \"Definition\">"
+[1086] "<S4 object of class \"Definition\">"
+[1087] "<S4 object of class \"Definition\">"
+[1088] "<S4 object of class \"Definition\">"
+[1089] "<S4 object of class \"Definition\">"
+[1090] "<S4 object of class \"Definition\">"
+[1091] "<S4 object of class \"Definition\">"
+[1092] "<S4 object of class \"Definition\">"
+[1093] "<S4 object of class \"Definition\">"
+[1094] "<S4 object of class \"Definition\">"
+[1095] "<S4 object of class \"Definition\">"
+[1096] "<S4 object of class \"Definition\">"
+[1097] "<S4 object of class \"Definition\">"
+[1098] "<S4 object of class \"Definition\">"
+[1099] "<S4 object of class \"Definition\">"
+[1100] "<S4 object of class \"Definition\">"
+[1101] "<S4 object of class \"Definition\">"
+[1102] "<S4 object of class \"Definition\">"
+[1103] "<S4 object of class \"Definition\">"
+[1104] "<S4 object of class \"Definition\">"
+[1105] "<S4 object of class \"Definition\">"
+[1106] "<S4 object of class \"Definition\">"
+[1107] "<S4 object of class \"Definition\">"
+[1108] "<S4 object of class \"Definition\">"
+[1109] "<S4 object of class \"Definition\">"
+[1110] "<S4 object of class \"Definition\">"
+[1111] "<S4 object of class \"Definition\">"
+[1112] "<S4 object of class \"Definition\">"
+[1113] "<S4 object of class \"Definition\">"
+[1114] "<S4 object of class \"Definition\">"
+[1115] "<S4 object of class \"Definition\">"
+[1116] "<S4 object of class \"Definition\">"
+[1117] "<S4 object of class \"Definition\">"
+[1118] "<S4 object of class \"Definition\">"
+[1119] "<S4 object of class \"Definition\">"
+[1120] "<S4 object of class \"Definition\">"
+[1121] "<S4 object of class \"Definition\">"
+[1122] "<S4 object of class \"Definition\">"
+[1123] "<S4 object of class \"Definition\">"
+[1124] "<S4 object of class \"Definition\">"
+[1125] "<S4 object of class \"Definition\">"
+[1126] "<S4 object of class \"Definition\">"
+[1127] "<S4 object of class \"Definition\">"
+[1128] "<S4 object of class \"Definition\">"
+[1129] "<S4 object of class \"Definition\">"
+[1130] "<S4 object of class \"Definition\">"
+[1131] "<S4 object of class \"Definition\">"
+[1132] "<S4 object of class \"Definition\">"
+[1133] "<S4 object of class \"Definition\">"
+[1134] "<S4 object of class \"Definition\">"
+[1135] "<S4 object of class \"Definition\">"
+[1136] "<S4 object of class \"Definition\">"
+[1137] "<S4 object of class \"Definition\">"
+[1138] "<S4 object of class \"Definition\">"
+[1139] "<S4 object of class \"Definition\">"
+[1140] "<S4 object of class \"Definition\">"
+[1141] "<S4 object of class \"Definition\">"
+[1142] "<S4 object of class \"Definition\">"
+[1143] "<S4 object of class \"Definition\">"
+[1144] "<S4 object of class \"Definition\">"
+[1145] "<S4 object of class \"Definition\">"
+[1146] "<S4 object of class \"Definition\">"
+[1147] "<S4 object of class \"Definition\">"
+[1148] "<S4 object of class \"Definition\">"
+[1149] "<S4 object of class \"Definition\">"
+[1150] "<S4 object of class \"Definition\">"
+[1151] "<S4 object of class \"Definition\">"
+[1152] "<S4 object of class \"Definition\">"
+[1153] "<S4 object of class \"Definition\">"
+[1154] "<S4 object of class \"Definition\">"
+[1155] "<S4 object of class \"Definition\">"
+[1156] "<S4 object of class \"Definition\">"
+[1157] "<S4 object of class \"Definition\">"
+[1158] "<S4 object of class \"Definition\">"
+[1159] "<S4 object of class \"Definition\">"
+[1160] "<S4 object of class \"Definition\">"
+[1161] "<S4 object of class \"Definition\">"
+[1162] "<S4 object of class \"Definition\">"
+[1163] "<S4 object of class \"Definition\">"
+[1164] "<S4 object of class \"Definition\">"
+[1165] "<S4 object of class \"Definition\">"
+[1166] "<S4 object of class \"Definition\">"
+[1167] "<S4 object of class \"Definition\">"
+[1168] "<S4 object of class \"Definition\">"
+[1169] "<S4 object of class \"Definition\">"
+[1170] "<S4 object of class \"Definition\">"
+[1171] "<S4 object of class \"Definition\">"
+[1172] "<S4 object of class \"Definition\">"
+[1173] "<S4 object of class \"Definition\">"
+[1174] "<S4 object of class \"Definition\">"
+[1175] "<S4 object of class \"Definition\">"
+[1176] "<S4 object of class \"Definition\">"
+[1177] "<S4 object of class \"Definition\">"
+[1178] "<S4 object of class \"Definition\">"
+[1179] "<S4 object of class \"Definition\">"
+[1180] "<S4 object of class \"Definition\">"
+[1181] "<S4 object of class \"Definition\">"
+[1182] "<S4 object of class \"Definition\">"
+[1183] "<S4 object of class \"Definition\">"
+[1184] "<S4 object of class \"Definition\">"
+[1185] "<S4 object of class \"Definition\">"
+[1186] "<S4 object of class \"Definition\">"
+[1187] "<S4 object of class \"Definition\">"
+[1188] "<S4 object of class \"Definition\">"
+[1189] "<S4 object of class \"Definition\">"
+[1190] "<S4 object of class \"Definition\">"
+[1191] "<S4 object of class \"Definition\">"
+[1192] "<S4 object of class \"Definition\">"
+[1193] "<S4 object of class \"Definition\">"
+[1194] "<S4 object of class \"Definition\">"
+[1195] "<S4 object of class \"Definition\">"
+[1196] "<S4 object of class \"Definition\">"
+[1197] "<S4 object of class \"Definition\">"
+[1198] "<S4 object of class \"Definition\">"
+[1199] "<S4 object of class \"Definition\">"
+[1200] "<S4 object of class \"Definition\">"
+[1201] "<S4 object of class \"Definition\">"
+[1202] "<S4 object of class \"Definition\">"
+[1203] "<S4 object of class \"Definition\">"
+[1204] "<S4 object of class \"Definition\">"
+[1205] "<S4 object of class \"Definition\">"
+[1206] "<S4 object of class \"Definition\">"
+[1207] "<S4 object of class \"Definition\">"
+[1208] "<S4 object of class \"Definition\">"
+[1209] "<S4 object of class \"Definition\">"
+[1210] "<S4 object of class \"Definition\">"
+[1211] "<S4 object of class \"Definition\">"
+[1212] "<S4 object of class \"Definition\">"
+[1213] "<S4 object of class \"Definition\">"
+[1214] "<S4 object of class \"Definition\">"
+[1215] "<S4 object of class \"Definition\">"
+[1216] "<S4 object of class \"Definition\">"
+[1217] "<S4 object of class \"Definition\">"
+[1218] "<S4 object of class \"Definition\">"
+[1219] "<S4 object of class \"Definition\">"
+[1220] "<S4 object of class \"Definition\">"
+[1221] "<S4 object of class \"Definition\">"
+[1222] "<S4 object of class \"Definition\">"
+[1223] "<S4 object of class \"Definition\">"
+[1224] "<S4 object of class \"Definition\">"
+[1225] "<S4 object of class \"Definition\">"
+[1226] "<S4 object of class \"Definition\">"
+[1227] "<S4 object of class \"Definition\">"
+[1228] "<S4 object of class \"Definition\">"
+[1229] "<S4 object of class \"Definition\">"
+[1230] "<S4 object of class \"Definition\">"
+[1231] "<S4 object of class \"Definition\">"
+[1232] "<S4 object of class \"Definition\">"
+[1233] "<S4 object of class \"Definition\">"
+[1234] "<S4 object of class \"Definition\">"
+[1235] "<S4 object of class \"Definition\">"
+[1236] "<S4 object of class \"Definition\">"
+[1237] "<S4 object of class \"Definition\">"
+[1238] "<S4 object of class \"Definition\">"
+[1239] "<S4 object of class \"Definition\">"
+[1240] "<S4 object of class \"Definition\">"
+[1241] "<S4 object of class \"Definition\">"
+[1242] "<S4 object of class \"Definition\">"
+[1243] "<S4 object of class \"Definition\">"
+[1244] "<S4 object of class \"Definition\">"
+[1245] "<S4 object of class \"Definition\">"
+[1246] "<S4 object of class \"Definition\">"
+[1247] "<S4 object of class \"Definition\">"
+[1248] "<S4 object of class \"Definition\">"
+[1249] "<S4 object of class \"Definition\">"
+[1250] "<S4 object of class \"Definition\">"
+[1251] "<S4 object of class \"Definition\">"
+[1252] "<S4 object of class \"Definition\">"
+[1253] "<S4 object of class \"Definition\">"
+[1254] "<S4 object of class \"Definition\">"
+[1255] "<S4 object of class \"Definition\">"
+[1256] "<S4 object of class \"Definition\">"
+[1257] "<S4 object of class \"Definition\">"
+[1258] "<S4 object of class \"Definition\">"
+[1259] "<S4 object of class \"Definition\">"
+[1260] "<S4 object of class \"Definition\">"
+[1261] "<S4 object of class \"Definition\">"
+[1262] "<S4 object of class \"Definition\">"
+[1263] "<S4 object of class \"Definition\">"
+[1264] "<S4 object of class \"Definition\">"
+[1265] "<S4 object of class \"Definition\">"
+[1266] "<S4 object of class \"Definition\">"
+[1267] "<S4 object of class \"Definition\">"
+[1268] "<S4 object of class \"Definition\">"
+[1269] "<S4 object of class \"Definition\">"
+[1270] "<S4 object of class \"Definition\">"
+[1271] "<S4 object of class \"Definition\">"
+[1272] "<S4 object of class \"Definition\">"
+[1273] "<S4 object of class \"Definition\">"
+[1274] "<S4 object of class \"Definition\">"
+[1275] "<S4 object of class \"Definition\">"
+[1276] "<S4 object of class \"Definition\">"
+[1277] "<S4 object of class \"Definition\">"
+[1278] "<S4 object of class \"Definition\">"
+[1279] "<S4 object of class \"Definition\">"
+[1280] "<S4 object of class \"Definition\">"
+[1281] "<S4 object of class \"Definition\">"
+[1282] "<S4 object of class \"Definition\">"
+[1283] "<S4 object of class \"Definition\">"
+[1284] "<S4 object of class \"Definition\">"
+[1285] "<S4 object of class \"Definition\">"
+[1286] "<S4 object of class \"Definition\">"
+[1287] "<S4 object of class \"Definition\">"
+[1288] "<S4 object of class \"Definition\">"
+[1289] "<S4 object of class \"Definition\">"
+[1290] "<S4 object of class \"Definition\">"
+[1291] "<S4 object of class \"Definition\">"
+[1292] "<S4 object of class \"Definition\">"
+[1293] "<S4 object of class \"Definition\">"
+[1294] "<S4 object of class \"Definition\">"
+[1295] "<S4 object of class \"Definition\">"
+[1296] "<S4 object of class \"Definition\">"
+[1297] "<S4 object of class \"Definition\">"
+[1298] "<S4 object of class \"Definition\">"
+[1299] "<S4 object of class \"Definition\">"
+[1300] "<S4 object of class \"Definition\">"
+[1301] "<S4 object of class \"Definition\">"
+[1302] "<S4 object of class \"Definition\">"
+[1303] "<S4 object of class \"Definition\">"
+[1304] "<S4 object of class \"Definition\">"
+[1305] "<S4 object of class \"Definition\">"
+[1306] "<S4 object of class \"Definition\">"
+[1307] "<S4 object of class \"Definition\">"
+[1308] "<S4 object of class \"Definition\">"
+[1309] "<S4 object of class \"Definition\">"
+[1310] "<S4 object of class \"Definition\">"
+[1311] "<S4 object of class \"Definition\">"
+[1312] "<S4 object of class \"Definition\">"
+[1313] "<S4 object of class \"Definition\">"
+[1314] "<S4 object of class \"Definition\">"
+[1315] "<S4 object of class \"Definition\">"
+[1316] "<S4 object of class \"Definition\">"
+[1317] "<S4 object of class \"Definition\">"
+[1318] "<S4 object of class \"Definition\">"
+[1319] "<S4 object of class \"Definition\">"
+[1320] "<S4 object of class \"Definition\">"
+[1321] "<S4 object of class \"Definition\">"
+[1322] "<S4 object of class \"Definition\">"
+[1323] "<S4 object of class \"Definition\">"
+[1324] "<S4 object of class \"Definition\">"
+[1325] "<S4 object of class \"Definition\">"
+[1326] "<S4 object of class \"Definition\">"
+[1327] "<S4 object of class \"Definition\">"
+[1328] "<S4 object of class \"Definition\">"
+[1329] "<S4 object of class \"Definition\">"
+[1330] "<S4 object of class \"Definition\">"
+[1331] "<S4 object of class \"Definition\">"
+[1332] "<S4 object of class \"Definition\">"
+[1333] "<S4 object of class \"Definition\">"
+[1334] "<S4 object of class \"Definition\">"
+[1335] "<S4 object of class \"Definition\">"
+[1336] "<S4 object of class \"Definition\">"
+[1337] "<S4 object of class \"Definition\">"
+[1338] "<S4 object of class \"Definition\">"
+[1339] "<S4 object of class \"Definition\">"
+[1340] "<S4 object of class \"Definition\">"
+[1341] "<S4 object of class \"Definition\">"
+[1342] "<S4 object of class \"Definition\">"
+[1343] "<S4 object of class \"Definition\">"
+[1344] "<S4 object of class \"Definition\">"
+[1345] "<S4 object of class \"Definition\">"
+[1346] "<S4 object of class \"Definition\">"
+[1347] "<S4 object of class \"Definition\">"
+[1348] "<S4 object of class \"Definition\">"
+[1349] "<S4 object of class \"Definition\">"
+[1350] "<S4 object of class \"Definition\">"
+[1351] "<S4 object of class \"Definition\">"
+[1352] "<S4 object of class \"Definition\">"
+[1353] "<S4 object of class \"Definition\">"
+[1354] "<S4 object of class \"Definition\">"
+[1355] "<S4 object of class \"Definition\">"
+[1356] "<S4 object of class \"Definition\">"
+[1357] "<S4 object of class \"Definition\">"
+[1358] "<S4 object of class \"Definition\">"
+[1359] "<S4 object of class \"Definition\">"
+[1360] "<S4 object of class \"Definition\">"
+[1361] "<S4 object of class \"Definition\">"
+[1362] "<S4 object of class \"Definition\">"
+[1363] "<S4 object of class \"Definition\">"
+[1364] "<S4 object of class \"Definition\">"
+[1365] "<S4 object of class \"Definition\">"
+[1366] "<S4 object of class \"Definition\">"
+[1367] "<S4 object of class \"Definition\">"
+[1368] "<S4 object of class \"Definition\">"
+[1369] "<S4 object of class \"Definition\">"
+[1370] "<S4 object of class \"Definition\">"
+[1371] "<S4 object of class \"Definition\">"
+[1372] "<S4 object of class \"Definition\">"
+[1373] "<S4 object of class \"Definition\">"
+[1374] "<S4 object of class \"Definition\">"
+[1375] "<S4 object of class \"Definition\">"
+[1376] "<S4 object of class \"Definition\">"
+[1377] "<S4 object of class \"Definition\">"
+[1378] "<S4 object of class \"Definition\">"
+[1379] "<S4 object of class \"Definition\">"
+[1380] "<S4 object of class \"Definition\">"
+[1381] "<S4 object of class \"Definition\">"
+[1382] "<S4 object of class \"Definition\">"
+[1383] "<S4 object of class \"Definition\">"
+[1384] "<S4 object of class \"Definition\">"
+[1385] "<S4 object of class \"Definition\">"
+[1386] "<S4 object of class \"Definition\">"
+[1387] "<S4 object of class \"Definition\">"
+[1388] "<S4 object of class \"Definition\">"
+[1389] "<S4 object of class \"Definition\">"
+[1390] "<S4 object of class \"Definition\">"
+[1391] "<S4 object of class \"Definition\">"
+[1392] "<S4 object of class \"Definition\">"
+[1393] "<S4 object of class \"Definition\">"
+[1394] "<S4 object of class \"Definition\">"
+[1395] "<S4 object of class \"Definition\">"
+[1396] "<S4 object of class \"Definition\">"
+[1397] "<S4 object of class \"Definition\">"
+[1398] "<S4 object of class \"Definition\">"
+[1399] "<S4 object of class \"Definition\">"
+[1400] "<S4 object of class \"Definition\">"
+[1401] "<S4 object of class \"Definition\">"
+[1402] "<S4 object of class \"Definition\">"
+[1403] "<S4 object of class \"Definition\">"
+[1404] "<S4 object of class \"Definition\">"
+[1405] "<S4 object of class \"Definition\">"
+[1406] "<S4 object of class \"Definition\">"
+[1407] "<S4 object of class \"Definition\">"
+[1408] "<S4 object of class \"Definition\">"
+[1409] "<S4 object of class \"Definition\">"
+[1410] "<S4 object of class \"Definition\">"
+[1411] "<S4 object of class \"Definition\">"
+[1412] "<S4 object of class \"Definition\">"
+[1413] "<S4 object of class \"Definition\">"
+[1414] "<S4 object of class \"Definition\">"
+[1415] "<S4 object of class \"Definition\">"
+[1416] "<S4 object of class \"Definition\">"
+[1417] "<S4 object of class \"Definition\">"
+[1418] "<S4 object of class \"Definition\">"
+[1419] "<S4 object of class \"Definition\">"
+[1420] "<S4 object of class \"Definition\">"
+[1421] "<S4 object of class \"Definition\">"
+[1422] "<S4 object of class \"Definition\">"
+[1423] "<S4 object of class \"Definition\">"
+[1424] "<S4 object of class \"Definition\">"
+[1425] "<S4 object of class \"Definition\">"
+[1426] "<S4 object of class \"Definition\">"
+[1427] "<S4 object of class \"Definition\">"
+[1428] "<S4 object of class \"Definition\">"
+[1429] "<S4 object of class \"Definition\">"
+[1430] "<S4 object of class \"Definition\">"
+[1431] "<S4 object of class \"Definition\">"
+[1432] "<S4 object of class \"Definition\">"
+[1433] "<S4 object of class \"Definition\">"
+[1434] "<S4 object of class \"Definition\">"
+[1435] "<S4 object of class \"Definition\">"
+[1436] "<S4 object of class \"Definition\">"
+[1437] "<S4 object of class \"Definition\">"
+[1438] "<S4 object of class \"Definition\">"
+[1439] "<S4 object of class \"Definition\">"
+[1440] "<S4 object of class \"Definition\">"
+[1441] "<S4 object of class \"Definition\">"
+[1442] "<S4 object of class \"Definition\">"
+[1443] "<S4 object of class \"Definition\">"
+[1444] "<S4 object of class \"Definition\">"
+[1445] "<S4 object of class \"Definition\">"
+[1446] "<S4 object of class \"Definition\">"
+[1447] "<S4 object of class \"Definition\">"
+[1448] "<S4 object of class \"Definition\">"
+[1449] "<S4 object of class \"Definition\">"
+[1450] "<S4 object of class \"Definition\">"
+[1451] "<S4 object of class \"Definition\">"
+[1452] "<S4 object of class \"Definition\">"
+[1453] "<S4 object of class \"Definition\">"
+[1454] "<S4 object of class \"Definition\">"
+[1455] "<S4 object of class \"Definition\">"
+[1456] "<S4 object of class \"Definition\">"
+[1457] "<S4 object of class \"Definition\">"
+[1458] "<S4 object of class \"Definition\">"
+[1459] "<S4 object of class \"Definition\">"
+[1460] "<S4 object of class \"Definition\">"
+[1461] "<S4 object of class \"Definition\">"
+[1462] "<S4 object of class \"Definition\">"
+[1463] "<S4 object of class \"Definition\">"
+[1464] "<S4 object of class \"Definition\">"
+[1465] "<S4 object of class \"Definition\">"
+[1466] "<S4 object of class \"Definition\">"
+[1467] "<S4 object of class \"Definition\">"
+[1468] "<S4 object of class \"Definition\">"
+[1469] "<S4 object of class \"Definition\">"
+[1470] "<S4 object of class \"Definition\">"
+[1471] "<S4 object of class \"Definition\">"
+[1472] "<S4 object of class \"Definition\">"
+[1473] "<S4 object of class \"Definition\">"
+[1474] "<S4 object of class \"Definition\">"
+[1475] "<S4 object of class \"Definition\">"
+[1476] "<S4 object of class \"Definition\">"
+[1477] "<S4 object of class \"Definition\">"
+[1478] "<S4 object of class \"Definition\">"
+[1479] "<S4 object of class \"Definition\">"
+[1480] "<S4 object of class \"Definition\">"
+[1481] "<S4 object of class \"Definition\">"
+[1482] "<S4 object of class \"Definition\">"
+[1483] "<S4 object of class \"Definition\">"
+[1484] "<S4 object of class \"Definition\">"
+[1485] "<S4 object of class \"Definition\">"
+[1486] "<S4 object of class \"Definition\">"
+[1487] "<S4 object of class \"Definition\">"
+[1488] "<S4 object of class \"Definition\">"
+[1489] "<S4 object of class \"Definition\">"
+[1490] "<S4 object of class \"Definition\">"
+[1491] "<S4 object of class \"Definition\">"
+[1492] "<S4 object of class \"Definition\">"
+[1493] "<S4 object of class \"Definition\">"
+[1494] "<S4 object of class \"Definition\">"
+[1495] "<S4 object of class \"Definition\">"
+[1496] "<S4 object of class \"Definition\">"
+[1497] "<S4 object of class \"Definition\">"
+[1498] "<S4 object of class \"Definition\">"
+[1499] "<S4 object of class \"Definition\">"
+[1500] "<S4 object of class \"Definition\">"
+[1501] "<S4 object of class \"Definition\">"
+[1502] "<S4 object of class \"Definition\">"
+[1503] "<S4 object of class \"Definition\">"
+[1504] "<S4 object of class \"Definition\">"
+[1505] "<S4 object of class \"Definition\">"
+[1506] "<S4 object of class \"Definition\">"
+[1507] "<S4 object of class \"Definition\">"
+[1508] "<S4 object of class \"Definition\">"
+[1509] "<S4 object of class \"Definition\">"
+[1510] "<S4 object of class \"Definition\">"
+[1511] "<S4 object of class \"Definition\">"
+[1512] "<S4 object of class \"Definition\">"
+[1513] "<S4 object of class \"Definition\">"
+[1514] "<S4 object of class \"Definition\">"
+[1515] "<S4 object of class \"Definition\">"
+[1516] "<S4 object of class \"Definition\">"
+[1517] "<S4 object of class \"Definition\">"
+[1518] "<S4 object of class \"Definition\">"
+[1519] "<S4 object of class \"Definition\">"
+[1520] "<S4 object of class \"Definition\">"
+[1521] "<S4 object of class \"Definition\">"
+[1522] "<S4 object of class \"Definition\">"
+[1523] "<S4 object of class \"Definition\">"
+[1524] "<S4 object of class \"Definition\">"
+[1525] "<S4 object of class \"Definition\">"
+[1526] "<S4 object of class \"Definition\">"
+[1527] "<S4 object of class \"Definition\">"
+[1528] "<S4 object of class \"Definition\">"
+[1529] "<S4 object of class \"Definition\">"
+[1530] "<S4 object of class \"Definition\">"
+[1531] "<S4 object of class \"Definition\">"
+[1532] "<S4 object of class \"Definition\">"
+[1533] "<S4 object of class \"Definition\">"
+[1534] "<S4 object of class \"Definition\">"
+[1535] "<S4 object of class \"Definition\">"
+[1536] "<S4 object of class \"Definition\">"
+[1537] "<S4 object of class \"Definition\">"
+[1538] "<S4 object of class \"Definition\">"
+[1539] "<S4 object of class \"Definition\">"
+[1540] "<S4 object of class \"Definition\">"
+[1541] "<S4 object of class \"Definition\">"
+[1542] "<S4 object of class \"Definition\">"
+[1543] "<S4 object of class \"Definition\">"
+[1544] "<S4 object of class \"Definition\">"
+[1545] "<S4 object of class \"Definition\">"
+[1546] "<S4 object of class \"Definition\">"
+[1547] "<S4 object of class \"Definition\">"
+[1548] "<S4 object of class \"Definition\">"
+[1549] "<S4 object of class \"Definition\">"
+[1550] "<S4 object of class \"Definition\">"
+[1551] "<S4 object of class \"Definition\">"
+[1552] "<S4 object of class \"Definition\">"
+[1553] "<S4 object of class \"Definition\">"
+[1554] "<S4 object of class \"Definition\">"
+[1555] "<S4 object of class \"Definition\">"
+[1556] "<S4 object of class \"Definition\">"
+[1557] "<S4 object of class \"Definition\">"
+[1558] "<S4 object of class \"Definition\">"
+[1559] "<S4 object of class \"Definition\">"
+[1560] "<S4 object of class \"Definition\">"
+[1561] "<S4 object of class \"Definition\">"
+[1562] "<S4 object of class \"Definition\">"
+[1563] "<S4 object of class \"Definition\">"
+[1564] "<S4 object of class \"Definition\">"
+[1565] "<S4 object of class \"Definition\">"
+[1566] "<S4 object of class \"Definition\">"
+[1567] "<S4 object of class \"Definition\">"
+[1568] "<S4 object of class \"Definition\">"
+[1569] "<S4 object of class \"Definition\">"
+[1570] "<S4 object of class \"Definition\">"
+[1571] "<S4 object of class \"Definition\">"
+[1572] "<S4 object of class \"Definition\">"
+[1573] "<S4 object of class \"Definition\">"
+[1574] "<S4 object of class \"Definition\">"
+[1575] "<S4 object of class \"Definition\">"
+[1576] "<S4 object of class \"Definition\">"
+[1577] "<S4 object of class \"Definition\">"
+[1578] "<S4 object of class \"Definition\">"
+[1579] "<S4 object of class \"Definition\">"
+[1580] "<S4 object of class \"Definition\">"
+[1581] "<S4 object of class \"Definition\">"
+[1582] "<S4 object of class \"Definition\">"
+[1583] "<S4 object of class \"Definition\">"
+[1584] "<S4 object of class \"Definition\">"
+[1585] "<S4 object of class \"Definition\">"
+[1586] "<S4 object of class \"Definition\">"
+[1587] "<S4 object of class \"Definition\">"
+[1588] "<S4 object of class \"Definition\">"
+[1589] "<S4 object of class \"Definition\">"
+[1590] "<S4 object of class \"Definition\">"
+[1591] "<S4 object of class \"Definition\">"
+[1592] "<S4 object of class \"Definition\">"
+[1593] "<S4 object of class \"Definition\">"
+[1594] "<S4 object of class \"Definition\">"
+[1595] "<S4 object of class \"Definition\">"
+[1596] "<S4 object of class \"Definition\">"
+[1597] "<S4 object of class \"Definition\">"
+[1598] "<S4 object of class \"Definition\">"
+[1599] "<S4 object of class \"Definition\">"
+[1600] "<S4 object of class \"Definition\">"
+[1601] "<S4 object of class \"Definition\">"
+[1602] "<S4 object of class \"Definition\">"
+[1603] "<S4 object of class \"Definition\">"
+[1604] "<S4 object of class \"Definition\">"
+[1605] "<S4 object of class \"Definition\">"
+[1606] "<S4 object of class \"Definition\">"
+[1607] "<S4 object of class \"Definition\">"
+[1608] "<S4 object of class \"Definition\">"
+[1609] "<S4 object of class \"Definition\">"
+[1610] "<S4 object of class \"Definition\">"
+[1611] "<S4 object of class \"Definition\">"
+[1612] "<S4 object of class \"Definition\">"
+[1613] "<S4 object of class \"Definition\">"
+[1614] "<S4 object of class \"Definition\">"
+[1615] "<S4 object of class \"Definition\">"
+[1616] "<S4 object of class \"Definition\">"
+[1617] "<S4 object of class \"Definition\">"
+[1618] "<S4 object of class \"Definition\">"
+[1619] "<S4 object of class \"Definition\">"
+[1620] "<S4 object of class \"Definition\">"
+[1621] "<S4 object of class \"Definition\">"
+[1622] "<S4 object of class \"Definition\">"
+[1623] "<S4 object of class \"Definition\">"
+[1624] "<S4 object of class \"Definition\">"
+[1625] "<S4 object of class \"Definition\">"
+[1626] "<S4 object of class \"Definition\">"
+[1627] "<S4 object of class \"Definition\">"
+[1628] "<S4 object of class \"Definition\">"
+[1629] "<S4 object of class \"Definition\">"
+[1630] "<S4 object of class \"Definition\">"
+[1631] "<S4 object of class \"Definition\">"
+[1632] "<S4 object of class \"Definition\">"
+[1633] "<S4 object of class \"Definition\">"
+[1634] "<S4 object of class \"Definition\">"
+[1635] "<S4 object of class \"Definition\">"
+[1636] "<S4 object of class \"Definition\">"
+[1637] "<S4 object of class \"Definition\">"
+[1638] "<S4 object of class \"Definition\">"
+[1639] "<S4 object of class \"Definition\">"
+[1640] "<S4 object of class \"Definition\">"
+[1641] "<S4 object of class \"Definition\">"
+[1642] "<S4 object of class \"Definition\">"
+[1643] "<S4 object of class \"Definition\">"
+[1644] "<S4 object of class \"Definition\">"
+[1645] "<S4 object of class \"Definition\">"
+> 
+>  cat("See the file", system.file("examples", "KEGG.S", package = "SSOAP"), "for more examples\n")
+See the file /Users/duncan/Projects/org/omegahat/XML/SOAP/SSOAP.Rcheck/SSOAP/examples/KEGG.S for more examples
+> 
+>      # Returns National Weather Service digital weather forecast data. 
+>   w = processWSDL("http://www.weather.gov/forecasts/xml/SOAP_server/ndfdXMLserver.php?wsdl")
+>   f = genSOAPClientInterface(,w)
+Note: Method with signature "PrimitiveSOAPType#list" chosen for function "resolve",
+ target signature "SOAPDateTimeType#SchemaCollection".
+ "SOAPType#SchemaCollection" would also be valid
+Note: Method with signature "ClassDefinition#list" chosen for function "resolve",
+ target signature "ClassDefinition#SchemaCollection".
+ "SOAPType#SchemaCollection" would also be valid
+Note: Method with signature "PrimitiveSOAPType#list" chosen for function "resolve",
+ target signature "SOAPDateType#SchemaCollection".
+ "SOAPType#SchemaCollection" would also be valid
+> 
+>     # For the next 5 days from now.
+>   str = f@functions$NDFDgenByDay(38.9936, -77.0224, Sys.time() +  60*24*60, 5, "m", "12 hourly")
+> 
+>   library(XML)
+>   xmlToList(xmlParse(str, asText = TRUE))
+$head
+$head$product
+$head$product$title
+[1] "NOAA's National Weather Service Forecast by 12 Hour Period"
+
+$head$product$field
+[1] "meteorological"
+
+$head$product$category
+[1] "forecast"
+
+$head$product$`creation-date`
+$head$product$`creation-date`$text
+[1] "2011-11-30T14:54:43Z"
+
+$head$product$`creation-date`$.attrs
+refresh-frequency 
+           "PT1H" 
+
+
+$head$product$.attrs
+         srsName     concise-name operational-mode 
+      "WGS 1984"      "dwmlByDay"       "official" 
+
+
+$head$source
+$head$source$`more-information`
+[1] "http://www.nws.noaa.gov/forecasts/xml/"
+
+$head$source$`production-center`
+$head$source$`production-center`$text
+[1] "Meteorological Development Laboratory"
+
+$head$source$`production-center`$`sub-center`
+[1] "Product Generation Branch"
+
+
+$head$source$disclaimer
+[1] "http://www.nws.noaa.gov/disclaimer.html"
+
+$head$source$credit
+[1] "http://www.weather.gov/"
+
+$head$source$`credit-logo`
+[1] "http://www.weather.gov/images/xml_logo.gif"
+
+$head$source$feedback
+[1] "http://www.weather.gov/feedback.php"
+
+
+
+$data
+$data$location
+$data$location$`location-key`
+[1] "point1"
+
+$data$location$point
+ latitude longitude 
+  "38.99"  "-77.02" 
+
+
+$data$moreWeatherInformation
+$data$moreWeatherInformation$text
+[1] "http://forecast.weather.gov/MapClick.php?textField1=38.99&textField2=-77.02"
+
+$data$moreWeatherInformation$.attrs
+applicable-location 
+           "point1" 
+
+
+$data$`time-layout`
+$data$`time-layout`$`layout-key`
+[1] "k-p24h-n5-1"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-01T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+period-name 
+ "Tomorrow" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-01T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-02T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+period-name 
+   "Friday" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-02T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-03T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+period-name 
+ "Saturday" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-03T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-04T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+period-name 
+   "Sunday" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-04T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-05T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+period-name 
+   "Monday" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-05T18:00:00-05:00"
+
+$data$`time-layout`$.attrs
+time-coordinate   summarization 
+        "local"      "12hourly" 
+
+
+$data$`time-layout`
+$data$`time-layout`$`layout-key`
+[1] "k-p24h-n5-2"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-11-30T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+period-name 
+  "Tonight" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-01T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-01T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+     period-name 
+"Tomorrow Night" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-02T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-02T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+   period-name 
+"Friday Night" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-03T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-03T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+     period-name 
+"Saturday Night" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-04T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-04T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+   period-name 
+"Sunday Night" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-05T06:00:00-05:00"
+
+$data$`time-layout`$.attrs
+time-coordinate   summarization 
+        "local"      "12hourly" 
+
+
+$data$`time-layout`
+$data$`time-layout`$`layout-key`
+[1] "k-p12h-n10-3"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-11-30T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+period-name 
+ "Tomorrow" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-01T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-01T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+     period-name 
+"Tomorrow Night" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-01T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-01T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+     period-name 
+"Thursday Night" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-02T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-02T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+period-name 
+   "Friday" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-02T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-02T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+   period-name 
+"Friday Night" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-03T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-03T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+period-name 
+ "Saturday" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-03T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-03T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+     period-name 
+"Saturday Night" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-04T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-04T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+period-name 
+   "Sunday" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-04T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-04T18:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+   period-name 
+"Sunday Night" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-05T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`
+$data$`time-layout`$`start-valid-time`$text
+[1] "2011-12-05T06:00:00-05:00"
+
+$data$`time-layout`$`start-valid-time`$.attrs
+period-name 
+   "Monday" 
+
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-05T18:00:00-05:00"
+
+$data$`time-layout`$.attrs
+time-coordinate   summarization 
+        "local"      "12hourly" 
+
+
+$data$`time-layout`
+$data$`time-layout`$`layout-key`
+[1] "k-p5d-n1-4"
+
+$data$`time-layout`$`start-valid-time`
+[1] "2011-11-30T18:00:00-05:00"
+
+$data$`time-layout`$`end-valid-time`
+[1] "2011-12-05T18:00:00-05:00"
+
+$data$`time-layout`$.attrs
+time-coordinate   summarization 
+        "local"      "12hourly" 
+
+
+$data$parameters
+$data$parameters$temperature
+$data$parameters$temperature$name
+[1] "Daily Maximum Temperature"
+
+$data$parameters$temperature$value
+[1] "11"
+
+$data$parameters$temperature$value
+[1] "13"
+
+$data$parameters$temperature$value
+[1] "12"
+
+$data$parameters$temperature$value
+[1] "14"
+
+$data$parameters$temperature$value
+[1] "13"
+
+$data$parameters$temperature$.attrs
+         type         units   time-layout 
+    "maximum"     "Celsius" "k-p24h-n5-1" 
+
+
+$data$parameters$temperature
+$data$parameters$temperature$name
+[1] "Daily Minimum Temperature"
+
+$data$parameters$temperature$value
+[1] "1"
+
+$data$parameters$temperature$value
+[1] "1"
+
+$data$parameters$temperature$value
+[1] "0"
+
+$data$parameters$temperature$value
+[1] "2"
+
+$data$parameters$temperature$value
+[1] "7"
+
+$data$parameters$temperature$.attrs
+         type         units   time-layout 
+    "minimum"     "Celsius" "k-p24h-n5-2" 
+
+
+$data$parameters$`probability-of-precipitation`
+$data$parameters$`probability-of-precipitation`$name
+[1] "12 Hourly Probability of Precipitation"
+
+$data$parameters$`probability-of-precipitation`$value
+[1] "10"
+
+$data$parameters$`probability-of-precipitation`$value
+[1] "0"
+
+$data$parameters$`probability-of-precipitation`$value
+[1] "0"
+
+$data$parameters$`probability-of-precipitation`$value
+[1] "4"
+
+$data$parameters$`probability-of-precipitation`$value
+[1] "4"
+
+$data$parameters$`probability-of-precipitation`$value
+[1] "8"
+
+$data$parameters$`probability-of-precipitation`$value
+[1] "7"
+
+$data$parameters$`probability-of-precipitation`$value
+[1] "7"
+
+$data$parameters$`probability-of-precipitation`$value
+[1] "23"
+
+$data$parameters$`probability-of-precipitation`$value
+[1] "23"
+
+$data$parameters$`probability-of-precipitation`$.attrs
+          type          units    time-layout 
+     "12 hour"      "percent" "k-p12h-n10-3" 
+
+
+$data$parameters$weather
+$data$parameters$weather$name
+[1] "Weather Type, Coverage, and Intensity"
+
+$data$parameters$weather$`weather-conditions`
+weather-summary 
+ "Mostly Clear" 
+
+$data$parameters$weather$`weather-conditions`
+weather-summary 
+        "Sunny" 
+
+$data$parameters$weather$`weather-conditions`
+weather-summary 
+ "Mostly Clear" 
+
+$data$parameters$weather$`weather-conditions`
+weather-summary 
+ "Partly Sunny" 
+
+$data$parameters$weather$`weather-conditions`
+weather-summary 
+"Partly Cloudy" 
+
+$data$parameters$weather$`weather-conditions`
+weather-summary 
+ "Mostly Sunny" 
+
+$data$parameters$weather$`weather-conditions`
+weather-summary 
+"Partly Cloudy" 
+
+$data$parameters$weather$`weather-conditions`
+weather-summary 
+ "Partly Sunny" 
+
+$data$parameters$weather$`weather-conditions`
+weather-summary 
+"Mostly Cloudy" 
+
+$data$parameters$weather$`weather-conditions`
+$data$parameters$weather$`weather-conditions`$value
+       coverage       intensity    weather-type       qualifier 
+"slight chance"         "light"  "rain showers"          "none" 
+
+$data$parameters$weather$`weather-conditions`$.attrs
+             weather-summary 
+"Slight Chance Rain Showers" 
+
+
+$data$parameters$weather$.attrs
+   time-layout 
+"k-p12h-n10-3" 
+
+
+$data$parameters$`conditions-icon`
+$data$parameters$`conditions-icon`$name
+[1] "Conditions Icons"
+
+$data$parameters$`conditions-icon`$`icon-link`
+[1] "http://www.nws.noaa.gov/weather/images/fcicons/nfew.jpg"
+
+$data$parameters$`conditions-icon`$`icon-link`
+[1] "http://www.nws.noaa.gov/weather/images/fcicons/skc.jpg"
+
+$data$parameters$`conditions-icon`$`icon-link`
+[1] "http://www.nws.noaa.gov/weather/images/fcicons/nfew.jpg"
+
+$data$parameters$`conditions-icon`$`icon-link`
+[1] "http://www.nws.noaa.gov/weather/images/fcicons/sct.jpg"
+
+$data$parameters$`conditions-icon`$`icon-link`
+[1] "http://www.nws.noaa.gov/weather/images/fcicons/nsct.jpg"
+
+$data$parameters$`conditions-icon`$`icon-link`
+[1] "http://www.nws.noaa.gov/weather/images/fcicons/few.jpg"
+
+$data$parameters$`conditions-icon`$`icon-link`
+[1] "http://www.nws.noaa.gov/weather/images/fcicons/nsct.jpg"
+
+$data$parameters$`conditions-icon`$`icon-link`
+[1] "http://www.nws.noaa.gov/weather/images/fcicons/sct.jpg"
+
+$data$parameters$`conditions-icon`$`icon-link`
+[1] "http://www.nws.noaa.gov/weather/images/fcicons/nbkn.jpg"
+
+$data$parameters$`conditions-icon`$`icon-link`
+[1] "http://www.nws.noaa.gov/weather/images/fcicons/hi_shwrs20.jpg"
+
+$data$parameters$`conditions-icon`$.attrs
+          type    time-layout 
+"forecast-NWS" "k-p12h-n10-3" 
+
+
+$data$parameters$hazards
+$data$parameters$hazards$name
+[1] "Watches, Warnings, and Advisories"
+
+$data$parameters$hazards$`hazard-conditions`
+   nil 
+"true" 
+attr(,"namespaces")
+http://www.w3.org/2001/XMLSchema-instance 
+                                    "xsi" 
+
+$data$parameters$hazards$.attrs
+ time-layout 
+"k-p5d-n1-4" 
+
+
+$data$parameters$.attrs
+applicable-location 
+           "point1" 
+
+
+
+$.attrs
+                                                        version 
+                                                          "1.0" 
+                                      noNamespaceSchemaLocation 
+"http://www.nws.noaa.gov/forecasts/xml/DWMLgen/schema/DWML.xsd" 
+attr(,"namespaces")
+                                          
+                                       "" 
+http://www.w3.org/2001/XMLSchema-instance 
+                                    "xsi" 
+
+> 
+>      # Note that the result is a string containing XML. The WSDL identifies the result
+>      # as an xsd:string and does not tell us about the structure of the contents.
+> 
+> 
+>      ##
+>      ## WABI
+> if(FALSE) {
++      # This site was not available May 4th.
++   w = processWSDL("http://xml.nig.ac.jp/wsdl/ARSA.wsdl")
++   f = genSOAPClientInterface(,w )
++ 
++   f@functions$searchSimple("Homo sapiens", 1, 100)
++   x = f@functions$getENTRYbySPECIMEN("ATCC 43049", 1, 100)
++   x = f@functions$getENTRYbyScientificName("Escherichia coli", 1, 400)
++   els = readLines(textConnection(x))
++      # get how many results are available in the database.
++   totalCount = as.integer(substring(els[1], nchar("hitscount       = ")+1))
++   hits = els[-1]  # the 400 results in the answer
++ 
++ 
++   x = f@functions$searchByXMLPath("/ENTRY/DDBJ/accessions/accn='ab0001'", 
++                                   "/ENTRY/DDBJ/primary-accession,/ENTRY/DDBJ/definition", 
++                                   1, 100)
++   els = unlist(strsplit(x, "\\n"))
++   totalCount = as.integer(substring(els[1], nchar("hitscount       = ")+1))
++ 
++   values = strsplit(els[-1], "\\t")
++   ans = structure(sapply(values, `[`, 2), names = sapply(values, `[`, 1))
++ 
++    ###
++   w = processWSDL("WSDLs/MassSpecAPI.asmx?WSDL", port = 1)  
++   f = genSOAPClientInterface(w)
++      # SearchByMass2 expects an object of class SearchByMass2 which has
++      # a mass and a range slot. But we can specify these separately, by
++      # name or partial name, or as a list or as a SearchByMass2 object
++   f@functions$SearchByMass2(89.0476, .01)
++   f@functions$SearchByMass2(mass = 89.0476, range = .01)
++   f@functions$SearchByMass2(range = .01, mass = 89.0476)
++ 
++   f@functions$SearchByMass2(list(range = .01, mass = 89.0476))
++   f@functions$SearchByMass2(new("SearchByMass2", range = .01, mass = 89.0476))
++   
++      ####
++    # A HTTP GET interface
++   w = processWSDL("WSDLs/MassSpecAPI.asmx?WSDL", port = 3)  
++   f = genSOAPClientInterface(w)
++ 
++   f@functions$GetDatabases()
++   f@functions$SearchByMass2(89.0476, .01)
++   f@functions$SearchByFormula("H2O")
++ 
++ ## Not run: 
++ ##D    # ned the token
++ ##D   f@functions$GetExtendedCompoundInfoArray(c("23500", "23543"), token)
++ ##D   f@functions$GetExtendedCompoundInfoArray(as.character(c(23500, 23543)), token)
++ ## End(Not run)
++ 
++ 
++   ##########
++   w = processWSDL("WSDLs/MassSpecAPI.asmx?WSDL", port = "MassSpecAPIHttpPost")  
++   f = genSOAPClientInterface(w)
++   names(f@functions)
++   db = f@functions$GetDatabases()
++   f@functions$SearchByMass2(89.0476, .01)
++ ## Not run: 
++ ##D    # ned the token
++ ##D   f@functions$GetExtendedCompoundInfoArray(c("23500", "23543"), token)
++ ##D   f@functions$GetExtendedCompoundInfoArray(as.character(c(23500, 23543)), token)
++ ## End(Not run)
++ 
++ }
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:XML’
+
+> nameEx("processWSDL")
+> ### * processWSDL
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: processWSDL
+> ### Title: Read and process a Web Service Description Language file
+> ### Aliases: processWSDL
+> ### Keywords: interface connection
+> 
+> ### ** Examples
+> 
+>   tmp = processWSDL(system.file("examples", "KEGG.wsdl", package = "SSOAP"))
+> 
+>    # The first set of operations, and the method "color_pathway_by_objects"
+>   o = tmp@operations[[1]][["color_pathway_by_objects"]]
+>   names(o@parameters)
+[1] "pathway_id"     "object_id_list" "fg_color_list"  "bg_color_list" 
+>   o@parameters[["fg_color_list"]]
+An object of class "SOAPTypeReference"
+Slot "count":
+numeric(0)
+
+Slot "abstract":
+logical(0)
+
+Slot "name":
+[1] "ArrayOfstring"
+
+Slot "ns":
+[1] "typens"
+
+Slot "nsuri":
+[1] "SOAP/KEGG"
+
+Slot "default":
+[1] NA
+
+Slot "Rname":
+character(0)
+
+Slot "documentation":
+character(0)
+
+>   o@returnValue
+An object of class "PrimitiveSOAPType"
+Slot "fromConverter":
+function () 
+NULL
+<bytecode: 0x7fd43db78408>
+
+Slot "toConverter":
+function (x, ...)  .Primitive("as.character")
+
+Slot "count":
+numeric(0)
+
+Slot "abstract":
+logical(0)
+
+Slot "name":
+[1] "string"
+
+Slot "ns":
+[1] "xsd"
+
+Slot "nsuri":
+[1] "http://www.w3.org/2001/XMLSchema"
+
+Slot "default":
+[1] NA
+
+Slot "Rname":
+character(0)
+
+Slot "documentation":
+character(0)
+
+> 
+> 
+>   ff = genSOAPClientInterface(tmp@operations[[1]], def = tmp, tmp@name, verbose=FALSE)
+> 
+> # ff$functions$get_all_neighbors_by_gene(kid="eco:b0002", threshold= as.integer(500), orgs = c("ecs","ypk"))
+> 
+> ## Not run: 
+> ##D   x = ff@functions$get_paralogs_by_gene("eco:b0002", 1, 10)
+> ## End(Not run)
+> 
+>   tp = get(".operation", environment(ff@functions$get_paralogs_by_gene))@returnValue
+> 
+> 
+>   # A different WSDL file.
+>   tmp = processWSDL(system.file("examples", "XMethodsFilesystemService.wsdl.xml", package = "SSOAP"))
+> 
+> ## Not run: 
+> ##D     cs = processWSDL("http://www.chemspider.com/MassSpecAPI.asmx?WSDL", port= 3)
+> ##D     cs = processWSDL("http://www.chemspider.com/MassSpecAPI.asmx?WSDL", port = "MassSpecAPIHttpGet")
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("writeInterface")
+> ### * writeInterface
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: writeInterface
+> ### Title: Serialize generated interface to a file
+> ### Aliases: writeInterface
+> ### Keywords: programming IO
+> 
+> ### ** Examples
+> 
+> w = processWSDL(system.file("examples", "KEGG.wsdl", package = "SSOAP"))
+> iface = genSOAPClientInterface(w)
+> f = tempfile()
+> writeInterface(iface, f)
+> source(f)
+Loading required package: XML
+> ## Not run: 
+> ##D db = list_databases()
+> ##D class(db)
+> ##D class(db[[1]])
+> ## End(Not run)
+> 
+> u = "http://gmd.mpimp-golm.mpg.de/webservices/wsGoBioSpace.asmx?WSDL"
+> z = processWSDL(u, port = 1)
+> iface = genSOAPClientInterface(z)
+Note: Method with signature "ClassDefinition#list" chosen for function "resolve",
+ target signature "ExtendedClassDefinition#SchemaCollection".
+ "SOAPType#SchemaCollection" would also be valid
+> f = tempfile()
+> writeInterface(iface, f)
+Warning in FUN("Adduct"[[1L]], ...) :
+  removing environment from coercion method with objects f, name, representation, where
+Warning in FUN("AdductHit"[[1L]], ...) :
+  removing environment from coercion method with objects f, name, representation, where
+Warning in FUN("ArrayOfAdduct"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("ArrayOfArrayOfMassSearchHit"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("ArrayOfDepositor"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("ArrayOfFloat"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("ArrayOfFloat"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("ArrayOfFloat"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("ArrayOfFloat"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("ArrayOfMassSearchHit"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("ArrayOfProperty"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("ArrayOfShort"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("ArrayOfShort"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("ArrayOfShort"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("ArrayOfShort"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("ArrayOfShort"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("ArrayOfSynonym"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("Depositor"[[1L]], ...) :
+  removing environment from coercion method with objects f, name, representation, where
+Warning in FUN("DepositorIds.AdductIds"[[1L]], ...) :
+  removing environment from coercion method with objects f, name, representation, where
+Warning in FUN("MassSearchHit"[[1L]], ...) :
+  removing environment from coercion method with objects f, name, representation, where
+Warning in FUN("Property"[[1L]], ...) :
+  removing environment from coercion method with objects f, name, representation, where
+Warning in FUN("SessionID.FormulaID"[[1L]], ...) :
+  removing environment from coercion method with objects f, name, representation, where
+Warning in FUN("SessionID.mass.tolerance"[[1L]], ...) :
+  removing environment from coercion method with objects f, name, representation, where
+Warning in FUN("SessionID.masses.tolerance"[[1L]], ...) :
+  removing environment from coercion method with objects f, name, representation, where
+Warning in FUN("StringArray"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("StringArray"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("StringArray"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("StringArray"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("Synonym"[[1L]], ...) :
+  removing environment from coercion method with objects f, name, representation, where
+Warning in FUN("guid"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+Warning in FUN("guid"[[1L]], ...) :
+  removing environment from coercion method with objects $.XMLFlatListTree, $.XMLHashTree, .First.lib, .InitSAXMethods, .S3MethodsClasses, .__C__DTDPublicIdentifier, .__C__Doctype, .__C__ExternalReference, .__C__FormattedInteger, .__C__FormattedNumber, .__C__HTMLInternalDocument, .__C__Percent, .__C__RXMLAbstractNode, .__C__SAXState, .__C__SchemaAttributeGroupTable, .__C__SchemaAttributeTable, .__C__SchemaElementTable, .__C__SchemaNotationTable, .__C__SchemaTypeTable, .__C__SimplifiedXMLNamespaceDefinitions, .__C__URI, .__C__URL, .__C__XMLAbstractDocument, .__C__XMLAbstractNode, .__C__XMLAttributeDeclNode, .__C__XMLAttributeNode, .__C__XMLCDataNode, .__C__XMLCodeDoc, .__C__XMLCodeFile, .__C__XMLCommentNode, .__C__XMLDTDNode, .__C__XMLDocument, .__C__XMLDocumentContent, .__C__XMLDocumentFragNode, .__C__XMLDocumentNode, .__C__XMLDocumentTypeNode, .__C__XMLEntityDeclNode, .__C__XMLFlatListTree, .__C__XMLFlatTree, .__C__XMLHashTree, .__C__XMLHashTreeNode, .__C__XMLInternalCDataNode, .__C__XM [... truncated]
+> source(f)
+> 
+> a = GetAdducts()
+> d = GetDepositors()
+> 
+> session = CreateSession(DepositorIds = c(3, 6, 8), AdductIds = c(2L, 3L))
+> sm = SearchMass12C(SessionID = session, mass = 579.1705, tolerance = 0.001)
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> cat("Time elapsed: ", proc.time() - get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  32.448 0.168 44.116 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

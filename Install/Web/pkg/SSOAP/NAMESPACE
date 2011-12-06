@@ -1,0 +1,79 @@
+# import(RCurl) - was for base64, but that is now lazy
+
+import(XML)
+import(XMLSchema)
+import(RCurl)
+
+exportClass(VirtualXMLSchemaClass)
+
+
+export(.SOAP)
+
+export(SOAPServer, SOAPResult)
+
+# exportClasses("token", "duration")
+
+exportClass(SOAPServerDescription)
+exportClass(SOAPResult)
+exportClass(WSDLMethod)
+
+export(WSDLParseHandlers)
+
+exportClass(SOAPServer)
+exportClass(HTTPSOAPServer)
+exportClass(HTTPSSOAPServer)
+
+
+export(dynamicSOAPServer)
+exportClass(DynamicSOAPServer)
+exportMethods("$", "names")
+
+exportClass(SOAPClientInterface)
+
+export(toSOAP, convertFromSOAP) #, fromSOAPStruct)
+export(SOAPHandlers) # , SOAPPrimitiveConverters)
+
+      
+export(processWSDL, genSOAPClientInterface)
+export(SOAPServerDescription)
+
+export(SOAPNameSpaces)
+
+export(writeSOAPBody, writeSOAPMessage, writeTypes, writeSOAPEnvelope)
+exportMethods("writeSOAPBody")
+exportMethods("writeSOAPEnvelope")
+
+exportClasses("VirtualSOAPClass", "SOAPServer", "SOAPResult")
+
+# export(.XMLRPC, xmlRPCResult, xmlRPCHandlers)
+
+# http://www.xmlrpc.com/spec
+
+
+export(getReturnNode)
+
+
+#exportClass(ArrayType)
+
+export(returnType, returnConverter)
+exportMethods(returnType, returnConverter, server)
+
+export(writeInterface)
+
+
+# Now from XMLSchema.
+#exportClass(SOAPType)
+#exportClasses("SOAPTypeReference", "BasicSOAPType", "SOAPVoidType")
+
+if(FALSE) {
+export(readSchema,
+       processWSDLTypes,
+       processWSDLType)
+
+
+export(createSOAPConverter)
+exportMethods(createSOAPConverter)
+}
+
+
+export(as.SOAPDateTime, as.SOAPDate)

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<s:schema targetNamespace="http://www.ncbi.nlm.nih.gov/soap/eutils/egquery" xmlns:tns="http://www.ncbi.nlm.nih.gov/soap/eutils/egquery" xmlns:s="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<!--  version="1.5" -->
+	<!--  http://www.ncbi.nlm.nih.gov/entrez/query/DTD/egquery.dtd   date: 2004/05/03 16:19:48  -->
+	
+	<s:element name="Result">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="Term" type="s:string"/>
+				<s:element name="eGQueryResult" type="tns:eGQueryResultType"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:complexType name="ResultItemType">
+		<s:sequence>
+			<s:element name="DbName" type="s:string"/>
+			<s:element name="MenuName" type="s:string"/>
+			<s:element name="Count" type="s:string"/>
+			<s:element name="Status" type="s:string"/>
+		</s:sequence>
+	</s:complexType>
+	<s:complexType name="eGQueryResultType">
+		<s:sequence>
+			<s:element name="ERROR" type="s:string" minOccurs="0"/>
+			<s:element name="ResultItem" type="tns:ResultItemType" maxOccurs="unbounded"/>
+		</s:sequence>
+	</s:complexType>
+	<s:element name="eGqueryRequest">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="term" type="s:string" minOccurs="0"/>
+				<s:element name="tool" type="s:string" minOccurs="0"/>
+				<s:element name="email" type="s:string" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:element name="eGqueryRequestMS">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="term" type="s:string" minOccurs="0"/>
+				<s:element name="tool" type="s:string" minOccurs="0"/>
+				<s:element name="email" type="s:string" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+	<s:complexType name="GQueryResultType">
+		<s:sequence>
+			<s:element name="Term" type="s:string"/>
+			<s:element name="eGQueryResult" type="tns:eGQueryResultType"/>
+		</s:sequence>
+	</s:complexType>
+	<s:element name="ResultMS">
+		<s:complexType>
+			<s:sequence>
+				<s:element name="Result" type="tns:GQueryResultType" minOccurs="0"/>
+			</s:sequence>
+		</s:complexType>
+	</s:element>
+</s:schema>

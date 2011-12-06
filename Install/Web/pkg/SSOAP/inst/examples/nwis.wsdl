@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://tempuri.org/NWISTS/NWIS2" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://tempuri.org/NWISTS/NWIS2" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/NWISTS/NWIS2">
+      <s:element name="GetSiteInfo">
+        <s:complexType>
+           <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SiteCode" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSiteInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSiteInfoResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetValues">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SiteCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="ParameterCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="StartDate" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="EndDate" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetValuesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetValuesResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetStationsWithWQParameter">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="NWLat" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="NWLong" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="SELat" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="SELong" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="StartDate" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="EndDate" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="ParameterCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="MinCount" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetStationsWithWQParameterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetStationsWithWQParameterResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetChart">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SiteCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="ParameterCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="StartDate" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="EndDate" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetChartResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetChartResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWQValues">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StationNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="ParamCode" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="StartDate" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="EndDate" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWQValuesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetWQValuesResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getDischargeValues">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StationNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="StartDate" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="EndDate" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getDischargeValuesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getDischargeValuesResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getDischargeInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StationID" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getDischargeInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getDischargeInfoResult" type="tns:ArrayOfAnyType"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfAnyType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="anyType" nillable="true"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getGWLevelValues">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WellNumber" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="StartDate" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="EndDate" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getGWLevelValuesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getGWLevelValuesResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWQParamUnits">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ParamCode" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWQParamUnitsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetWQParamUnitsResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetParameterInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ParameterCode" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetParameterInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetParameterInfoResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MakeKMLFileForNeuse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ParameterCode" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MakeKMLFileForNeuseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MakeKMLFileForNeuseResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetSiteInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSiteInfo"/>
+  </wsdl:message>
+  <wsdl:message name="GetSiteInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSiteInfoResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetValuesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetValues"/>
+  </wsdl:message>
+  <wsdl:message name="GetValuesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetValuesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetStationsWithWQParameterSoapIn">
+    <wsdl:part name="parameters" element="tns:GetStationsWithWQParameter"/>
+  </wsdl:message>
+  <wsdl:message name="GetStationsWithWQParameterSoapOut">
+    <wsdl:part name="parameters" element="tns:GetStationsWithWQParameterResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetChartSoapIn">
+    <wsdl:part name="parameters" element="tns:GetChart"/>
+  </wsdl:message>
+  <wsdl:message name="GetChartSoapOut">
+    <wsdl:part name="parameters" element="tns:GetChartResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetWQValuesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetWQValues"/>
+  </wsdl:message>
+  <wsdl:message name="GetWQValuesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetWQValuesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getDischargeValuesSoapIn">
+    <wsdl:part name="parameters" element="tns:getDischargeValues"/>
+  </wsdl:message>
+  <wsdl:message name="getDischargeValuesSoapOut">
+    <wsdl:part name="parameters" element="tns:getDischargeValuesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getDischargeInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:getDischargeInfo"/>
+  </wsdl:message>
+  <wsdl:message name="getDischargeInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:getDischargeInfoResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getGWLevelValuesSoapIn">
+    <wsdl:part name="parameters" element="tns:getGWLevelValues"/>
+  </wsdl:message>
+  <wsdl:message name="getGWLevelValuesSoapOut">
+    <wsdl:part name="parameters" element="tns:getGWLevelValuesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetWQParamUnitsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetWQParamUnits"/>
+  </wsdl:message>
+  <wsdl:message name="GetWQParamUnitsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetWQParamUnitsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetParameterInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetParameterInfo"/>
+  </wsdl:message>
+  <wsdl:message name="GetParameterInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetParameterInfoResponse"/>
+  </wsdl:message>
+  <wsdl:message name="MakeKMLFileForNeuseSoapIn">
+    <wsdl:part name="parameters" element="tns:MakeKMLFileForNeuse"/>
+  </wsdl:message>
+  <wsdl:message name="MakeKMLFileForNeuseSoapOut">
+    <wsdl:part name="parameters" element="tns:MakeKMLFileForNeuseResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="NWISSoap">
+    <wsdl:operation name="GetSiteInfo">
+      <documentation xmlns="http://schemas.xmlsoap.org/wsdl/">Given a USGS station number, this method returns a string (formatted as xml)  with the station's metadata.</documentation>
+      <wsdl:input message="tns:GetSiteInfoSoapIn"/>
+      <wsdl:output message="tns:GetSiteInfoSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetValues">
+      <documentation xmlns="http://schemas.xmlsoap.org/wsdl/">Given a USGS station number, a paremeter code, a start date, and an end date,  this method returns a time series.</documentation>
+      <wsdl:input message="tns:GetValuesSoapIn"/>
+      <wsdl:output message="tns:GetValuesSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetStationsWithWQParameter">
+      <documentation xmlns="http://schemas.xmlsoap.org/wsdl/">Given a lat/long box, a begin date, an end date, a USGS parameter code, and a minimum count, this method returns a string where each record is a new line, and each record contains (1) the USGS station number, (2) the number of observations, (3) the date of the first observation, and (4) the date of the last observation of the given parameter, for that station.</documentation>
+      <wsdl:input message="tns:GetStationsWithWQParameterSoapIn"/>
+      <wsdl:output message="tns:GetStationsWithWQParameterSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetChart">
+      <documentation xmlns="http://schemas.xmlsoap.org/wsdl/">Given a USGS station number, a parameter code, a start date, and an end date , this method returns the url for a graph image of the parameter for that station.</documentation>
+      <wsdl:input message="tns:GetChartSoapIn"/>
+      <wsdl:output message="tns:GetChartSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetWQValues">
+      <documentation xmlns="http://schemas.xmlsoap.org/wsdl/">Given a USGS station number, a USGS parameter code, a start date, and an end date,  this method returns a string with the water quality time series date/times and values.</documentation>
+      <wsdl:input message="tns:GetWQValuesSoapIn"/>
+      <wsdl:output message="tns:GetWQValuesSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="getDischargeValues">
+      <documentation xmlns="http://schemas.xmlsoap.org/wsdl/">Given a USGS station number, a start date, and an end date,  this method returns a string with the daily averaged discharge time series date/times and values.</documentation>
+      <wsdl:input message="tns:getDischargeValuesSoapIn"/>
+      <wsdl:output message="tns:getDischargeValuesSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="getDischargeInfo">
+      <documentation xmlns="http://schemas.xmlsoap.org/wsdl/">Given a USGS station number, this method returns an array with (1) the number of discharge observations, (2) the date/time of the first discharge observtion, and (3) the date/time of the last discharge observation for that station.</documentation>
+      <wsdl:input message="tns:getDischargeInfoSoapIn"/>
+      <wsdl:output message="tns:getDischargeInfoSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="getGWLevelValues">
+      <documentation xmlns="http://schemas.xmlsoap.org/wsdl/">Given a USGS well number, a start date, and an end date,  this method returns a string with the groundwater level time series (date/times and values).</documentation>
+      <wsdl:input message="tns:getGWLevelValuesSoapIn"/>
+      <wsdl:output message="tns:getGWLevelValuesSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetWQParamUnits">
+      <documentation xmlns="http://schemas.xmlsoap.org/wsdl/">Given a USGS parameter code,  this method returns the parameter's measurement units.</documentation>
+      <wsdl:input message="tns:GetWQParamUnitsSoapIn"/>
+      <wsdl:output message="tns:GetWQParamUnitsSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetParameterInfo">
+      <documentation xmlns="http://schemas.xmlsoap.org/wsdl/">Given a USGS parameter code,  this method returns the parameter's name.</documentation>
+      <wsdl:input message="tns:GetParameterInfoSoapIn"/>
+      <wsdl:output message="tns:GetParameterInfoSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="MakeKMLFileForNeuse">
+      <documentation xmlns="http://schemas.xmlsoap.org/wsdl/">Creates a KML file that can be used to view stations in Google Earth.</documentation>
+      <wsdl:input message="tns:MakeKMLFileForNeuseSoapIn"/>
+      <wsdl:output message="tns:MakeKMLFileForNeuseSoapOut"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NWISSoap" type="tns:NWISSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+    <wsdl:operation name="GetSiteInfo">
+      <soap:operation soapAction="http://tempuri.org/NWISTS/NWIS2/GetSiteInfo" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetValues">
+      <soap:operation soapAction="http://tempuri.org/NWISTS/NWIS2/GetValues" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStationsWithWQParameter">
+      <soap:operation soapAction="http://tempuri.org/NWISTS/NWIS2/GetStationsWithWQParameter" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChart">
+      <soap:operation soapAction="http://tempuri.org/NWISTS/NWIS2/GetChart" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWQValues">
+      <soap:operation soapAction="http://tempuri.org/NWISTS/NWIS2/GetWQValues" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDischargeValues">
+      <soap:operation soapAction="http://tempuri.org/NWISTS/NWIS2/getDischargeValues" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDischargeInfo">
+      <soap:operation soapAction="http://tempuri.org/NWISTS/NWIS2/getDischargeInfo" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGWLevelValues">
+      <soap:operation soapAction="http://tempuri.org/NWISTS/NWIS2/getGWLevelValues" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWQParamUnits">
+      <soap:operation soapAction="http://tempuri.org/NWISTS/NWIS2/GetWQParamUnits" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetParameterInfo">
+      <soap:operation soapAction="http://tempuri.org/NWISTS/NWIS2/GetParameterInfo" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MakeKMLFileForNeuse">
+      <soap:operation soapAction="http://tempuri.org/NWISTS/NWIS2/MakeKMLFileForNeuse" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="NWIS">
+    <documentation xmlns="http://schemas.xmlsoap.org/wsdl/">Services for querying the National Water Information System (NWIS)</documentation>
+    <wsdl:port name="NWISSoap" binding="tns:NWISSoap">
+      <soap:address location="http://river.sdsc.edu/NWISTS/nwis.asmx"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
