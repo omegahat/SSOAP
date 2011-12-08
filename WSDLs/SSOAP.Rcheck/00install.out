@@ -1,7 +1,0 @@
-* installing *source* package ‘SSOAP’ ...
-** R
-** inst
-** preparing package for lazy loading
-
-recover called non-interactively; frames dumped, use debugger() to view
-* removing ‘/Users/duncan/Projects/org/omegahat/XML/SOAP/WSDLs/SSOAP.Rcheck/SSOAP’
