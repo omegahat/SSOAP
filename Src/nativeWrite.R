@@ -35,7 +35,7 @@ function(method, ..., xmlns= NULL, con,
       # xmlns is the value of the URI for the default namespace for this node.
       # e.g. SOAP/KEGG.
       # This comes from <operation> node in the WSDL along with the use = encoded and encodingStyle attributes.
-   methodCall = newXMLNode(method, parent = b)
+   methodCall = newXMLNode(method, parent = b, doc = con)
 
    if(length(xmlns) && xmlns != "") {
      if(length(names(xmlns)) == 0 && (is.na(.elementFormQualified) || .elementFormQualified == FALSE))
@@ -53,7 +53,7 @@ function(method, ..., xmlns= NULL, con,
      lapply(seq(along = argValues),
               function(i) {
                 argName <- argNames[i]
-#browser()
+
                 typedef = NULL
                 if(length(.types) >= i ) {
                   typedef = .types[[i]]
@@ -62,12 +62,17 @@ function(method, ..., xmlns= NULL, con,
                   type = getSOAPType(argValues[[i]])
 
 
-                ans = toSOAP(argValues[[i]], methodCall, type = typedef, literal = .literal, elementFormQualified = .elementFormQualified)                
+                ans = toSOAP(argValues[[i]], if(!.literal) NULL else methodCall, type = typedef,
+                              literal = .literal, elementFormQualified = .elementFormQualified)                
 
-                if(!.literal)
+                if(!.literal) {
                   ans = newXMLNode(argName, ans, parent = methodCall,
                                    attrs = if(length(type) && type[1] != "")
-                                         writeTypes(argValues[[i]], con = con, types = type))
+                                               writeTypes(argValues[[i]], con = con, types = type),
+                                   doc = con)
+                  if(length(xmlns) && xmlns != "")
+                      newXMLNamespace(ans, xmlns, set = TRUE)
+                }
               })
 
 #   addChildren(methodCall, kids = argNodes)

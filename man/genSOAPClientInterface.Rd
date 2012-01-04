@@ -126,16 +126,18 @@ genSOAPClientInterface(operations = def@operations[[1]], def, name = def@name,
 
  cat("See the file", system.file("examples", "KEGG.S", package = "SSOAP"), "for more examples\n")
 
-     # Returns National Weather Service digital weather forecast data. 
-  w = processWSDL("http://www.weather.gov/forecasts/xml/SOAP_server/ndfdXMLserver.php?wsdl")
-  f = genSOAPClientInterface(,w)
+     # Returns National Weather Service digital weather forecast data.
+  library(RCurl)
+  if(url.exists("http://www.weather.gov/forecasts/xml/SOAP_server/ndfdXMLserver.php?wsdl")) {
+     w = processWSDL("http://www.weather.gov/forecasts/xml/SOAP_server/ndfdXMLserver.php?wsdl")
+     f = genSOAPClientInterface(,w)
 
-    # For the next 5 days from now.
-  str = f@functions$NDFDgenByDay(38.9936, -77.0224, Sys.time() +  60*24*60, 5, "m", "12 hourly")
+         # For the next 5 days from now.
+     str = f@functions$NDFDgenByDay(38.9936, -77.0224, Sys.time() +  60*24*60, 5, "m", "12 hourly")
 
-  library(XML)
-  xmlToList(xmlParse(str, asText = TRUE))
-
+     library(XML)
+     xmlToList(xmlParse(str, asText = TRUE))
+  }
      # Note that the result is a string containing XML. The WSDL identifies the result
      # as an xsd:string and does not tell us about the structure of the contents.
 

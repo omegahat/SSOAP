@@ -502,13 +502,13 @@ s,@LIBS@,|#_!!_#|,g
 s,@build_alias@,|#_!!_#|,g
 s,@host_alias@,|#_!!_#|,g
 s,@target_alias@,|#_!!_#|,g
-s,@TAR_FILE@,|#_!!_#|SSOAP_0.8-1.tar.gz,g
+s,@TAR_FILE@,|#_!!_#|SSOAP_0.8-2.tar.gz,g
 s,@MAJOR_VERSION@,|#_!!_#|0,g
 s,@MINOR_VERSION@,|#_!!_#|8,g
-s,@PATCH_LEVEL@,|#_!!_#|1,g
+s,@PATCH_LEVEL@,|#_!!_#|2,g
 s,@PKG_NAME@,|#_!!_#|SSOAP,g
-s,@DATE@,|#_!!_#|30 Nov 2011,g
-s,@VERSION@,|#_!!_#|0.8-1,g
+s,@DATE@,|#_!!_#|04 Jan 2012,g
+s,@VERSION@,|#_!!_#|0.8-2,g
 s,@LIBOBJS@,|#_!!_#|,g
 s,@LTLIBOBJS@,|#_!!_#|,g
 :end

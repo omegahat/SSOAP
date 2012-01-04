@@ -385,6 +385,7 @@ function(method, ..., xmlns= NULL, con,
 toSOAPNamedContainer <-
 function(obj, con = stdout(), type = NULL, ..., .literal = FALSE)
 {
+
    # cat("xsi:type=\"apachens:Map\">", , file = con,)
    for(i in names(obj)) {
      if(is(con, "connection")) {
@@ -394,8 +395,8 @@ function(obj, con = stdout(), type = NULL, ..., .literal = FALSE)
        cat("</value>", file = con)
      } else {
        tmp = newXMLNode("item", doc = con)
-       newXMLNode("key", attrs = c("xsi:type" = 'xsd:string'), i, parent = tmp)
-       val = newXMLNode("value", parent = tmp)
+       newXMLNode("key", attrs = c("xsi:type" = 'xsd:string'), i, parent = tmp, doc = con)
+       val = newXMLNode("value", parent = tmp, doc = con)
        addChildren(val, toSOAP(obj[[i]], NULL, type = NULL, .literal = .literal) )      
        tmp
      }

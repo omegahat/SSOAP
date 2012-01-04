@@ -18,9 +18,10 @@ function(server, method, ..., .soapArgs = list(), action, nameSpaces = SOAPNameS
  useNodes = TRUE
  
  if(useNodes)
-   doc = newXMLDoc()
+   doc =  newXMLDoc()
  else
    doc <- textConnection(".foo", open = "w", local = TRUE)
+ 
  writeSOAPMessage(doc, nameSpaces, method, ...,
                     .soapArgs = .soapArgs, .types = .types, xmlns = xmlns, .literal = .literal,
                      .soapHeader = .soapHeader, .elementFormQualified = .elementFormQualified )
