@@ -244,8 +244,8 @@ function(obj, con = stdout(), type = NULL, literal = FALSE, elementFormQualified
       elType = NULL
 
      # Not activated yet. We just pass the XMLInternalDocument
-    # parent = if(is(con, "XMLInternalNode") || is(con, "XMLInternalDocument")) con else NULL
-    parent = NULL
+    parent = if(is(con, "XMLInternalNode") || is(con, "XMLInternalDocument")) con else NULL
+    # parent = NULL
 
     lapply(obj,
            function(x) {
