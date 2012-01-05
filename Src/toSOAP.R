@@ -53,12 +53,13 @@ function(obj, con = xmlOutputBuffer(header=""), type = NULL, literal = FALSE, el
 {
  if(length(names(obj)))
    return(toSOAPNamedContainer(obj, con, type, ...))
-          
+ 
  if(length(obj) > 1) {
     # If we have named elements, then we need to do something with these rather than lose them
     # so we put them out as named elements, i.e. as a struct.
   if(!is.null(names(obj))) {
     for(i in names(obj)) {
+#XXXXXX      
       cat("<", i, file = con, sep="")
       writeTypes(obj[[i]])
       cat(obj[[i]])

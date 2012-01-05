@@ -62,17 +62,32 @@ function(method, ..., xmlns= NULL, con,
                   type = getSOAPType(argValues[[i]])
 
 
-                ans = toSOAP(argValues[[i]], if(!.literal) NULL else methodCall, type = typedef,
-                              literal = .literal, elementFormQualified = .elementFormQualified)                
-
                 if(!.literal) {
-                  ans = newXMLNode(argName, ans, parent = methodCall,
+                  ans = newXMLNode(argName, parent = methodCall,
                                    attrs = if(length(type) && type[1] != "")
                                                writeTypes(argValues[[i]], con = con, types = type),
                                    doc = con)
                   if(length(xmlns) && xmlns != "")
                       newXMLNamespace(ans, xmlns, set = TRUE)
                 }
+                tmp = toSOAP(argValues[[i]], if(!.literal) ans else methodCall, type = typedef,
+                              literal = .literal, elementFormQualified = .elementFormQualified)
+
+                if(FALSE && !.literal) {
+                  ans = newXMLNode(argName, ans, parent = methodCall,
+                                   attrs = if(length(type) && type[1] != "")
+                                               writeTypes(argValues[[i]], con = con, types = type),
+                                   doc = con)
+                  if(length(xmlns) && xmlns != "")
+                      newXMLNamespace(ans, xmlns, set = TRUE)
+                }                
+
+                if(!.literal)
+                   ans
+                else
+                   tmp
+
+                
               })
 
 #   addChildren(methodCall, kids = argNodes)
