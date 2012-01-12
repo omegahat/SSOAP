@@ -114,4 +114,6 @@ setMethod("help", "WSDLGeneratedSOAPFunction",
 
 
 
-setClass("WSSEAuth", representation(username = "character", password = "character"))
+setClass("WSSEAuth", representation(username = "character", password = "character",
+                                    required = "logical"),
+           prototype = list(required = TRUE))
