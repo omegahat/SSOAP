@@ -149,6 +149,8 @@ function(con, nameSpaces, method, ...,
       tmp = .soapHeader
    else if(is.character(.soapHeader))
       tmp = xmlInternalTreeParse(.soapHeader, asText = TRUE)
+   else
+      tmp = as(.soapHeader, "XMLInternalNode")
 
    if(!is.null(tmp)) {
      if(is(con, "XMLInternalDocument")) {

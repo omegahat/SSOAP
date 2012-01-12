@@ -50,5 +50,14 @@ showClass("WSSEAuth")
 
 auth = new("WSSEAuth", username = "duncan", password = "bob")
 as(auth, "XMLInternalNode")
+
+\dontrun{
+  # This adds a Header to the request with user name and password
+  # It is NOT needed for this service, but we are just using it as an
+  # example of how we can pass the authentication information.
+.SOAP("http://soap.genome.jp/keggapi/request_v6.2.cgi", "list_databases",
+       action = "SOAP/KEGG#list_databases",
+       .soapHeader = auth)
+}
 }
 \keyword{classes}

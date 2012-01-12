@@ -503,11 +503,11 @@ s,@build_alias@,|#_!!_#|,g
 s,@host_alias@,|#_!!_#|,g
 s,@target_alias@,|#_!!_#|,g
 s,@DATE@,|#_!!_#|2012/01/12,g
-s,@MINOR_VERSION@,|#_!!_#|8,g
+s,@MINOR_VERSION@,|#_!!_#|9,g
 s,@MAJOR_VERSION@,|#_!!_#|0,g
-s,@PATCH_LEVEL@,|#_!!_#|3,g
+s,@PATCH_LEVEL@,|#_!!_#|0,g
 s,@PKG_NAME@,|#_!!_#|SSOAP,g
-s,@TAR_FILE@,|#_!!_#|SSOAP_0.8-3.tar.gz,g
+s,@TAR_FILE@,|#_!!_#|SSOAP_0.9-0.tar.gz,g
 s,@LIBOBJS@,|#_!!_#|,g
 s,@LTLIBOBJS@,|#_!!_#|,g
 :end
