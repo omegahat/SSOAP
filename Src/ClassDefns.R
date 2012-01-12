@@ -113,3 +113,5 @@ setMethod("help", "WSDLGeneratedSOAPFunction",
          cat(environment(topic)$.operation@documentation))
 
 
+
+setClass("WSSEAuth", representation(username = "character", password = "character"))

@@ -17,7 +17,8 @@ R_SRC_FILES=Src/fault.S \
 	    Src/duration.S Src/nativeWrite.R  \
             Src/functionAccessors.R Src/writeGeneratedCode.R \
             Src/wsdlProcess.R Src/ClassDefns.R  Src/utils.R Src/toSOAP.R \
-            Src/httpGet.R
+            Src/httpGet.R \
+            Src/wsse.R
 
 
 include $(OMEGA_HOME)/Config/GNUmakefile.PackageRules

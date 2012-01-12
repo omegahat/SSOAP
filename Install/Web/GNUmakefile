@@ -28,7 +28,7 @@ install: pkg/$(PKG_NAME)/inst/Docs index.html examples pkg/man.pdf
 	$(update-r-mirror)
 
 
-docs: $(AUX_DOCS) index.html
+aux docs: $(AUX_DOCS) index.html
 	scp $^ $(TARGET_DIR)
 
 include $(OMEGA_HOME)/Config/GNUmakefile.SWebPackageRules

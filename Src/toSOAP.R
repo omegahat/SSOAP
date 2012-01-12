@@ -2,6 +2,11 @@ setGeneric("toSOAP",
             function(obj, con = xmlOutputBuffer(header = ""), type = NULL, literal = FALSE, elementFormQualified = FALSE, ...) {
               tmp = standardGeneric("toSOAP")
 
+                # For the methods that just format the value (e.g. SOAPDataType, decimal, etc.)
+                # we'll add the text as a child of con if it is an XML node
+              if(is.character(tmp) && is(con, "XMLInternalElementNode") && xmlSize(con) == 0)
+                 xmlValue(con) = tmp
+
 #??? Is this the right thing to be doing?
    if(FALSE) {
               if(is(tmp, "XMLInternalNode") && !is.null(xmlParent(tmp)) && (is(con, "XMLInternalDocument") || is(con, "XMLInternalNode")))
@@ -300,7 +305,7 @@ setMethod("toSOAP", c("vector", "XMLInternalElementNode", type = "BasicSOAPType"
                 # But it actually works eventhough the Body of the request is dubious.
                 #   <NDFDgenByDay>38.9936<latitude xsi:type="xsd:decimal">38.9936</latitude>-77.0224<longitude xsi:type="xsd:decimal">-77.0224</longitude>
                 #XXXX
-#browser()
+
                 if(literal)
                    newXMLTextNode(val[1], parent = con)  
                 else

@@ -30,8 +30,8 @@ Kernel configured for up to 4 processors.
 Processor type: i486 (Intel 80486)
 Processors active: 0 1 2 3
 Primary memory available: 8.00 gigabytes
-Default processor set: 234 tasks, 1131 threads, 4 processors
-Load average: 5.26, Mach factor: 0.96
+Default processor set: 230 tasks, 1040 threads, 4 processors
+Load average: 2.64, Mach factor: 1.60
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
@@ -100,7 +100,7 @@ ac_cv_env_target_alias_value=
 ## Output variables. ##
 ## ----------------- ##
 
-DATE='04 Jan 2012'
+DATE='05 Jan 2012'
 DEFS='-DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\"'
 ECHO_C=''
 ECHO_N='-n'
@@ -115,12 +115,12 @@ PACKAGE_NAME=''
 PACKAGE_STRING=''
 PACKAGE_TARNAME=''
 PACKAGE_VERSION=''
-PATCH_LEVEL='2'
+PATCH_LEVEL='3'
 PATH_SEPARATOR=':'
 PKG_NAME='SSOAP'
 SHELL='/bin/sh'
-TAR_FILE='SSOAP_0.8-2.tar.gz'
-VERSION='0.8-2'
+TAR_FILE='SSOAP_0.8-3.tar.gz'
+VERSION='0.8-3'
 bindir='${exec_prefix}/bin'
 build_alias=''
 datadir='${datarootdir}'

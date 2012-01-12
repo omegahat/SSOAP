@@ -4,7 +4,7 @@ function(server, method, ..., .soapArgs = list(), action, nameSpaces = SOAPNameS
          .opts = list(), curlHandle = getCurlHandle(),
          .header = getSOAPRequestHeader(action, .server = server),
          .literal = FALSE, .soapHeader = NULL, .elementFormQualified = FALSE,
-         .returnNodeName = NA)  
+         .returnNodeName = NA)
 {
 
  if(is.null(xmlns))
@@ -21,10 +21,14 @@ function(server, method, ..., .soapArgs = list(), action, nameSpaces = SOAPNameS
    doc =  newXMLDoc()
  else
    doc <- textConnection(".foo", open = "w", local = TRUE)
+
+# if(!is.null(.wsse)) 
+#    .soapHeader = addWSSE(.wsse, .soapHeader)
+
  
  writeSOAPMessage(doc, nameSpaces, method, ...,
                     .soapArgs = .soapArgs, .types = .types, xmlns = xmlns, .literal = .literal,
-                     .soapHeader = .soapHeader, .elementFormQualified = .elementFormQualified )
+                     .soapHeader = .soapHeader, .elementFormQualified = .elementFormQualified)
  if(useNodes)
    txt <- as(doc, "character")
  else {
@@ -96,6 +100,13 @@ function(doc)
    length(getNodeSet(doc, "//env:Body/env:Fault", c(env="http://schemas.xmlsoap.org/soap/envelope/"))) > 0
 }
 
+
+addWSSE =
+function(wse, header)
+{
+  if(is.null(header))
+    header = newXMLDoc()
+}
 
 
 toURL =

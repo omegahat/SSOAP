@@ -14,7 +14,7 @@ License: GPL2
 Collate: ClassDefns.R fault.S http.S parseSOAP.S print.S 
          RPC.R SOAP.S SOAPServer.S zSOAP.S duration.S  nativeWrite.R
          functionAccessors.R writeGeneratedCode.R wsdlProcess.R
-         utils.R toSOAP.R httpGet.R
+         utils.R toSOAP.R httpGet.R wsse.R
 Note:  There is an opportunity to do a lot of optimization in   
   the machine generated code to reduce the processing time.
   This is a simple approach that "works" with little regard

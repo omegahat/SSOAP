@@ -155,11 +155,16 @@ function(con, nameSpaces, method, ...,
           # Add this node to the document.
           # or we could use envelope = xmlRoot(con)
         envelope = con[["//SOAP-ENV:Envelope"]]
-        addChildren(envelope, as(tmp, "XMLInternalNode"))
+        node = as(tmp, "XMLInternalNode")
+        if(xmlName(node) != "Header")
+          newXMLNode("SOAP-ENV:Header", node, parent = xmlRoot(con))
+        else
+          addChildren(envelope, node)
      } else if(is(con, "connection"))
         cat(as(tmp, "character"), file = con)
    }
  }
+
   
  writeSOAPBody(method, ..., .soapArgs = .soapArgs, xmlns = xmlns, con = con,
                 .types = .types, .literal = .literal, .elementFormQualified = .elementFormQualified)
@@ -183,6 +188,12 @@ function(con, nameSpaces, method, ...,
   con
 }  
 
+
+addWSSEHeader =
+function(info, envelope)
+{
+
+}
 
 #SOAP 1.1
 #      "SOAP-ENC" = 'http://schemas.xmlsoap.org/soap/encoding/',
