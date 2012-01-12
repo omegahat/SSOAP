@@ -30,8 +30,8 @@ Kernel configured for up to 4 processors.
 Processor type: i486 (Intel 80486)
 Processors active: 0 1 2 3
 Primary memory available: 8.00 gigabytes
-Default processor set: 230 tasks, 1040 threads, 4 processors
-Load average: 2.64, Mach factor: 1.60
+Default processor set: 262 tasks, 1101 threads, 4 processors
+Load average: 2.26, Mach factor: 2.31
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
@@ -100,27 +100,26 @@ ac_cv_env_target_alias_value=
 ## Output variables. ##
 ## ----------------- ##
 
-DATE='05 Jan 2012'
+DATE='12 Jan 2012'
 DEFS='-DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\"'
-ECHO_C=''
-ECHO_N='-n'
+ECHO_C='ECHO_N=''
 ECHO_T=''
 LIBOBJS=''
 LIBS=''
 LTLIBOBJS=''
 MAJOR_VERSION='0'
-MINOR_VERSION='8'
+MINOR_VERSION='9'
 PACKAGE_BUGREPORT=''
 PACKAGE_NAME=''
 PACKAGE_STRING=''
 PACKAGE_TARNAME=''
 PACKAGE_VERSION=''
-PATCH_LEVEL='3'
+PATCH_LEVEL='0'
 PATH_SEPARATOR=':'
 PKG_NAME='SSOAP'
 SHELL='/bin/sh'
-TAR_FILE='SSOAP_0.8-3.tar.gz'
-VERSION='0.8-3'
+TAR_FILE='SSOAP_0.9-0.tar.gz'
+VERSION='0.9-0'
 bindir='${exec_prefix}/bin'
 build_alias=''
 datadir='${datarootdir}'

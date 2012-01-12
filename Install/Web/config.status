@@ -495,20 +495,20 @@ s,@libdir@,|#_!!_#|${exec_prefix}/lib,g
 s,@localedir@,|#_!!_#|${datarootdir}/locale,g
 s,@mandir@,|#_!!_#|${datarootdir}/man,g
 s,@DEFS@,|#_!!_#|-DPACKAGE_NAME=\\"\\" -DPACKAGE_TARNAME=\\"\\" -DPACKAGE_VERSION=\\"\\" -DPACKAGE_STRING=\\"\\" -DPACKAGE_BUGREPORT=\\"\\",g
-s,@ECHO_C@,|#_!!_#|,g
-s,@ECHO_N@,|#_!!_#|-n,g
+s,@ECHO_C@,|#_!!_#|\\c,g
+s,@ECHO_N@,|#_!!_#|,g
 s,@ECHO_T@,|#_!!_#|,g
 s,@LIBS@,|#_!!_#|,g
 s,@build_alias@,|#_!!_#|,g
 s,@host_alias@,|#_!!_#|,g
 s,@target_alias@,|#_!!_#|,g
-s,@TAR_FILE@,|#_!!_#|SSOAP_0.8-3.tar.gz,g
+s,@TAR_FILE@,|#_!!_#|SSOAP_0.9-0.tar.gz,g
 s,@MAJOR_VERSION@,|#_!!_#|0,g
-s,@MINOR_VERSION@,|#_!!_#|8,g
-s,@PATCH_LEVEL@,|#_!!_#|3,g
+s,@MINOR_VERSION@,|#_!!_#|9,g
+s,@PATCH_LEVEL@,|#_!!_#|0,g
 s,@PKG_NAME@,|#_!!_#|SSOAP,g
-s,@DATE@,|#_!!_#|05 Jan 2012,g
-s,@VERSION@,|#_!!_#|0.8-3,g
+s,@DATE@,|#_!!_#|12 Jan 2012,g
+s,@VERSION@,|#_!!_#|0.9-0,g
 s,@LIBOBJS@,|#_!!_#|,g
 s,@LTLIBOBJS@,|#_!!_#|,g
 :end
