@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://SDMDataAccess.nrcs.usda.gov/Tabular/SDMTabularService.asmx" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://SDMDataAccess.nrcs.usda.gov/Tabular/SDMTabularService.asmx" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://SDMDataAccess.nrcs.usda.gov/Tabular/SDMTabularService.asmx">
+      <s:element name="RunQuery">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Query" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RunQueryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RunQueryResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="RunQuerySoapIn">
+    <wsdl:part name="parameters" element="tns:RunQuery" />
+  </wsdl:message>
+  <wsdl:message name="RunQuerySoapOut">
+    <wsdl:part name="parameters" element="tns:RunQueryResponse" />
+  </wsdl:message>
+  <wsdl:portType name="SDMTabularServiceSoap">
+    <wsdl:operation name="RunQuery">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">This method runs your own custom SQL or SQL Data Shaping query against the Soil Data Mart database and returns an XML data set containing the results.  If an error occurs, an exception will be thrown.  See the Soil Data Access Web Service Help page for more information.</wsdl:documentation>
+      <wsdl:input message="tns:RunQuerySoapIn" />
+      <wsdl:output message="tns:RunQuerySoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SDMTabularServiceSoap" type="tns:SDMTabularServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="RunQuery">
+      <soap:operation soapAction="http://SDMDataAccess.nrcs.usda.gov/Tabular/SDMTabularService.asmx/RunQuery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SDMTabularServiceSoap12" type="tns:SDMTabularServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="RunQuery">
+      <soap12:operation soapAction="http://SDMDataAccess.nrcs.usda.gov/Tabular/SDMTabularService.asmx/RunQuery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SDMTabularService">
+    <wsdl:port name="SDMTabularServiceSoap" binding="tns:SDMTabularServiceSoap">
+      <soap:address location="http://sdmdataaccess.nrcs.usda.gov/tabular/SDMTabularService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SDMTabularServiceSoap12" binding="tns:SDMTabularServiceSoap12">
+      <soap12:address location="http://sdmdataaccess.nrcs.usda.gov/tabular/SDMTabularService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
