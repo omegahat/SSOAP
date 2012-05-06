@@ -49,37 +49,38 @@ function(method, ..., xmlns= NULL, con,
    argValues = fixSOAPArgNames(list(...), .soapArgs)
    argNames = names(argValues)
    
-   argNodes =
-     lapply(seq(along = argValues),
-              function(i) {
-                argName <- argNames[i]
-
-                typedef = NULL
-                if(length(.types) >= i ) {
-                  typedef = .types[[i]]
-                  type = getSOAPType(typedef, argValues[[i]])
-                } else
-                  type = getSOAPType(argValues[[i]])
-
-
-                if(!.literal) {
-                  ans = newXMLNode(argName, parent = methodCall,
-                                   attrs = if(length(type) && type[1] != "")
-                                               writeTypes(argValues[[i]], con = con, types = type),
-                                   doc = con)
-                  if(length(xmlns) && xmlns != "")
-                      newXMLNamespace(ans, xmlns, set = TRUE)
-                }
-                toSOAP(argValues[[i]], if(!.literal) ans else methodCall, type = typedef,
-                              literal = .literal, elementFormQualified = .elementFormQualified)
-
-                NULL                
-              })
+   argNodes =  mapply(makeArgNode,  argNames, argValues, .types[ seq(along = argValues) ],
+                       MoreArgs = list(con, xmlns, methodCall, .literal, .elementFormQualified))
 
 #   addChildren(methodCall, kids = argNodes)
 
    b
 })
+
+makeArgNode =
+function(argName, argValue, type, con, xmlns, methodCall, .literal, .elementFormQualified) {
+
+                typedef = NULL
+                if(!is.null(type)) {  #length(.types) >= i ) 
+                  typedef = type
+                  type = getSOAPType(typedef, argValue)
+                } else
+                  type = getSOAPType(argValue)
+
+
+                if(!.literal) {
+                  ans = newXMLNode(argName, parent = methodCall,
+                                   attrs = if(length(type) && type[1] != "")
+                                               writeTypes(argValue, con = con, types = type),
+                                   doc = con)
+                  if(length(xmlns) && xmlns != "")
+                      newXMLNamespace(ans, xmlns, set = TRUE)
+                }
+                toSOAP(argValue, if(!.literal) ans else methodCall, type = typedef,
+                              literal = .literal, elementFormQualified = .elementFormQualified)
+
+                NULL                
+}
 
 
 fixSOAPArgNames =

@@ -82,7 +82,7 @@ function(server, method, ..., .soapArgs = list(), action, nameSpaces = SOAPNameS
            else
               .convert(getReturnNode(content))
          )
-  else if(is(.convert, "GenericSchemaType"))  # was "SOAPType" but want to include Element.
+  else if(is(.convert, "GenericSchemaType"))  # was "SchemaType" but want to include Element.
      convertFromSOAP(SOAPResult(content$content, content$header), .convert, nodeName = .returnNodeName)
   else if(is.character(.convert))
        as(getReturnNode(content), .convert)

@@ -1,7 +1,8 @@
 library(SSOAP)
 
 u = "http://www.wikipathways.org/wpi/webservice/webservice.php?wsdl"
-w = processWSDL("WSDLs/wikipathways.R")
+#w = processWSDL("WSDLs/wikipathways.R")
+w = processWSDL(u) 
 wk = genSOAPClientInterface(, u)
 
 wk@functions$listOrganisms()

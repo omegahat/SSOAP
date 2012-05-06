@@ -53,7 +53,7 @@ function(obj, value = NULL)
   return(ans)  
 })
 
-setMethod("getSOAPType", "PrimitiveSOAPType",
+setMethod("getSOAPType", "PrimitiveSchemaType",
 function(obj, value = NULL) {
   c("xsi:type" = paste(obj@ns, obj@name, sep=":"))
 })

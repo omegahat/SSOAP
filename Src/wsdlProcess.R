@@ -184,7 +184,7 @@ function(.operation, .defaultServer, .types, env = globalenv(), nameSpaces = NA,
  }
 
 
- converter = if(is(.operation@returnValue, "BasicSOAPType") && length(body(.operation@returnValue@fromConverter)) > 1)
+ converter = if(is(.operation@returnValue, "BasicSchemaType") && length(body(.operation@returnValue@fromConverter)) > 1)
                 ".operation@returnValue@fromConverter"
              else
                 ".operation@returnValue"
@@ -551,11 +551,11 @@ function(node, types, doc, namespaceDefinitions = list(), typeDefinitions = list
                              # For some reason, adding nsuri here causes the genSOAPClientInterface () to fail.
                              # when generating the operation code in the tests/interop.R example. It is most like
                              # an issue. With the nsuri, we get a SOAPTypeReference for the single parameter,
-                             # but without it (i.e. the 2nd call below) we get an object of class PrimitiveSOAPType.
+                             # but without it (i.e. the 2nd call below) we get an object of class PrimitiveSchemaType.
                              # We are using the namespace from x, and not the value in the type element, e.g. xsd:string
                              # However, in this example, they are the same.
                              # SOAPType(el, nsuri = xmlNamespace(x), namespaceDefs = namespaceDefinitions)
-                            SOAPType(el, namespaceDefs = namespaceDefinitions)                            
+                            SchemaType(el, namespaceDefs = namespaceDefinitions)                            
                           })
    # need to map the name for an element rather than type. Let's do this in
    # genSOAPClientInterface() for now.
@@ -618,7 +618,7 @@ function(node, types, doc, namespaceDefinitions = list(), typeDefinitions = list
   action = SOAPAction(action)
 
   obj = new("WSDLMethod", name = name, parameters = args,
-                          returnValue = SOAPType(value, namespaceDefs = namespaceDefinitions), #, obj = new("SOAPTypeReference")),
+                          returnValue = SchemaType(value, namespaceDefs = namespaceDefinitions), #, obj = new("SchemaTypeReference")),
                           namespace = namespace,
                           action = action,
                           returnNodeName = as.character(returnNodeName))

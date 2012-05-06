@@ -1,3 +1,4 @@
+#as.string = as.character
 
 # When we generate an S4 class to represent a SOAP compound data type,
 # we have it extend this degenerate class. This allows us to
