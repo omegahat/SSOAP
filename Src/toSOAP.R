@@ -4,7 +4,7 @@ setGeneric("toSOAP",
 
                 # For the methods that just format the value (e.g. SOAPDataType, decimal, etc.)
                 # we'll add the text as a child of con if it is an XML node
-              if(is.character(tmp) && is(con, "XMLInternalElementNode") && xmlSize(con) == 0)
+              if(is.vector(tmp) && is(con, "XMLInternalElementNode") && xmlSize(con) == 0)
                  xmlValue(con) = tmp
 
 #??? Is this the right thing to be doing?
