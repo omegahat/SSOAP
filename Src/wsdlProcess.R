@@ -82,8 +82,10 @@ function(operations = def@operations[[1]],
        operations = def@operations[[1]] # NULL
  } 
 
- if(is.character(def) || is(def, "XMLAbstractNode"))
+ if(is.character(def) || is(def, "XMLAbstractNode")) {
     def = processWSDL(def, ...)
+    operations = def@operations[[1]]
+  }
 
  
  classes = NULL
@@ -174,6 +176,7 @@ function(.operation, .defaultServer, .types, env = globalenv(), nameSpaces = NA,
    dotArgs = paste(paste(paste("'", names(.operation@parameters), "'", sep=""),
                                        values, sep = " = "),
                    collapse=",\n\t")
+   dotArgs = sprintf(".soapArgs = list(%s)", dotArgs)
  }
 
 
@@ -205,6 +208,8 @@ function(.operation, .defaultServer, .types, env = globalenv(), nameSpaces = NA,
                     collapse=",\n\t "),
                     paste(",\n\t nameSpaces = ", ifelse(is.na(nameSpaces), nameSpaces, simple.dQuote(nameSpaces))),
                     if(insertSoapHeader) ", .soapHeader = NULL",
+                    ", .header = SSOAP::getSOAPRequestHeader(.operation@action, .server = server)",   
+                    ", curlHandle = RCurl::getCurlHandle()",
                   ")\n{\n",
               fixes[1],
              "\t .SOAP(server, .operation@name, ",
@@ -214,7 +219,7 @@ function(.operation, .defaultServer, .types, env = globalenv(), nameSpaces = NA,
                   "\n\t\t",         "xmlns = .operation@namespace, ",
                   "\n\t\t",         ".types = .operation@parameters, ",
                   "\n\t\t",         ".convert = .convert,",
-                  "\n\t\t",         ".header = .header,",
+#                  "\n\t\t",         ".header = .header,",
                   "\n\t\t",         ".opts = .opts ",
                   if(!is.na(.operation@use["input"]) && .operation@use["input"] == "literal") ",\n\t\t .literal = TRUE",
 # now in .opts = list(...)
@@ -223,6 +228,7 @@ function(.operation, .defaultServer, .types, env = globalenv(), nameSpaces = NA,
                   paste(" .elementFormQualified", .elementFormQualified, sep = " = "),
                   sprintf(", .returnNodeName = %s", if(is.na(.operation@returnNodeName)) NA else sQuote(.operation@returnNodeName)),
                   if(insertSoapHeader) ", .soapHeader = .soapHeader",
+                  ", .header = .header, curlHandle = curlHandle",
                   ")\n",
                   fixes[2],
                   "\n}", sep="")  
@@ -233,7 +239,8 @@ function(.operation, .defaultServer, .types, env = globalenv(), nameSpaces = NA,
  
  environment(f) <- e <- new.env(parent = env)
  e$.operation <- .operation
- e$.header <- getSOAPRequestHeader(.operation@action, .server = .defaultServer)
+   # Why do this here?
+ # e$.header <- getSOAPRequestHeader(.operation@action, .server = .defaultServer)
 
   # The .defaultServer will, by default, be shared across all the functions.
   # So no need to copy it here. But if we can't find it and have it here,
@@ -254,7 +261,9 @@ function(.operation, .defaultServer, .types, env = globalenv(), nameSpaces = NA,
 
 
 
-setGeneric("convertFromSOAP", function(val, type, nodeName = "return", ...) standardGeneric("convertFromSOAP"))
+setGeneric("convertFromSOAP",
+            function(val, type, nodeName = "return", ...)
+                 standardGeneric("convertFromSOAP"))
 
 
 if(FALSE)

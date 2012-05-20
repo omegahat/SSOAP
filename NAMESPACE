@@ -57,6 +57,7 @@ exportClass(VirtualSOAPClass)
 
 export(getReturnNode)
 
+export(getSOAPRequestHeader)
 
 #exportClass(ArrayType)
 
