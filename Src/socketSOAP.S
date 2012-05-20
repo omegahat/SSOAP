@@ -56,7 +56,7 @@ function(server, method, ..., action, nameSpaces = SOAPNameSpaces(), xmlns = NUL
  
  writeSOAPHeader(server@url, server@host, action, con)
 
- txt <- writeSOAPMessage(con, nameSpaces, method, ..., .types = .types, xmlns = xmlns)
+ txt <- writeSOAPMessage(con, ..., nameSpaces = nameSpaces, method = method, .types = .types, xmlns = xmlns)
 
  cat("Content-Length: ", nchar(txt),"\r\n", sep="", file=con)
  cat("\r\n", file=con)

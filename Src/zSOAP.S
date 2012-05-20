@@ -26,7 +26,7 @@ function(server, method, ..., .soapArgs = list(), action, nameSpaces = SOAPNameS
 #    .soapHeader = addWSSE(.wsse, .soapHeader)
 
  
- writeSOAPMessage(doc, nameSpaces, method, ...,
+ writeSOAPMessage(doc, ..., nameSpaces = nameSpaces, method = method, 
                     .soapArgs = .soapArgs, .types = .types, xmlns = xmlns, .literal = .literal,
                      .soapHeader = .soapHeader, .elementFormQualified = .elementFormQualified)
  if(useNodes)
