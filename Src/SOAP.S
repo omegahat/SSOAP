@@ -128,7 +128,7 @@ function(content, header, obj = new("SOAPResult"))
 
 
 writeSOAPMessage <-
-function(con, nameSpaces, method, ...,
+function(con, ..., nameSpaces, method, 
           .types = NULL, xmlns = NULL, .soapArgs = list(),
           .literal = FALSE, .soapHeader = NULL, .elementFormQualified = FALSE)
 {
