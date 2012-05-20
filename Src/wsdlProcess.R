@@ -69,12 +69,17 @@ function(operations = def@operations[[1]],
          opFun = getOperationFunction(verb),
          opts = new("CodeGenOpts"), ...)
 {
-
+   if(missing(where) && is(putFunctions, "environment"))
+      where = putFunctions
+  
  computeOperations = FALSE
- if(missing(def) && (is(operations, "SOAPServerDescription") || is(operations, "character") || is(operations, "XMLAbstractNode"))) {
+ if(missing(def) && (is(operations, "SOAPServerDescription") 
+                     || is(operations, "character")
+                     || is(operations, "XMLAbstractNode"))) {
     computeOperations = TRUE
     def = operations
-    operations = def@operations[[1]] # NULL
+    if(is(operations, "SOAPServerDescription"))
+       operations = def@operations[[1]] # NULL
  } 
 
  if(is.character(def) || is(def, "XMLAbstractNode"))
