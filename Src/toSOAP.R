@@ -1,5 +1,6 @@
 setGeneric("toSOAP",
-            function(obj, con = xmlOutputBuffer(header = ""), type = NULL, literal = FALSE, elementFormQualified = FALSE, ...) {
+            function(obj, con = xmlOutputBuffer(header = ""), type = NULL,
+                      literal = FALSE, elementFormQualified = FALSE, ...) {
               tmp <- standardGeneric("toSOAP")
 
                 # For the methods that just format the value (e.g. SOAPDataType, decimal, etc.)
@@ -147,7 +148,8 @@ function(obj, con = xmlOutputBuffer(header=""), type = NULL, literal = FALSE, el
 })
 
 
-setGeneric("toSOAPArray", function(obj, con = stdout(), type = NULL, literal = FALSE, elementFormQualified = FALSE, ...)
+setGeneric("toSOAPArray",
+            function(obj, con = stdout(), type = NULL, literal = FALSE, elementFormQualified = FALSE, ...)
                {
                  if(length(names(obj))) 
                    return(toSOAPNamedContainer(obj, con))
@@ -355,7 +357,8 @@ setMethod("toSOAP", c("vector", type = "SchemaType"),
  # We need these signatures to be very specific to ensure that these methods and not the one for BasicSOAPType get called.
 setMethod("toSOAP", c("vector", con = "XMLInternalElementNode", type = "ArrayType"),
               function(obj, con = xmlOutputBuffer(header = ""), type = NULL, literal = FALSE, elementFormQualified = FALSE, ...) {
-                toSOAPArray(obj, con = con, type = type, literal = literal, elementFormQualified = elementFormQualified, ...)
+                toSOAPArray(obj, con = con, type = type, literal = literal,
+                              elementFormQualified = elementFormQualified, ...)
               })
 setMethod("toSOAP", c("list", con = "XMLInternalElementNode", type = "ArrayType"),
               function(obj, con = xmlOutputBuffer(header = ""), type = NULL, literal = FALSE, elementFormQualified = FALSE, ...) {

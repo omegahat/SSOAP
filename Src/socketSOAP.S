@@ -54,7 +54,7 @@ function(server, method, ..., action, nameSpaces = SOAPNameSpaces(), xmlns = NUL
  if(!is(action, "SOAPAction") && !is.null(handlers) && !is.na(match("action", names(handlers)))) 
    action <- handlers[["action"]](action, method, server, xmlns)
  
- writeSOAPHeader(server@url, server@host, action, con)
+ writeSOAPHeader(server@path, server@host, action, con)
 
  txt <- writeSOAPMessage(con, ..., nameSpaces = nameSpaces, method = method, .types = .types, xmlns = xmlns)
 

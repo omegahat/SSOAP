@@ -35,8 +35,8 @@ setClass("SOAPGeneralFault", representation("SOAPFault", code="character"))
 setClass("SOAPServer", representation(
                                       host = "character",
                                       port = "integer",
-                                      url = "character"),
-                       prototype = list(host = "", port = as.integer(NA), url="" ))
+                                      path = "character"),
+                       prototype = list(host = "", port = as.integer(NA), path = "" ))
 
 
 setClass("DynamicSOAPServer", representation(server = "SOAPServer", functions = "list")) # , contains = "SOAPServer")
@@ -67,8 +67,9 @@ setClass("WSDLMethod", representation(name="character",
                                       use = "character",          # literal or encoded
                                       documentation = "character",
                                       header = "ANY", #XXX
-                                      returnNodeName = 'character' # name of the node that contains
+                                      returnNodeName = 'character', # name of the node that contains
                                                                    # the result's payload. See getReturnNode.
+                                      numPartElements = "integer"
                                      ),
                        prototype = list(bindingStyle = as.character(NA),
                                         use = c(input = as.character(NA), output = as.character(NA)),

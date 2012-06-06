@@ -31,7 +31,7 @@ function(host, url, port = NA,  s = new(className))
  s = new(className)
  s@host <- host
 
- s@url <- url
+ s@path <- url
 
   #  if(!missing(port))    really want  missing value here.        
  s@port <- as.integer(port)

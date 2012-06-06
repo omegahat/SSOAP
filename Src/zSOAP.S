@@ -124,8 +124,8 @@ function(server)
  
  url = paste(getProtocol(server), server@host, 
               ifelse(length(port), paste(":", port, sep = ""), ""),
-              ifelse(substring(server@url, 1, 1) == "/", "", "/"),
-              server@url, sep="")
+              ifelse(substring(server@path, 1, 1) == "/", "", "/"),
+              server@path, sep="")
 
  url
 }

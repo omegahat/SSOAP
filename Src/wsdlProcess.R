@@ -67,7 +67,8 @@ function(operations = def@operations[[1]],
          putFunctions = FALSE,
          verb = def@verb,
          opFun = getOperationFunction(verb),
-         opts = new("CodeGenOpts"), ...)
+         opts = new("CodeGenOpts"),
+         collapseSingleComplexParameter = TRUE, ...)
 {
    if(missing(where) && is(putFunctions, "environment"))
       where = putFunctions
@@ -99,7 +100,8 @@ function(operations = def@operations[[1]],
    if(verbose)
       cat("Operation", i@name, "\n")
 
-   funs[[convertToSName(i@name)]] = opFun(i, server, def@types, env, nameSpaces, addSoapHeader)
+   funs[[convertToSName(i@name)]] = opFun(i, server, def@types, env, nameSpaces, addSoapHeader,
+                                           collapseSingleComplexParameter = collapseSingleComplexParameter)
  }
 
 
@@ -113,7 +115,7 @@ function(operations = def@operations[[1]],
  
  ans = new("SOAPClientInterface", functions = funs, classes = as.list(classes))
 
- ans
+ invisible(ans)
 }
 
 
@@ -143,13 +145,36 @@ setMethod("getElementFormQualified", "SchemaCollection",
 
 createOperationDefinition =
 function(.operation, .defaultServer, .types, env = globalenv(), nameSpaces = NA, addSoapHeader = FALSE,
-          .elementFormQualified = getElementFormQualified(.types))
+          .elementFormQualified = getElementFormQualified(.types),
+          collapseSingleComplexParameter = TRUE)
 {
+
+if(.operation@name == "list_pathways")  browser() #XX
+  
   empty = sapply(.operation@parameters, checkIsEmptyParameter, types = .types, name = .operation@name, namespaceDefs = nameSpaces)
-     # resolve the parameter types
+     #XXX resolve the parameter types. Already resolving them in checkIsEmptyParameter. Should
+     # avoid second round of resolve()ing.
  .operation@parameters = .operation@parameters[!empty]
  .operation@parameters = lapply(.operation@parameters, resolve, .types)
 
+  collapsedParameter = FALSE  
+  if(collapseSingleComplexParameter && length(.operation@parameters) && .operation@numPartElements == 1) {
+    p = .operation@parameters[[1]]
+    if(is(p, "Element")) {
+      collapsedParameter = TRUE
+      collapsedType = p@type
+      if(is(p@type, "ClassDefinition"))
+        .operation@parameters = p@type@slotTypes
+      else if(is(p@type, "PrimitiveSchemaType"))
+        .operation@parameters = structure(list(p@type), names = p@name)
+      else
+        collapsedParameter = FALSE
+    } else {
+      cat("Not collapsing for", .operation@name, "type", class(p), "\n")
+ #      browser()
+   }
+  }
+  
  .operation@returnValue = rval = resolve(.operation@returnValue, .types)
 
  if(!is.null(.operation@header))
@@ -170,12 +195,23 @@ function(.operation, .defaultServer, .types, env = globalenv(), nameSpaces = NA,
 
  dotArgs = ""
  if(length(.operation@parameters)) {
-   values = sapply(names(.operation@parameters),
+
+  if(collapsedParameter) {
+      # leave the coercion of the individual elements until later.
+     dotArgs =  paste(sprintf("%s = %s", names(.operation@parameters),
+                                   names(.operation@parameters)),
+                      collapse = ", ")
+     dotArgs = sprintf("as(list(%s), '%s')", dotArgs, collapsedType@name)
+  } else {
+     values = sapply(names(.operation@parameters),
                      function(x)
                         coerceArgumentCode(x, .operation@parameters[[x]]))
-   dotArgs = paste(paste(paste("'", names(.operation@parameters), "'", sep=""),
-                                       values, sep = " = "),
-                   collapse=",\n\t")
+     dotArgs = paste(paste(paste("'", names(.operation@parameters), "'", sep=""),
+                                      values, sep = " = "),
+                      collapse=",\n\t")
+   }
+
+   
    dotArgs = sprintf(".soapArgs = list(%s)", dotArgs)
  }
 
@@ -201,7 +237,8 @@ function(.operation, .defaultServer, .types, env = globalenv(), nameSpaces = NA,
 
  .opts = ", .opts = list(...), ..."
  .opts = ", .opts = list()"
- 
+
+  
  txt = paste("function(",
               paste(c(params,
                       paste("server = .defaultServer, .convert = ", converter, .opts)),
@@ -549,6 +586,7 @@ function(node, types, doc, namespaceDefinitions = list(), typeDefinitions = list
   portType = types[which][[1]] 
   if(is.null(portType[["input"]])) {
      args = list()
+     parts = list()
   } else  {
      input = discardNamespace( xmlGetAttr(portType[["input"]], "message") )
  
@@ -600,7 +638,7 @@ function(node, types, doc, namespaceDefinitions = list(), typeDefinitions = list
   msgs = doc[xmlSApply(doc, function(x) xmlName(x) == "message" && xmlGetAttr(x, "name") == output)]
   msg = msgs[[1]]  
 
-
+ 
   returnNodeName = NA
   if(xmlSize(msg)) {
     value = xmlGetAttr(msg[["part"]], "type")
@@ -635,7 +673,8 @@ function(node, types, doc, namespaceDefinitions = list(), typeDefinitions = list
                           returnValue = SchemaType(value, namespaceDefs = namespaceDefinitions), #, obj = new("SchemaTypeReference")),
                           namespace = namespace,
                           action = action,
-                          returnNodeName = as.character(returnNodeName))
+                          returnNodeName = as.character(returnNodeName),
+                          numPartElements = length(parts))
 
   obj@bindingStyle = xmlGetAttr(node[["operation"]], "style", as.character(NA))
   obj@use = sapply(c("input", "output"), 
@@ -677,7 +716,7 @@ function(type, types, name = NA, namespaceDefs = list())
    if(is(tt, "Element"))
      tt = tt@type
 
-   if(is.null(tt) || (is(tt, "ClassDefinition") && length(tt@slotTypes) == 0)) {
+   if(is.null(tt) || (is(tt, "ClassDefinition") && length(tt@slotTypes) == 0) || is(tt, "SchemaVoidType")) {
      return(TRUE)
     }
 

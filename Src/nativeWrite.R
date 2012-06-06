@@ -48,6 +48,10 @@ function(method, ..., xmlns= NULL, con,
       # Process the argument values.
    argValues = fixSOAPArgNames(list(...), .soapArgs)
    argNames = names(argValues)
+   if(length(argNames) == 0)
+      argNames = rep("", length(argValues))
+   if(length(.types) == 0)
+     .types = replicate(length(argValues), NULL, simplify = FALSE)
    
    argNodes =  mapply(makeArgNode,  argNames, argValues, .types[ seq(along = argValues) ],
                        MoreArgs = list(con, xmlns, methodCall, .literal, .elementFormQualified))
@@ -76,7 +80,7 @@ function(argName, argValue, type, con, xmlns, methodCall, .literal, .elementForm
                   if(length(xmlns) && xmlns != "")
                       newXMLNamespace(ans, xmlns, set = TRUE)
                 }
-                toSOAP(argValue, if(!.literal) ans else methodCall, type = typedef,
+                toSOAP(argValue, if(.literal) methodCall else ans, type = typedef,
                              literal = .literal, elementFormQualified = .elementFormQualified)
 
                 NULL                
