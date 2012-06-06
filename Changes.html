@@ -9,6 +9,14 @@
 <h2>0.9-1</h2>
 <dl>
   <dt>
+  <li>  genSOAPClientInterface(url/file/xml doc) calls processWSDL() first
+         with the document name and then generates the interface
+  <dd>
+  <dt>
+  <li>  Generated functions from genSOAPClientInterface pass the
+        method arguments via .soapArgs
+  <dd>
+  <dt>
   <li> Change the order of the parameters in writeSOAPBody to avoid
         conflicts in parameter names passed via ..., e.g. in generated functions.
   <dd>
@@ -559,6 +567,6 @@
 <address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Fri May 18 22:25:13 PDT 2012
+Last modified: Sun May 20 10:30:24 PDT 2012
 <!-- hhmts end -->
 </body> </html>
