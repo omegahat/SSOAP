@@ -128,6 +128,10 @@ function(content, header, obj = new("SOAPResult"))
 
 
 writeSOAPMessage <-
+  #
+  # Create the entire body of what we send as the SOAP request, i.e. the Envelope and it
+  # header and body.
+  #
 function(con, ..., nameSpaces, method, 
           .types = NULL, xmlns = NULL, .soapArgs = list(),
           .literal = FALSE, .soapHeader = NULL, .elementFormQualified = FALSE)
