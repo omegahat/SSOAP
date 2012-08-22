@@ -1,6 +1,6 @@
 Package: SSOAP
-Version: 0.91-0
-Date:    2012/06/01
+Version: 0.92-0
+Date:    2012/08/22
 Title: Client-side SOAP access for S
 Author:  Duncan Temple Lang <duncan@wald.ucdavis.edu>
 Depends: R (>= 1.5.0), methods

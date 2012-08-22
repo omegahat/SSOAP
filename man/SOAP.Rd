@@ -14,7 +14,7 @@
       .convert = TRUE, .opts = list(), curlHandle = getCurlHandle(),
       .header = getSOAPRequestHeader(action, .server = server),
       .literal = FALSE, .soapHeader = NULL, .elementFormQualified = FALSE,
-      .returnNodeName = NA)
+      .returnNodeName = NA, .use_encoded = FALSE)
 }
 \arguments{
   \item{server}{a \code{SOAPServer} object}
@@ -120,6 +120,14 @@
    \code{"return"}  but can be any legal XML node name and is often
    given to us in a WSDL.
  }
+ \item{.use_encoded}{a logical value that corresponds to
+   \texttt{use="encoded"}
+  in a WSDL. This means that we will use the older SOAP encoding which
+   puts the XML schema type on each primitive data type sent as a
+   parameter. It also (currently) removes the method's namespaces from
+   the parameter nodes and makes these use no default. This is done by
+   not defining a default name space for the method element/node.
+  }
 }
 \value{
  An S object representing the return value from the SOAP method invocation.

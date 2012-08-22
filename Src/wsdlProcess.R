@@ -266,6 +266,8 @@ if(.operation@name == "list_pathways")  browser() #XX
                   sprintf(", .returnNodeName = %s", if(is.na(.operation@returnNodeName)) NA else sQuote(.operation@returnNodeName)),
                   if(insertSoapHeader) ", .soapHeader = .soapHeader",
                   ", .header = .header, curlHandle = curlHandle",
+                  if(!is.na(.operation@use["input"]) && .operation@use["input"] == "encoded")
+                      ", .use_encoded = TRUE",
                   ")\n",
                   fixes[2],
                   "\n}", sep="")  

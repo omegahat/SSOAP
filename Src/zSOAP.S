@@ -3,7 +3,7 @@ function(server, method, ..., .soapArgs = list(), action, nameSpaces = SOAPNameS
          handlers = SOAPHandlers(), .types = NULL, .convert = TRUE,
          .opts = list(), curlHandle = getCurlHandle(),
          .header = getSOAPRequestHeader(action, .server = server),
-         .literal = FALSE, .soapHeader = NULL, .elementFormQualified = FALSE,
+         .literal = FALSE, .soapHeader = NULL, .elementFormQualified = FALSE,  .use_encoded = FALSE,
          .returnNodeName = NA)
 {
 
@@ -28,7 +28,7 @@ function(server, method, ..., .soapArgs = list(), action, nameSpaces = SOAPNameS
  
  writeSOAPMessage(doc, ..., nameSpaces = nameSpaces, method = method, 
                     .soapArgs = .soapArgs, .types = .types, xmlns = xmlns, .literal = .literal,
-                     .soapHeader = .soapHeader, .elementFormQualified = .elementFormQualified)
+                     .soapHeader = .soapHeader, .elementFormQualified = .elementFormQualified, .use_encoded = .use_encoded)
  if(useNodes)
    txt <- as(doc, "character")
  else {

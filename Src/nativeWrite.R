@@ -23,7 +23,7 @@ setMethod("writeSOAPBody", c(con = "XMLInternalDocument"),
 function(method, ..., xmlns= NULL, con,
           .types = NULL, .soapArgs = list(),
           .literal = FALSE,
-          .header = NULL, .elementFormQualified = FALSE)
+          .header = NULL, .elementFormQualified = FALSE, .use_encoded = FALSE)
 {
 
    if(!is.null(.header))
@@ -38,7 +38,7 @@ function(method, ..., xmlns= NULL, con,
    methodCall = newXMLNode(method, parent = b, doc = con)
 
    if(length(xmlns) && xmlns != "") {
-     if(length(names(xmlns)) == 0 && (is.na(.elementFormQualified) || .elementFormQualified == FALSE))
+     if(length(names(xmlns)) == 0 && (is.na(.elementFormQualified) || .elementFormQualified == FALSE || .use_encoded))
        names(xmlns) = "ns"
      
       newXMLNamespace(methodCall, xmlns, set = TRUE)
@@ -54,7 +54,7 @@ function(method, ..., xmlns= NULL, con,
      .types = replicate(length(argValues), NULL, simplify = FALSE)
    
    argNodes =  mapply(makeArgNode,  argNames, argValues, .types[ seq(along = argValues) ],
-                       MoreArgs = list(con, xmlns, methodCall, .literal, .elementFormQualified))
+                       MoreArgs = list(con, xmlns, methodCall, .literal, .elementFormQualified, .use_encoded = .use_encoded))
 
 #   addChildren(methodCall, kids = argNodes)
 
@@ -62,7 +62,7 @@ function(method, ..., xmlns= NULL, con,
 })
 
 makeArgNode =
-function(argName, argValue, type, con, xmlns, methodCall, .literal, .elementFormQualified) {
+function(argName, argValue, type, con, xmlns, methodCall, .literal, .elementFormQualified, .use_encoded = FALSE) {
 
                 typedef = NULL
                 if(!is.null(type)) {  #length(.types) >= i ) 
@@ -77,11 +77,12 @@ function(argName, argValue, type, con, xmlns, methodCall, .literal, .elementForm
                                    attrs = if(length(type) && type[1] != "")
                                                writeTypes(argValue, con = con, types = type),
                                    doc = con)
-                  if(length(xmlns) && xmlns != "")
+                  if(length(xmlns) && xmlns != "" && (!.use_encoded))  # if .use_encoded is TRUE, have to check the type is primitive
+                                                                       # if not, then put the namespace on (?)
                       newXMLNamespace(ans, xmlns, set = TRUE)
                 }
                 toSOAP(argValue, if(.literal) methodCall else ans, type = typedef,
-                             literal = .literal, elementFormQualified = .elementFormQualified)
+                             literal = .literal, elementFormQualified = !.use_encoded && .elementFormQualified)
 
                 NULL                
 }

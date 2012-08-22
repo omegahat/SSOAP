@@ -134,7 +134,7 @@ writeSOAPMessage <-
   #
 function(con, ..., nameSpaces, method, 
           .types = NULL, xmlns = NULL, .soapArgs = list(),
-          .literal = FALSE, .soapHeader = NULL, .elementFormQualified = FALSE)
+          .literal = FALSE, .soapHeader = NULL, .elementFormQualified = FALSE, .use_encoded = FALSE)
 {
   #XXX make this anonymous!
   ownCon = FALSE
@@ -173,7 +173,7 @@ function(con, ..., nameSpaces, method,
 
   
  writeSOAPBody(method, ..., .soapArgs = .soapArgs, xmlns = xmlns, con = con,
-                .types = .types, .literal = .literal, .elementFormQualified = .elementFormQualified)
+                .types = .types, .literal = .literal, .elementFormQualified = .elementFormQualified, .use_encoded = .use_encoded)
 
  if(is(con, "connection")) {
     cat("</SOAP-ENV:Envelope>\r\n", file=con)
@@ -317,7 +317,7 @@ setGeneric("writeSOAPBody",
            function(method, ..., xmlns= NULL, con,
                     .types = NULL, .soapArgs = list(),
                     .literal = FALSE,
-                    .header = NULL, .elementFormQualified = FALSE)
+                    .header = NULL, .elementFormQualified = FALSE, .use_encoded = FALSE)
             standardGeneric("writeSOAPBody"))
 
 
