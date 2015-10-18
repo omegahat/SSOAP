@@ -121,7 +121,7 @@
    given to us in a WSDL.
  }
  \item{.use_encoded}{a logical value that corresponds to
-   \texttt{use="encoded"}
+   \code{use="encoded"}
   in a WSDL. This means that we will use the older SOAP encoding which
    puts the XML schema type on each primitive data type sent as a
    parameter. It also (currently) removes the method's namespaces from
