@@ -642,7 +642,7 @@ function(node, types, doc, namespaceDefinitions = list(), typeDefinitions = list
 
  
   returnNodeName = NA
-  if(xmlSize(msg)) {
+  if(xmlSize(msg) && "part" %in% names(msg)) {
     value = xmlGetAttr(msg[["part"]], "type")
     if(is.null(value)) 
        value = xmlGetAttr(msg[["part"]], "element", NULL)
