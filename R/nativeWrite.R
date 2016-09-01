@@ -62,29 +62,29 @@ function(method, ..., xmlns= NULL, con,
 })
 
 makeArgNode =
-function(argName, argValue, type, con, xmlns, methodCall, .literal, .elementFormQualified, .use_encoded = FALSE) {
+function(argName, argValue, type, con, xmlns, methodCall, .literal, .elementFormQualified, .use_encoded = FALSE)
+{
+    typedef = NULL
+    if(!is.null(type)) {  #length(.types) >= i ) 
+        typedef = type
+        type = getSOAPType(typedef, argValue)
+    } else
+        type = getSOAPType(argValue)
 
-                typedef = NULL
-                if(!is.null(type)) {  #length(.types) >= i ) 
-                  typedef = type
-                  type = getSOAPType(typedef, argValue)
-                } else
-                  type = getSOAPType(argValue)
 
-
-                if(!.literal) {
-                  ans = newXMLNode(argName, parent = methodCall,
-                                   attrs = if(length(type) && type[1] != "")
-                                               writeTypes(argValue, con = con, types = type),
-                                   doc = con)
-                  if(length(xmlns) && xmlns != "" && (!.use_encoded))  # if .use_encoded is TRUE, have to check the type is primitive
-                                                                       # if not, then put the namespace on (?)
-                      newXMLNamespace(ans, xmlns, set = TRUE)
-                }
-                toSOAP(argValue, if(.literal) methodCall else ans, type = typedef,
-                             literal = .literal, elementFormQualified = !.use_encoded && .elementFormQualified)
-
-                NULL                
+    if(!.literal) {
+        ans = newXMLNode(argName, parent = methodCall,
+            attrs = if(length(type) && type[1] != "")
+            writeTypes(argValue, con = con, types = type),
+            doc = con)
+        if(length(xmlns) && xmlns != "" && (!.use_encoded))  # if .use_encoded is TRUE, have to check the type is primitive
+                                        # if not, then put the namespace on (?)
+            newXMLNamespace(ans, xmlns, set = TRUE)
+    }
+    toSOAP(argValue, if(.literal) methodCall else ans, type = typedef,
+           literal = .literal, elementFormQualified = !.use_encoded && .elementFormQualified)
+    
+    NULL                
 }
 
 
