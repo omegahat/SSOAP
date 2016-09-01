@@ -4,7 +4,7 @@ function(server, method, ..., .soapArgs = list(), action, nameSpaces = SOAPNameS
          .opts = list(), curlHandle = getCurlHandle(),
          .header = getSOAPRequestHeader(action, .server = server),
          .literal = FALSE, .soapHeader = NULL, .elementFormQualified = FALSE,  .use_encoded = FALSE,
-         .returnNodeName = NA)
+         .returnNodeName = NA, .contentOnly = FALSE)
 {
 
  if(is.null(xmlns))
@@ -27,8 +27,8 @@ function(server, method, ..., .soapArgs = list(), action, nameSpaces = SOAPNameS
 
  
  writeSOAPMessage(doc, ..., nameSpaces = nameSpaces, method = method, 
-                    .soapArgs = .soapArgs, .types = .types, xmlns = xmlns, .literal = .literal,
-                     .soapHeader = .soapHeader, .elementFormQualified = .elementFormQualified, .use_encoded = .use_encoded)
+                   .soapArgs = .soapArgs, .types = .types, xmlns = xmlns, .literal = .literal,
+                    .soapHeader = .soapHeader, .elementFormQualified = .elementFormQualified, .use_encoded = .use_encoded)
  if(useNodes)
    txt <- as(doc, "character")
  else {
@@ -60,7 +60,10 @@ function(server, method, ..., .soapArgs = list(), action, nameSpaces = SOAPNameS
               list(header = RCurl:::parseHTTPHeader(headerDataFun$value(NULL)),
                    content = bodyDataFun$value()),
               class = "SOAPHTTPReply"
-              )
+             )
+
+ if(.contentOnly)
+     return(content)
 
  if(isHTTPError(content$header) || isSOAPBodyError(content$content)) {
 
