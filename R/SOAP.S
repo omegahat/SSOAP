@@ -1,7 +1,7 @@
    # Create XML to invoke a SOAP method
 
 "writeTypes" =
-function(x, con, types = getSOAPType(x))
+function(x, con, types = SchemaType(x))
 {  
     if(!is.null(types)) {
 
